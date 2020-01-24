@@ -4,21 +4,18 @@
 
 Versions:    
  - R 3.5.0    
- - RStudio 1.1.453      
-  
-******  
+ - RStudio 1.1.453        
   
 File extensions:     
 .R    
 .Rmd    
 .html      
 
+******      
 
-## [Visualising Airbnb open data]  
+## Visualising Airbnb open data  
 
-[San Francisco property type and ratings](https://darwinanddavis.github.io/worldmaps/airbnb_sf.html)        
-
-******    
+[San Francisco property type and ratings](https://darwinanddavis.github.io/worldmaps/airbnb_sf.html)          
 
 ## Maintainer    
 
