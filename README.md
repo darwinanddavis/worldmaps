@@ -13,6 +13,11 @@ File extensions:
 .Rmd    
 .html      
 
+
+## [Visualising Airbnb open data]  
+
+[San Francisco property type and ratings](https://darwinanddavis.github.io/worldmaps/airbnb_sf.html)        
+
 ******    
 
 ## Maintainer    
