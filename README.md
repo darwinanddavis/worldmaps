@@ -15,7 +15,12 @@ File extensions:
 
 ## Visualising Airbnb open data  
 
-[San Francisco property type and ratings](https://darwinanddavis.github.io/worldmaps/airbnb_sf.html)          
+[**San Francisco property type and ratings**](https://darwinanddavis.github.io/worldmaps/airbnb_sf.html)          
+
+<div align="center"; text-align:center>
+  <img src="img/airbnb_sf.jpg", width = "100%", height = "25%">  
+</div>
+
 
 ## Maintainer    
 
