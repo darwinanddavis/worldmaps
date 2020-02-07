@@ -13,9 +13,32 @@ File extensions:
 
 ******      
 
-## Visualising Airbnb open data  
+## Realtime interactive map of coronavirus 2019-nCov global distribution   
+
+[Coronavirus global distribution map](https://darwinanddavis.github.io/worldmaps/cornonavirus.html)          
+
+Realtime updates of 2019-nCov data distribution of live scraped [data from the European Centre for Disease Prevention and Control (ECDC)]("https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases").    
+
+### Tools  
+
+R, HTML, CSS  
+R packages: `maps`, `readr`, `dplyr`,`leaflet`,`xml2`,`rvest`,`ggmap`,`geosphere`,`htmltools`,`mapview`,`rnaturalearth`,`purrr`    
+
+
+<div align="center"; text-align:center>
+  <img src="img/coronavirus.jpg", width = "100%", height = "25%">  
+</div>  
+  
+## Visualising Airbnb open data    
 
 [**San Francisco property type and ratings**](https://darwinanddavis.github.io/worldmaps/airbnb_sf.html)          
+
+Spatial analysis of Airbnb listing and ratings for the San Francisco area.    
+
+### Tools  
+
+R, HTML, CSS  
+R packages: `readr` `dplyr`, `leaflet`, `colorspace`   
 
 <div align="center"; text-align:center>
   <img src="img/airbnb_sf.jpg", width = "100%", height = "25%">  
