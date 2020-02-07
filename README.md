@@ -15,7 +15,7 @@ File extensions:
 
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 
-[Coronavirus global distribution map](https://darwinanddavis.github.io/worldmaps/cornonavirus.html)          
+[Coronavirus global distribution map](https://darwinanddavis.github.io/worldmaps/coronavirus.html)          
 
 Realtime updates of 2019-nCov data distribution of live scraped [data from the European Centre for Disease Prevention and Control (ECDC)]("https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases").    
 
