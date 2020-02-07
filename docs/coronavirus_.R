@@ -112,6 +112,8 @@ popup_deaths <- paste(sep = "<br/>",
                       ""
 )
 
+# style options -----------------------------------------------------------
+
 # css
 map_title <- tags$style( # title 
   HTML(".leaflet-control.map-title { 
@@ -139,10 +141,8 @@ style <- list(
   "padding" = "3px 3px"
 )
 
-# style options -----------------------------------------------------------
-
 # text label options 
-text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "15px",
+text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "20px",
                                textOnly = F, opacity = 0.5, offset = c(0,0),
                                style = style, permanent = T
 )
@@ -178,12 +178,10 @@ gcIntermediate(lonlat_matrix[1,],
   addPolylines(color=colv, # cases
                opacity = opac,
                weight = 1,
-               popup = popup_cases,
                group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths 
                opacity = opac,
                weight = 1,
-               popup = popup_cases,
                group = layer2) %>%
   addCircles(lon, lat, # cases
              weight=1,
