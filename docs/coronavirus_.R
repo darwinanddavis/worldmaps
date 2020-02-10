@@ -1,11 +1,8 @@
 # 2019-nCov distribution 
 
 # web scraped data from the european centre for disease control
-# you will need a google api to generate new latlons for any new countries added to the online database
-# otherwise, you can watch the live updates here
-
 # up to date link ---------------------------------------------------------
-# https://darwinanddavis.github.io/worldmaps/airbnb_sf.html
+# https://darwinanddavis.github.io/worldmaps/coronavirus.html
 
 # . -----------------------------------------------------------------------
 # . -----------------------------------------------------------------------
