@@ -10,14 +10,15 @@
 # . -----------------------------------------------------------------------
 # . -----------------------------------------------------------------------
 
-# register google api 
-api <- "your api key"
-register_google(api)
 
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
-p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,rnaturalearth,purrr)
+p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos)
+
+# register google api 
+api <- "your api key"
+register_google(api)
 
 # read data ---------------------------------------------------------------
 # scrape data from web \xml2
@@ -31,6 +32,11 @@ cv <- setNames(cv,c("Continent","Country","Cases","Deaths")) # set names
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
 
+# remove duplicate entries
+cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")]
+cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove japan duplicate
+cv[cv$Country=="Republic of Korea","Country"] <- "South Korea" # rename korea for getting centroid later 
+
 # subset
 cv_country <- cv$Country
 cv_cases <- cv$Cases
@@ -38,27 +44,33 @@ cv_deaths <- cv$Deaths
 cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
 
-# get latlons from google api \ ggmap
-# lonlat <- ggmap::geocode(cv_country) # run once
+# get geocode \ rgeos rworldmaps
+lonlat <- getMap(resolution="low") %>% # get country lonlats from database
+  gCentroid(byid=TRUE) %>% 
+  as.data.frame 
+lonlat$Country <- rownames(lonlat) # add country col
+colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
+lonlat <- lonlat[cv_country,] # match country lonlat 
+lonlat  %>%   # write to dir
+  readr::write_csv("cv_lonlat.csv")
 
-# read in datafile  
-lonlat <- readr::read_csv("cv_lonlat.csv") # get lonlat from dir 
-cv[,c("Lon","Lat")] <- lonlat # add to df
-cv %>% str
+# add lonlat to df
+cv[,c("Lon","Lat")] <- lonlat[,c("Lon","Lat")]
+if((any(lonlat$Country == cv$Country)!=TRUE)){# check country name with latlon
+  cat("\n\n\nCheck country lonlat before plotting\n\n\n")}
+
+# fix malaysia latlon
+cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
 
 # get numeric
-lon <- lonlat[1][[1]]
-lat <- lonlat[2][[1]]
-
-# get matrix for poly arcs (omits nafta)
-lonlat_matrix <- cv %>% 
+lon <- cv$Lon 
+lat <- cv$Lat 
+lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arcs 
+lonlat_matrix <- cv %>% # filter out nafta 
   filter(Continent!="America") %>% 
-  select(c(Lon,Lat)) %>% 
+  select(c("Lon","Lat")) %>% 
   unlist %>% 
   matrix(ncol=2)
-
-# get country polygons \naturalearth
-cv_polygons <- ne_countries(country=cv_country,returnclass = "sp")
 
 # style -------------------------------------------------------------------
 custom_tile <- names(providers)[113] # choose tiles
