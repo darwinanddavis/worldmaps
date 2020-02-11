@@ -13,10 +13,6 @@
 require(pacman)
 p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos)
 
-# register google api 
-api <- "your api key"
-register_google(api)
-
 # read data ---------------------------------------------------------------
 # scrape data from web \xml2
 url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases"
@@ -25,19 +21,19 @@ web_data <- url %>% read_html
 # convert to tibble \rvest
 tb <- web_data %>% html_table 
 cv <- tb[[1]] # get df
-cv <- setNames(cv,c("Continent","Country","Cases","Deaths")) # set names 
+cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Info")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
 
 # remove duplicate entries
-cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")]
+cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
 cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove japan duplicate
 cv[cv$Country=="Republic of Korea","Country"] <- "South Korea" # rename korea for getting centroid later 
 
 # subset
 cv_country <- cv$Country
-cv_cases <- cv$Cases
-cv_deaths <- cv$Deaths
+cv_cases <- cv$Cases %>% as.numeric()
+cv_deaths <- cv$Deaths %>% as.numeric()
 cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
 
@@ -68,6 +64,11 @@ lonlat_matrix <- cv %>% # filter out nafta
   select(c("Lon","Lat")) %>% 
   unlist %>% 
   matrix(ncol=2)
+
+# nafta coords
+nafta_lon <- cv %>% filter(Continent=="America") %>% select(c("Lon")) %>% unlist
+nafta_lat <- cv %>% filter(Continent=="America") %>% select(c("Lat")) %>% unlist
+
 
 # style -------------------------------------------------------------------
 custom_tile <- names(providers)[113] # choose tiles
@@ -121,6 +122,8 @@ popup_deaths <- paste(sep = "<br/>",
                       ""
 )
 
+
+
 # style options -----------------------------------------------------------
 
 # css
@@ -150,10 +153,22 @@ style <- list(
   "padding" = "3px 3px"
 )
 
+style_nafta <- list(
+  "color" = "#F90F40",
+  "font-weight" = "normal",
+  "font-family" = "Optima",
+  "padding" = "3px 3px"
+)
+
 # text label options 
 text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "20px",
                                textOnly = F, opacity = 0.5, offset = c(0,0),
                                style = style, permanent = T
+)
+
+text_label_opt_nafta <- labelOptions(noHide = T, direction = "top", textsize = "15px",
+                               textOnly = F, opacity = 0.5, offset = c(0,0),
+                               style = style_nafta, permanent = T
 )
 
 # layer options 
@@ -192,7 +207,7 @@ gcIntermediate(lonlat_matrix[1,],
                opacity = opac,
                weight = 1,
                group = layer2) %>%
-  addCircles(lon, lat, # cases
+  addCircles(lon,lat, # cases
              weight=1,
              radius= radius_cases,
              color=colv,
@@ -210,6 +225,10 @@ gcIntermediate(lonlat_matrix[1,],
              popup = popup_deaths,
              labelOptions = text_label_opt,
              group = layer2) %>%
+  addLabelOnlyMarkers(nafta_lon,nafta_lat,
+                      label=c("United States of America","Canada"),
+                      labelOptions = text_label_opt_nafta,
+                      group=layer1) %>% 
   addLayersControl(
     baseGroups = c(layer1,layer2),
     options = layer_options) %>% 
@@ -217,5 +236,3 @@ gcIntermediate(lonlat_matrix[1,],
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
   addControl(heading_tr, "topright")
-
-
