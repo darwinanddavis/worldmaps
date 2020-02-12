@@ -11,7 +11,7 @@
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
-p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos)
+p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr)
 
 # read data ---------------------------------------------------------------
 # scrape data from web \xml2
@@ -19,11 +19,16 @@ url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases"
 web_data <- url %>% read_html
 
 # convert to tibble \rvest
-tb <- web_data %>% html_table 
+tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Info")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
+
+# remove white space from chars
+cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
+cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
+
 
 # remove duplicate entries
 cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
