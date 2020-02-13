@@ -11,9 +11,10 @@
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
-p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr)
+p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets)
 
 # read data ---------------------------------------------------------------
+here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
 # scrape data from web \xml2
 url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases"
 web_data <- url %>% read_html
@@ -193,7 +194,7 @@ radius_deaths <- sqrt(cv_deaths) * 5000
 # map ---------------------------------------------------------------------
 
 # set arc matrix
-gcIntermediate(lonlat_matrix[1,],
+cvm <- gcIntermediate(lonlat_matrix[1,],
                lonlat_matrix,
                n=100,
                addStartEnd=T,
@@ -241,3 +242,10 @@ gcIntermediate(lonlat_matrix[1,],
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
   addControl(heading_tr, "topright")
+
+cvm
+
+# save outputs ------------------------------------------------------------
+
+cvm %>% saveWidget(here("Data/worldmaps/coronavirus.html"))
+cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to repo 
