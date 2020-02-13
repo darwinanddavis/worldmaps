@@ -11,19 +11,25 @@
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
-p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos)
+p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets)
 
 # read data ---------------------------------------------------------------
+here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
 # scrape data from web \xml2
 url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases"
 web_data <- url %>% read_html
 
 # convert to tibble \rvest
-tb <- web_data %>% html_table 
+tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Info")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
+
+# remove white space from chars
+cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
+cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
+
 
 # remove duplicate entries
 cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
@@ -188,7 +194,7 @@ radius_deaths <- sqrt(cv_deaths) * 5000
 # map ---------------------------------------------------------------------
 
 # set arc matrix
-gcIntermediate(lonlat_matrix[1,],
+cvm <- gcIntermediate(lonlat_matrix[1,],
                lonlat_matrix,
                n=100,
                addStartEnd=T,
@@ -236,3 +242,10 @@ gcIntermediate(lonlat_matrix[1,],
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
   addControl(heading_tr, "topright")
+
+cvm
+
+# save outputs ------------------------------------------------------------
+
+cvm %>% saveWidget(here("Data/worldmaps/coronavirus.html"))
+cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to repo 
