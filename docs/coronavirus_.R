@@ -241,7 +241,7 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
   hideGroup(layer2) %>% 
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
-  addControl(heading_tr, "topright")
+  addControl(heading_tr, "topright") 
 
 cvm
 
