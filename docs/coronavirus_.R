@@ -30,11 +30,12 @@ cv <- cv[-length(cv$Deaths),] # rm total from country df
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
 
-
 # remove duplicate entries
 cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
 cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove japan duplicate
-cv[cv$Country=="Republic of Korea","Country"] <- "South Korea" # rename korea for getting centroid later 
+# rename countries for getting centroid later 
+cv[stringr::str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
+cv[stringr::str_which(cv$Country,"Iran"),"Country"] <- "Iran"
 
 # subset
 cv_country <- cv$Country
@@ -189,7 +190,6 @@ layer2 <- "Deaths"
 # point size
 radius_cases <- sqrt(cv_cases) * 5000 
 radius_deaths <- sqrt(cv_deaths) * 5000
-
 
 # map ---------------------------------------------------------------------
 
