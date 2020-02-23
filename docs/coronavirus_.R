@@ -25,7 +25,7 @@ cv <- tb[[1]] # get df
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Info")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
-
+ 
 # remove white space from chars
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
@@ -37,12 +37,22 @@ cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove ja
 cv[stringr::str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
 cv[stringr::str_which(cv$Country,"Iran"),"Country"] <- "Iran"
 
+# get totals per continent
+cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
+cv_continent_deaths <- cv %>% filter(Country=="") %>% select(Deaths)
+cv_continent_cases$Continent <- cv[,"Continent"] %>% unique
+cv_continent_deaths$Continent <- cv[,"Continent"] %>% unique
+
+# remove empty country rows
+cv <- cv[!cv$Country=="",] 
+
 # subset
 cv_country <- cv$Country
 cv_cases <- cv$Cases %>% as.numeric()
 cv_deaths <- cv$Deaths %>% as.numeric()
 cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
+
 
 # get geocode \ rgeos rworldmaps
 lonlat <- getMap(resolution="low") %>% # get country lonlats from database
@@ -129,8 +139,6 @@ popup_deaths <- paste(sep = "<br/>",
                       ""
 )
 
-
-
 # style options -----------------------------------------------------------
 
 # css
@@ -211,7 +219,7 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
                group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths 
                opacity = opac,
-               weight = 1,
+               weight = 2,
                group = layer2) %>%
   addCircles(lon,lat, # cases
              weight=1,
