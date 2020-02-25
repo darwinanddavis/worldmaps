@@ -37,14 +37,14 @@ cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove ja
 cv[stringr::str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
 cv[stringr::str_which(cv$Country,"Iran"),"Country"] <- "Iran"
 
-# get totals per continent
-cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
-cv_continent_deaths <- cv %>% filter(Country=="") %>% select(Deaths)
-cv_continent_cases$Continent <- cv[,"Continent"] %>% unique
-cv_continent_deaths$Continent <- cv[,"Continent"] %>% unique
+# get totals per continent ## not run 24-2-20  
+# cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
+# cv_continent_deaths <- cv %>% filter(Country=="") %>% select(Deaths)
+# cv_continent_cases$Continent <- cv[,"Continent"] %>% unique
+# cv_continent_deaths$Continent <- cv[,"Continent"] %>% unique
 
 # remove empty country rows
-cv <- cv[!cv$Country=="",] 
+# cv <- cv[!cv$Country=="",] 
 
 # subset
 cv_country <- cv$Country
@@ -254,6 +254,7 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
 cvm
 
 # save outputs ------------------------------------------------------------
+last.warning; geterrmessage() # get last warning and error message
 
 cvm %>% saveWidget(here("Data/worldmaps/coronavirus.html"))
 cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to repo 
