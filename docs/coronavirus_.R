@@ -72,19 +72,22 @@ if((any(lonlat$Country == cv$Country)!=TRUE)){# check country name with latlon
 # fix malaysia latlon
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
 
+# get character string for nafta to rm from df and get latlon 
+nafta_string <- stringr::str_subset(cv$Country,c("Amer*","Cana*"))
+
 # get numeric
 lon <- cv$Lon 
 lat <- cv$Lat 
 lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arcs 
 lonlat_matrix <- cv %>% # filter out nafta 
-  filter(Continent!="America") %>% 
+  filter(Country!=nafta_string) %>% 
   select(c("Lon","Lat")) %>% 
   unlist %>% 
   matrix(ncol=2)
 
 # nafta coords
-nafta_lon <- cv %>% filter(Continent=="America") %>% select(c("Lon")) %>% unlist
-nafta_lat <- cv %>% filter(Continent=="America") %>% select(c("Lat")) %>% unlist
+nafta_lon <- cv %>% filter(Country==nafta_string) %>% select(c("Lon")) %>% unlist
+nafta_lat <- cv %>% filter(Country==nafta_string) %>% select(c("Lat")) %>% unlist
 
 
 # style -------------------------------------------------------------------
@@ -93,7 +96,7 @@ custom_tile2 <- names(providers)[110]
 colv <- "#F90F40"
 colv2 <- "#FA0303"
 opac <- 0.7
-colvec_deaths <- ifelse(cv_deaths == 0,"#090909",colv2) # remove 0 points 
+colvec_deaths <- ifelse(cv_deaths == 0,NaN,colv2) # remove 0 points 
 
 # text --------------------------------------------------------------------
 
@@ -215,7 +218,7 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
   addProviderTiles(custom_tile, group = c(layer1,layer2)) %>% 
   addPolylines(color=colv, # cases
                opacity = opac,
-               weight = 1,
+               weight = 2,
                group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths 
                opacity = opac,
@@ -257,4 +260,4 @@ cvm
 last.warning; geterrmessage() # get last warning and error message
 
 cvm %>% saveWidget(here("Data/worldmaps/coronavirus.html"))
-cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to repo 
+cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to dir 
