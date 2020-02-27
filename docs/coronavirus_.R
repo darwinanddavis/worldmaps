@@ -36,6 +36,7 @@ cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove ja
 # rename countries for getting centroid later 
 cv[stringr::str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
 cv[stringr::str_which(cv$Country,"Iran"),"Country"] <- "Iran"
+cv[stringr::str_which(cv$Country,"Maced"),"Country"] <- "Macedonia"
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -53,7 +54,6 @@ cv_deaths <- cv$Deaths %>% as.numeric()
 cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
 
-
 # get geocode \ rgeos rworldmaps
 lonlat <- getMap(resolution="low") %>% # get country lonlats from database
   gCentroid(byid=TRUE) %>% 
@@ -68,19 +68,22 @@ lonlat  %>%   # write to dir
 cv[,c("Lon","Lat")] <- lonlat[,c("Lon","Lat")]
 if((any(lonlat$Country == cv$Country)!=TRUE)){# check country name with latlon
   cat("\n\n\nCheck country lonlat before plotting\n\n\n")}
-
+  
 # fix malaysia latlon
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
 
 # get character string for nafta to rm from df and get latlon 
-nafta_string <- stringr::str_subset(cv$Country,c("Amer*","Cana*"))
+nafta_string <-c(
+  cv[stringr::str_which(cv$Country,"Amer"),"Country"],
+  cv[stringr::str_which(cv$Country,"Cana"),"Country"]
+)
 
 # get numeric
 lon <- cv$Lon 
 lat <- cv$Lat 
 lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arcs 
 lonlat_matrix <- cv %>% # filter out nafta 
-  filter(Country!=nafta_string) %>% 
+  filter(Country==nafta_string) %>% 
   select(c("Lon","Lat")) %>% 
   unlist %>% 
   matrix(ncol=2)
