@@ -73,24 +73,21 @@ if((any(lonlat$Country == cv$Country)!=TRUE)){# check country name with latlon
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
 
 # get character string for nafta to rm from df and get latlon 
-nafta_string <-c(
-  cv[stringr::str_which(cv$Country,"Amer"),"Country"],
-  cv[stringr::str_which(cv$Country,"Cana"),"Country"]
-)
+nafta_string <-str_subset(cv$Country,"Amer|Cana")
 
 # get numeric
 lon <- cv$Lon 
 lat <- cv$Lat 
 lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arcs 
 lonlat_matrix <- cv %>% # filter out nafta 
-  filter(Country==nafta_string) %>% 
+  filter(!Country %in% nafta_string) %>% 
   select(c("Lon","Lat")) %>% 
   unlist %>% 
   matrix(ncol=2)
 
 # nafta coords
-nafta_lon <- cv %>% filter(Country==nafta_string) %>% select(c("Lon")) %>% unlist
-nafta_lat <- cv %>% filter(Country==nafta_string) %>% select(c("Lat")) %>% unlist
+nafta_lon <- cv %>% filter(Country %in% nafta_string) %>% select(c("Lon")) %>% unlist
+nafta_lat <- cv %>% filter(Country %in% nafta_string) %>% select(c("Lat")) %>% unlist
 
 
 # style -------------------------------------------------------------------
