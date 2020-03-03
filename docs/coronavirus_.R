@@ -22,7 +22,7 @@ web_data <- url %>% read_html
 # convert to tibble \rvest
 tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
-cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Info")) # set names 
+cv <- setNames(cv,c("Continent","Country","Cases","Deaths")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
  
@@ -72,23 +72,28 @@ if((any(lonlat$Country == cv$Country)!=TRUE)){# check country name with latlon
 # fix malaysia latlon
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
 
-# get character string for nafta to rm from df and get latlon 
-nafta_string <-str_subset(cv$Country,"Amer|Cana")
-
 # get numeric
 lon <- cv$Lon 
 lat <- cv$Lat 
 lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arcs 
-lonlat_matrix <- cv %>% # filter out nafta 
-  filter(!Country %in% nafta_string) %>% 
-  select(c("Lon","Lat")) %>% 
-  unlist %>% 
-  matrix(ncol=2)
 
-# nafta coords
-nafta_lon <- cv %>% filter(Country %in% nafta_string) %>% select(c("Lon")) %>% unlist
-nafta_lat <- cv %>% filter(Country %in% nafta_string) %>% select(c("Lat")) %>% unlist
+# if using nafta coords # not run 3-3-20
+# get character string for nafta to rm from df and get latlon 
+# nafta_string <- str_subset(cv$Country,"Amer|Cana|Ecu|Mexi")
+# lonlat_matrix <- cv %>% # filter out nafta 
+#   filter(!Country %in% nafta_string) %>% 
+#   select(c("Lon","Lat")) %>% 
+#   unlist %>% 
+#   matrix(ncol=2)
+# nafta_lon <- cv %>% filter(Country %in% nafta_string) %>% select(c("Lon")) %>% unlist
+# nafta_lat <- cv %>% filter(Country %in% nafta_string) %>% select(c("Lat")) %>% unlist
 
+# death latlon
+death_lon <- cv %>% filter(Deaths>0) %>% select(c("Lon")) %>% unlist
+death_lat <- cv %>% filter(Deaths>0) %>% select(c("Lat")) %>% unlist
+
+# get death labels
+cv_deaths_labels <- cv %>% filter(Deaths>0) %>% select(Country) %>% unlist
 
 # style -------------------------------------------------------------------
 custom_tile <- names(providers)[113] # choose tiles
@@ -96,7 +101,19 @@ custom_tile2 <- names(providers)[110]
 colv <- "#F90F40"
 colv2 <- "#FA0303"
 opac <- 0.7
-colvec_deaths <- ifelse(cv_deaths == 0,NaN,colv2) # remove 0 points 
+colvec_cases <- ifelse(cv_cases > 0, colv,NaN) # get colvec w/o nafta cases
+colvec_deaths <- ifelse(cv_deaths > 0 ,colv2,NaN) # remove 0 points
+
+
+# set colvec for if removing nafta polylines # not run 3-3-20
+# nafta_cases <- cv %>% filter(Country %in% nafta_string) %>% select("Cases") %>% unlist
+# colvec_cases <- ifelse(cv_cases %in% nafta_cases,NaN,colv) # get colvec w/o nafta cases
+# colvec_deaths <- ifelse(cv_deaths %in% c(0,nafta_cases),NaN,colv2) # remove 0 points 
+
+# add deaths latlon manually # not run 3-2-20
+# cv_deaths_lon <- cv %>% filter(Deaths>0) %>% select("Lon") %>% unlist
+# cv_deaths_lat <- cv %>% filter(Deaths>0) %>% select("Lat") %>% unlist
+
 
 # text --------------------------------------------------------------------
 
@@ -192,6 +209,14 @@ text_label_opt_nafta <- labelOptions(noHide = T, direction = "top", textsize = "
 # layer options 
 layer_options <- layersControlOptions(collapsed = F)
 
+# tile options
+min_zoom <- 3
+max_zoom <- 10
+
+# set max map bounds
+max_bound1 <- c(-150,90)
+max_bound2 <- c(180,-90)
+
 # layers ------------------------------------------------------------------
 
 # titles
@@ -213,14 +238,20 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
                sp=T
 ) %>% 
   leaflet() %>% 
-  setView(lonlat[1,1],lonlat[1,2],zoom=4) %>% 
-  addTiles(custom_tile) %>% 
-  addProviderTiles(custom_tile, group = c(layer1,layer2)) %>% 
-  addPolylines(color=colv, # cases
+  setMaxBounds(max_bound1[1],max_bound1[2],max_bound2[1],max_bound2[2]) %>% 
+  setView(lonlat[1,1],lonlat[1,2],zoom=min_zoom) %>% 
+  addTiles(custom_tile,
+           options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom)
+           ) %>% 
+  addProviderTiles(custom_tile, 
+                   group = c(layer1,layer2),
+                   options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom)
+                   ) %>% 
+  addPolylines(color=colvec_cases, # cases
                opacity = opac,
-               weight = 2,
+               weight = 1,
                group = layer1) %>%
-  addPolylines(color=colvec_deaths, # deaths 
+  addPolylines(color=colvec_deaths, # deaths
                opacity = opac,
                weight = 2,
                group = layer2) %>%
@@ -242,11 +273,15 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
              popup = popup_deaths,
              labelOptions = text_label_opt,
              group = layer2) %>%
-  addLabelOnlyMarkers(nafta_lon,nafta_lat,
-                      label=c("United States of America","Canada"),
-                      labelOptions = text_label_opt_nafta,
-                      group=layer1) %>% 
-  addLayersControl(
+  # addLabelOnlyMarkers(nafta_lon,nafta_lat, # add labels for cases outside of polylines
+  #                     label=nafta_string,
+  #                     labelOptions = text_label_opt_nafta,
+  #                     group=layer1) %>% 
+  # addLabelOnlyMarkers(death_lon,death_lat, # add labels for deaths outside of polylines
+  #                     label=cv_deaths_labels,
+  #                     labelOptions = text_label_opt_nafta,
+  #                     group=layer2) %>% 
+  addLayersControl( 
     baseGroups = c(layer1,layer2),
     options = layer_options) %>% 
   hideGroup(layer2) %>% 
@@ -261,3 +296,5 @@ last.warning; geterrmessage() # get last warning and error message
 
 cvm %>% saveWidget(here("Data/worldmaps/coronavirus.html"))
 cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to dir 
+
+
