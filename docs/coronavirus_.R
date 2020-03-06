@@ -25,7 +25,7 @@ cv <- tb[[1]] # get df
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
- 
+
 # remove white space from chars
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
@@ -68,10 +68,12 @@ lonlat  %>%   # write to dir
 cv[,c("Lon","Lat")] <- lonlat[,c("Lon","Lat")]
 if((any(lonlat$Country == cv$Country)!=TRUE)){# check country name with latlon
   cat("\n\n\nCheck country lonlat before plotting\n\n\n")}
-  
+
 # fix malaysia latlon
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
-
+# fix palestine latlon
+cv[cv$Country==cv[stringr::str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Israel") %>% select(c("Lon","Lat")) + 0.05 # displace Palestine latlon from israel
+  
 # get numeric
 lon <- cv$Lon 
 lat <- cv$Lat 
