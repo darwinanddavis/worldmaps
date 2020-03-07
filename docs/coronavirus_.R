@@ -4,39 +4,58 @@
 # up to date link ---------------------------------------------------------
 # https://darwinanddavis.github.io/worldmaps/coronavirus.html
 
-# . -----------------------------------------------------------------------
-# . -----------------------------------------------------------------------
-
-
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
 p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets)
 
-# read data ---------------------------------------------------------------
+# set wd
 here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
-# scrape data from web \xml2
-url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases"
-web_data <- url %>% read_html
 
-# convert to tibble \rvest
+# scrape data from web \xml2 ---------------------------------------------------------------
+url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases" 
+
+# end user input ----------------------------------------------------------
+# . -----------------------------------------------------------------------
+# . -----------------------------------------------------------------------
+
+# get geocode \ rgeos rworldmaps ------------------------------------------
+lonlat <- getMap(resolution="low") %>% # get country lonlats from rgeos database
+  gCentroid(byid=TRUE) %>% 
+  as.data.frame 
+lonlat$Country <- rownames(lonlat) # add country col
+colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
+
+# function for getting lonlat from rgeos database 
+find_lonlat <- function(country_string){
+  country_string_return <- lonlat %>% filter(Country %in% str_subset(lonlat$Country,country_string))
+  country_string_return_name <- country_string_return %>% select("Country") # get country string
+  print(country_string_return)
+}
+
+# convert to tibble \rvest ------------------------------------------------
+web_data <- url %>% read_html
 tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
+cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
 # remove white space from chars
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
 
-# remove duplicate entries
+# fix anomalies in country entries
 cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
 cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove japan duplicate
 # rename countries for getting centroid later 
 cv[stringr::str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
 cv[stringr::str_which(cv$Country,"Iran"),"Country"] <- "Iran"
 cv[stringr::str_which(cv$Country,"Maced"),"Country"] <- "Macedonia"
+cv[stringr::str_which(cv$Country,"Pales"),"Country"] <- "Palestine* (as neither recognition nor prejudice towards the State)"
+cv[stringr::str_which(cv$Country,"Ser"),"Country"] <- "Republic of Serbia" # match serbia to geocode country string in lonlat /rgeos
+cv[stringr::str_which(cv$Country,"Vat"),"Country"] <- "Vatican" # match serbia to geocode country string in lonlat /rgeos 
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -46,7 +65,6 @@ cv[stringr::str_which(cv$Country,"Maced"),"Country"] <- "Macedonia"
 
 # remove empty country rows
 # cv <- cv[!cv$Country=="",] 
-
 # subset
 cv_country <- cv$Country
 cv_cases <- cv$Cases %>% as.numeric()
@@ -54,26 +72,31 @@ cv_deaths <- cv$Deaths %>% as.numeric()
 cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
 
-# get geocode \ rgeos rworldmaps
-lonlat <- getMap(resolution="low") %>% # get country lonlats from database
-  gCentroid(byid=TRUE) %>% 
-  as.data.frame 
-lonlat$Country <- rownames(lonlat) # add country col
-colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
-lonlat <- lonlat[cv_country,] # match country lonlat 
-lonlat  %>%   # write to dir
+# match cv country lonlat to lonlat rgeos database
+lonlat_final <- lonlat[cv_country,] 
+lonlat_final  %>%   # write to dir
   readr::write_csv("cv_lonlat.csv")
 
 # add lonlat to df
-cv[,c("Lon","Lat")] <- lonlat[,c("Lon","Lat")]
-if((any(lonlat$Country == cv$Country)!=TRUE)){# check country name with latlon
-  cat("\n\n\nCheck country lonlat before plotting\n\n\n")}
+cv[,c("Lon","Lat")] <- lonlat_final[,c("Lon","Lat")]
+# check country name with latlon
+if(any(lonlat_final$Country == cv$Country)!=TRUE){
+  cat("\n\n\nCheck country lonlat before plotting\n\n\n",rep("*",10))}
 
 # fix malaysia latlon
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
 # fix palestine latlon
 cv[cv$Country==cv[stringr::str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Israel") %>% select(c("Lon","Lat")) + 0.05 # displace Palestine latlon from israel
-  
+
+# check NAs
+if(any(is.na(cv$Lat))==TRUE){
+  cat("\n\n\nLatlon in cv dataset contains NAs\n",rep("*",10),"\n")
+  cv[which(is.na(cv$Lat)),"Country"] %>% cat
+}
+
+# find which countries show NAs/anomalies 
+find_lonlat("XXX") 
+
 # get numeric
 lon <- cv$Lon 
 lat <- cv$Lat 
@@ -241,7 +264,7 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
 ) %>% 
   leaflet() %>% 
   setMaxBounds(max_bound1[1],max_bound1[2],max_bound2[1],max_bound2[2]) %>% 
-  setView(lonlat[1,1],lonlat[1,2],zoom=min_zoom) %>% 
+  setView(cv[1,"Lon"],cv[1,"Lat"],zoom=min_zoom) %>% 
   addTiles(custom_tile,
            options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom)
            ) %>% 
