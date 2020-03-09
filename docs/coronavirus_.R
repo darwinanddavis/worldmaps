@@ -33,14 +33,14 @@ find_lonlat <- function(country_string){
   print(country_string_return)
 }
 
-# convert to tibble \rvest ------------------------------------------------
+# convert to tibble \rvest 
 web_data <- url %>% read_html
 tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
-cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
+# cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
 # remove white space from chars
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
@@ -55,7 +55,7 @@ cv[stringr::str_which(cv$Country,"Iran"),"Country"] <- "Iran"
 cv[stringr::str_which(cv$Country,"Maced"),"Country"] <- "Macedonia"
 cv[stringr::str_which(cv$Country,"Pales"),"Country"] <- "Palestine* (as neither recognition nor prejudice towards the State)"
 cv[stringr::str_which(cv$Country,"Ser"),"Country"] <- "Republic of Serbia" # match serbia to geocode country string in lonlat /rgeos
-cv[stringr::str_which(cv$Country,"Vat"),"Country"] <- "Vatican" # match serbia to geocode country string in lonlat /rgeos 
+cv[stringr::str_which(cv$Country,c("VAT","Vat")),"Country"] <- "Vatican" # match serbia to geocode country string in lonlat /rgeos 
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
