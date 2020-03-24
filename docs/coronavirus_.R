@@ -33,29 +33,44 @@ find_lonlat <- function(country_string){
   print(country_string_return)
 }
 
+# function for getting current country name in cv
+set_country_name <-  function(country_name){
+  cv[str_which(cv$Country,c(country_name)),"Country"] 
+}
+
 # convert to tibble \rvest 
 web_data <- url %>% read_html
 tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
-cv <- setNames(cv,c("Continent","Country","Cases","Deaths")) # set names 
+cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Confirmed cases in last 15 days")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
-# remove white space from chars
+# clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
+cv$Country <- cv$Country %>% str_replace_all("_"," ") %>% as.character()
 
 # fix anomalies in country entries
 cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
 cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove japan duplicate
 # rename countries for getting centroid later 
-cv[stringr::str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
-cv[stringr::str_which(cv$Country,"Iran"),"Country"] <- "Iran"
-cv[stringr::str_which(cv$Country,"Maced"),"Country"] <- "Macedonia"
-cv[stringr::str_which(cv$Country,"Pales"),"Country"] <- "Palestine* (as neither recognition nor prejudice towards the State)"
-cv[stringr::str_which(cv$Country,"Ser"),"Country"] <- "Republic of Serbia" # match serbia to geocode country string in lonlat /rgeos
-cv[stringr::str_which(cv$Country,c("VAT","Vat")),"Country"] <- "Vatican" # match serbia to geocode country string in lonlat /rgeos 
+cv[str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
+cv[str_which(cv$Country,"Iran"),"Country"] <- "Iran"
+cv[str_which(cv$Country,"Maced"),"Country"] <- "Macedonia"
+cv[str_which(cv$Country,"Pales"),"Country"] <- "Palestine* (as neither recognition nor prejudice towards the State)"
+cv[str_which(cv$Country,"Ser"),"Country"] <- "Republic of Serbia" # match geocode country string in lonlat /rgeos
+cv[str_which(cv$Country,"Holy"),"Country"] <- "Vatican" # match geocode country string in lonlat /rgeos 
+cv[str_which(cv$Country,"Brun"),"Country"] <- "Brunei" # match geocode country string in lonlat /rgeos 
+cv[str_which(cv$Country,"Congo"),"Country"][1] <- "Republic of the Congo" # republic of the congo
+cv[str_which(cv$Country,"Democratic"),"Country"] <- "Democratic Republic of the Congo" # DRC
+cv[str_which(cv$Country,"Eswa"),"Country"] <- "Swaziland" # swaziland
+cv[str_which(cv$Country,"Ivo"),"Country"] <- "Ivory Coast" # ivory coast
+cv[str_which(cv$Country,"Baha"),"Country"] <- "The Bahamas" # bahamas
+cv[str_which(cv$Country,"Nether"),"Country"][1] <- "Netherlands Antilles"
+cv[str_which(cv$Country,"Nether"),"Country"][2] <- "Netherlands"
+cv[str_which(cv$Country,"Timor"),"Country"] <- "East Timor"
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -83,19 +98,22 @@ cv[,c("Lon","Lat")] <- lonlat_final[,c("Lon","Lat")]
 if(any(lonlat_final$Country == cv$Country)!=TRUE){
   cat("\n\n\nCheck country lonlat before plotting\n\n\n",rep("*",10))}
 
-# fix malaysia latlon
-cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484)
-# fix palestine latlon
-cv[cv$Country==cv[stringr::str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Israel") %>% select(c("Lon","Lat")) + 0.05 # displace Palestine latlon from israel
+# fix misc latlon
+cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484) # malaysia
+cv[cv$Country==cv[str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Israel") %>% select(c("Lon","Lat")) + 0.05 # displace Palestine latlon from israel
+cv[cv$Country==cv[str_which(cv$Country,"Gibral"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Spain") %>% select(c("Lon","Lat")) + 0.05 # displace gibraltar latlon from spain
+cv[cv$Country==cv[str_which(cv$Country,"Antill"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Aruba") %>% select(c("Lon","Lat")) + 0.2  # displace gibraltar latlon from spain
 
 # check NAs
 if(any(is.na(cv$Lat))==TRUE){
   cat("\n\n\nLatlon in cv dataset contains NAs\n",rep("*",10),"\n")
-  cv[which(is.na(cv$Lat)),"Country"] %>% cat
+  cv[which(is.na(cv$Lat)),"Country"]
 }
 
 # find which countries show NAs/anomalies 
-find_lonlat("XXX") 
+find_lonlat("East") 
+# get current country name in cv  
+set_country_name("Timor") 
 
 # get numeric
 lon <- cv$Lon 
@@ -239,6 +257,7 @@ min_zoom <- 3
 max_zoom <- 10
 
 # set max map bounds
+latlon_origin <- cv %>% filter(Country=="China") %>% select(c("Lon","Lat")) %>% as.numeric() # china lonlat
 max_bound1 <- c(-150,90)
 max_bound2 <- c(180,-90)
 
@@ -255,7 +274,8 @@ radius_deaths <- sqrt(cv_deaths) * 5000
 # map ---------------------------------------------------------------------
 
 # set arc matrix
-cvm <- gcIntermediate(lonlat_matrix[1,],
+cvm <- gcIntermediate(latlon_origin,
+                      # lonlat_matrix[1,],
                lonlat_matrix,
                n=100,
                addStartEnd=T,
@@ -264,7 +284,7 @@ cvm <- gcIntermediate(lonlat_matrix[1,],
 ) %>% 
   leaflet() %>% 
   setMaxBounds(max_bound1[1],max_bound1[2],max_bound2[1],max_bound2[2]) %>% 
-  setView(cv[1,"Lon"],cv[1,"Lat"],zoom=min_zoom) %>% 
+  setView(latlon_origin[1],latlon_origin[2],zoom=min_zoom) %>% 
   addTiles(custom_tile,
            options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom)
            ) %>% 
@@ -321,5 +341,4 @@ last.warning; geterrmessage() # get last warning and error message
 
 cvm %>% saveWidget(here("Data/worldmaps/coronavirus.html"))
 cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to dir 
-
 
