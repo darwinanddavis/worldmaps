@@ -71,6 +71,7 @@ cv[str_which(cv$Country,"Baha"),"Country"] <- "The Bahamas" # bahamas
 cv[str_which(cv$Country,"Nether"),"Country"][1] <- "Netherlands Antilles"
 cv[str_which(cv$Country,"Nether"),"Country"][2] <- "Netherlands"
 cv[str_which(cv$Country,"Timor"),"Country"] <- "East Timor"
+cv[str_which(cv$Country,"Turks"),"Country"] <- find_lonlat("Turks")$Country
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -111,9 +112,9 @@ if(any(is.na(cv$Lat))==TRUE){
 }
 
 # find which countries show NAs/anomalies 
-find_lonlat("East") 
+find_lonlat("Turks")
 # get current country name in cv  
-set_country_name("Timor") 
+set_country_name("Turks") 
 
 # get numeric
 lon <- cv$Lon 
@@ -334,7 +335,7 @@ cvm <- gcIntermediate(latlon_origin,
   addControl(heading_bl,"bottomleft") %>%
   addControl(heading_tr, "topright") 
 
-cvm
+cvm 
 
 # save outputs ------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and error message
