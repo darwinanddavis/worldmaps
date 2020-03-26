@@ -7,13 +7,18 @@
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
-p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets)
+p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets,readxl,httr,readr)
 
 # set wd
 here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
 
 # scrape data from web \xml2 ---------------------------------------------------------------
-url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases" 
+url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases" # get today's data
+url2 <- "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.csv" # get historical data as of today
+GET(url2, authenticate(":", ":", type="ntlm"), write_disk(tf <- tempfile(fileext = ".csv")))
+cv_historical <- read_csv(tf)
+cv_historical  %>% head
+write_csv(cv_historical,paste0(here(),"/cv_historical.csv")) # write historical data to file
 
 # end user input ----------------------------------------------------------
 # . -----------------------------------------------------------------------
@@ -42,7 +47,7 @@ set_country_name <-  function(country_name){
 web_data <- url %>% read_html
 tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
-cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Confirmed cases in last 15 days")) # set names 
+cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
@@ -87,6 +92,8 @@ cv_cases <- cv$Cases %>% as.numeric()
 cv_deaths <- cv$Deaths %>% as.numeric()
 cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
+cv_total_recent_cases <- cv_total$Cases_last_15_days
+cv_recent_cases <- cv$Cases_last_15_days %>% as.numeric()
 
 # match cv country lonlat to lonlat rgeos database
 lonlat_final <- lonlat[cv_country,] 
@@ -142,11 +149,13 @@ cv_deaths_labels <- cv %>% filter(Deaths>0) %>% select(Country) %>% unlist
 # style -------------------------------------------------------------------
 custom_tile <- names(providers)[113] # choose tiles
 custom_tile2 <- names(providers)[110]
-colv <- "#F90F40"
-colv2 <- "#FA0303"
+colv <- "#F90F40" # cases
+colv2 <- "#FA0303" # deaths
+colv3 <- "#FFA447" # recent cases 
 opac <- 0.7
 colvec_cases <- ifelse(cv_cases > 0, colv,NaN) # get colvec w/o nafta cases
 colvec_deaths <- ifelse(cv_deaths > 0 ,colv2,NaN) # remove 0 points
+colvec_recent_cases <- ifelse(cv_recent_cases > 0, colv3,NaN) # remove 0 points
 
 
 # set colvec for if removing nafta polylines # not run 3-3-20
@@ -171,7 +180,9 @@ ttl <- paste0("<div
 heading_tr <- paste(sep = "<br>",
                     "<strong> Total cases </strong>", cv_total_cases,
                     "",
-                    "<strong> Total deaths </strong>", cv_total_deaths)
+                    "<strong> Total deaths </strong>", cv_total_deaths,
+                    "",
+                    "<strong> Total cases in last 15 days </strong>", cv_total_recent_cases)
 
 # bl
 heading_bl <- paste(sep = "<br>",
@@ -202,6 +213,13 @@ popup_deaths <- paste(sep = "<br/>",
                       "<strong> Deaths: </strong>", cv_deaths,
                       ""
 )
+
+popup_recent_cases <- paste(sep = "<br/>",
+                             "<strong> Country: </strong>", cv_country,
+                             "",
+                             "<strong> Cases in last 15 days: </strong>", cv_recent_cases,
+                             ""
+                             )
 
 # style options -----------------------------------------------------------
 
@@ -267,10 +285,12 @@ max_bound2 <- c(180,-90)
 # titles
 layer1 <- "Cases"
 layer2 <- "Deaths"
+layer3 <- "Cases in last 15 days"  
 
 # point size
 radius_cases <- sqrt(cv_cases) * 5000 
 radius_deaths <- sqrt(cv_deaths) * 5000
+radius_recent_cases <- sqrt(cv_recent_cases) * 5000
 
 # map ---------------------------------------------------------------------
 
@@ -287,11 +307,11 @@ cvm <- gcIntermediate(latlon_origin,
   setMaxBounds(max_bound1[1],max_bound1[2],max_bound2[1],max_bound2[2]) %>% 
   setView(latlon_origin[1],latlon_origin[2],zoom=min_zoom) %>% 
   addTiles(custom_tile,
-           options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom)
+           options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom) # set zoom bounds
            ) %>% 
   addProviderTiles(custom_tile, 
-                   group = c(layer1,layer2),
-                   options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom)
+                   group = c(layer1,layer2,layer3),
+                   options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom) # set zoom bounds
                    ) %>% 
   addPolylines(color=colvec_cases, # cases
                opacity = opac,
@@ -299,7 +319,7 @@ cvm <- gcIntermediate(latlon_origin,
                group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths
                opacity = opac,
-               weight = 2,
+               weight = 1,
                group = layer2) %>%
   addCircles(lon,lat, # cases
              weight=1,
@@ -319,6 +339,15 @@ cvm <- gcIntermediate(latlon_origin,
              popup = popup_deaths,
              labelOptions = text_label_opt,
              group = layer2) %>%
+  addCircles(lon,lat, # recent cases 
+             weight=1,
+             radius=radius_recent_cases,
+             color=colvec_recent_cases,
+             fillColor=colvec_recent_cases,
+             label = cv_country,
+             popup = popup_recent_cases,
+             labelOptions = text_label_opt,
+             group = layer3) %>%
   # addLabelOnlyMarkers(nafta_lon,nafta_lat, # add labels for cases outside of polylines
   #                     label=nafta_string,
   #                     labelOptions = text_label_opt_nafta,
@@ -328,18 +357,28 @@ cvm <- gcIntermediate(latlon_origin,
   #                     labelOptions = text_label_opt_nafta,
   #                     group=layer2) %>% 
   addLayersControl( 
-    baseGroups = c(layer1,layer2),
+    baseGroups = c(layer1,layer2,layer3),
     options = layer_options) %>% 
-  hideGroup(layer2) %>% 
+  hideGroup(c(layer2,layer3)) %>% 
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
   addControl(heading_tr, "topright") 
-
+ 
 cvm 
 
 # save outputs ------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and error message
 
-cvm %>% saveWidget(here("Data/worldmaps/coronavirus.html"))
-cvm %>% saveWidget(here("Data/worldmaps/worldmaps/coronavirus.html")) # save to dir 
+cvm %>% saveWidget(here("/coronavirus.html"))
+cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to dir 
+
+# save daily totals 
+cv_total_df <- data.frame("Date" = Sys.Date(),
+                          cv_total %>% select(-c(Continent,Country))
+)
+
+# append new total to file and save to dir 
+if(cv_total_df$Date!=Sys.Date()){
+  write_csv(cv_total_df,paste0(here(),"/cv_total_df.csv"),append = T,col_names = F)
+}
 
