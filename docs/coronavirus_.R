@@ -22,7 +22,6 @@ url3 <- "https://google.org/crisisresponse/covid19-map" # recovery data from goo
 # . -----------------------------------------------------------------------
 # . -----------------------------------------------------------------------
 
-
 # get geocode \ rgeos rworldmaps ------------------------------------------
 lonlat <- getMap(resolution="low") %>% # get country lonlats from rgeos database
   gCentroid(byid=TRUE) %>% 
@@ -62,6 +61,7 @@ cv2 %>% head
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
+cv <- cv[!cv$Country=="Other",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
 # clean strings
@@ -86,10 +86,11 @@ cv[str_which(cv$Country,"Democratic"),"Country"] <- "Democratic Republic of the 
 cv[str_which(cv$Country,"Eswa"),"Country"] <- "Swaziland" # swaziland
 cv[str_which(cv$Country,"Ivo"),"Country"] <- "Ivory Coast" # ivory coast
 cv[str_which(cv$Country,"Baha"),"Country"] <- "The Bahamas" # bahamas
-cv[str_which(cv$Country,"Nether"),"Country"][1] <- "Netherlands Antilles"
-cv[str_which(cv$Country,"Nether"),"Country"][2] <- "Netherlands"
+cv[str_which(cv$Country,"Nether"),"Country"][1] <- "Netherlands"
+# cv[str_which(cv$Country,"Nether"),"Country"][2] <- "Netherlands Antilles"
 cv[str_which(cv$Country,"Timor"),"Country"] <- "East Timor"
 cv[str_which(cv$Country,"Turks"),"Country"] <- find_lonlat("Turks")$Country
+cv[str_which(cv$Country,"Cura"),"Country"] <- find_lonlat("Curac")$Country
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -99,6 +100,11 @@ cv[str_which(cv$Country,"Turks"),"Country"] <- find_lonlat("Turks")$Country
 
 # remove empty country rows
 # cv <- cv[!cv$Country=="",] 
+
+# rank data in descending order to layer map points 
+cv <- cv %>% arrange(desc(Cases))
+cv %>% head
+
 # subset
 cv_country <- cv$Country
 cv_cases <- cv$Cases %>% as.numeric()
@@ -137,9 +143,9 @@ if(any(is.na(cv$Lat))==TRUE){
 }
 
 # find which countries show NAs/anomalies 
-find_lonlat("Turks")
+find_lonlat("Other")
 # get current country name in cv  
-set_country_name("Turks") 
+set_country_name("Other") 
 
 # get numeric
 lon <- cv$Lon 
@@ -163,6 +169,7 @@ death_lat <- cv %>% filter(Deaths>0) %>% select(c("Lat")) %>% unlist
 
 # get death labels
 cv_deaths_labels <- cv %>% filter(Deaths>0) %>% select(Country) %>% unlist
+
 
 # style -------------------------------------------------------------------
 custom_tile <- names(providers)[113] # choose tiles
@@ -328,9 +335,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- sqrt(cv_cases) * 5000 
-radius_deaths <- sqrt(cv_deaths) * 5000
-radius_recent_cases <- sqrt(cv_recent_cases) * 5000
+radius_cases <- sqrt(cv_cases) * 2500 
+radius_deaths <- sqrt(cv_deaths) * 2500
+radius_recent_cases <- sqrt(cv_recent_cases) * 2500
 
 # map ---------------------------------------------------------------------
 
@@ -355,11 +362,11 @@ cvm <- gcIntermediate(latlon_origin,
                    ) %>% 
   addPolylines(color=colvec_cases, # cases
                opacity = opac,
-               weight = 1,
+               weight = 0.5,
                group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths
                opacity = opac,
-               weight = 1,
+               weight = 0.5,
                group = layer2) %>%
   addCircles(lon,lat, # cases
              weight=1,
@@ -419,8 +426,9 @@ cv_total_df <- data.frame("Date" = Sys.Date(),
 )
 
 # append new total to file and save to dir 
-if(cv_total_df$Date!=Sys.Date()){
+start_date <- "2020-03-26"
+if(start_date!=Sys.Date()){
   write_csv(cv_total_df,paste0(here(),"/cv_total_df.csv"),append = T,col_names = F)
-  cat("New historical data saved to ",here(),"\n\n");Sys.Date()
+  cat("New historical data saved to ",here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
 
