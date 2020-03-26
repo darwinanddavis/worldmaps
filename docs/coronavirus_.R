@@ -14,15 +14,14 @@ here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
 
 # scrape data from web \xml2 ---------------------------------------------------------------
 url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases" # get today's data
+# link: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
 url2 <- "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.csv" # get historical data as of today
-GET(url2, authenticate(":", ":", type="ntlm"), write_disk(tf <- tempfile(fileext = ".csv")))
-cv_historical <- read_csv(tf)
-cv_historical  %>% head
-write_csv(cv_historical,paste0(here(),"/cv_historical.csv")) # write historical data to file
+url3 <- "https://google.org/crisisresponse/covid19-map" # recovery data from google
 
 # end user input ----------------------------------------------------------
 # . -----------------------------------------------------------------------
 # . -----------------------------------------------------------------------
+
 
 # get geocode \ rgeos rworldmaps ------------------------------------------
 lonlat <- getMap(resolution="low") %>% # get country lonlats from rgeos database
@@ -43,10 +42,23 @@ set_country_name <-  function(country_name){
   cv[str_which(cv$Country,c(country_name)),"Country"] 
 }
 
-# convert to tibble \rvest 
+# save historical data to dir 
+GET(url2, authenticate(":", ":", type="ntlm"), write_disk(tf <- tempfile(fileext = ".csv")))
+cv_historical <- read_csv(tf)
+cv_historical  %>% head
+write_csv(cv_historical,paste0(here(),"/cv_historical.csv")) # write historical data to file
+
+# convert cv webtable to tibble \rvest 
 web_data <- url %>% read_html
 tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
+
+# get recovery and cases per million data from google
+web_data_recovered <- url3 %>% read_html
+cv2 <- web_data_recovered %>% html_table(trim = T) 
+cv2 <- cv2[[2]] # get df
+cv2 %>% head
+
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
@@ -56,6 +68,7 @@ cv <- cv[-length(cv$Deaths),] # rm total from country df
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
 cv$Country <- cv$Country %>% str_replace_all("_"," ") %>% as.character()
+cv2$Recovered <- cv2$Recovered %>% str_replace_all(",","") %>% as.character()
 
 # fix anomalies in country entries
 cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
@@ -94,14 +107,19 @@ cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
 cv_total_recent_cases <- cv_total$Cases_last_15_days
 cv_recent_cases <- cv$Cases_last_15_days %>% as.numeric()
+# recovery data
+cv2_country <- cv2$Location
+cv2_recovered <- cv2$Recovered %>% as.numeric()
 
 # match cv country lonlat to lonlat rgeos database
 lonlat_final <- lonlat[cv_country,] 
+lonlat_final2 <- lonlat[cv2_country,] 
 lonlat_final  %>%   # write to dir
   readr::write_csv("cv_lonlat.csv")
 
 # add lonlat to df
 cv[,c("Lon","Lat")] <- lonlat_final[,c("Lon","Lat")]
+cv2[,c("Lon","Lat")] <- lonlat_final2[,c("Lon","Lat")] # recovery data
 # check country name with latlon
 if(any(lonlat_final$Country == cv$Country)!=TRUE){
   cat("\n\n\nCheck country lonlat before plotting\n\n\n",rep("*",10))}
@@ -221,10 +239,17 @@ popup_recent_cases <- paste(sep = "<br/>",
                              ""
                              )
 
+# controlbox 
+layer1 <- "Cases"
+layer2 <- "Deaths"
+layer3 <- "Cases in last 15 days"  
+
 # style options -----------------------------------------------------------
 
 # css
-map_title <- tags$style( # title 
+
+# title 
+map_title <- tags$style( 
   HTML(".leaflet-control.map-title { 
        transform: translate(-50%,-20%);
        position: fixed !important;
@@ -240,6 +265,21 @@ map_title <- tags$style( # title
 
 title <- tags$div(
   map_title, HTML(ttl)
+)  
+
+# control box
+map_control_box <- tags$style( 
+  HTML(".leaflet-control-layers-base { 
+       text-align: left;
+       padding-left: 10px; 
+       padding-right: 10px; 
+       background: white; opacity: 1;
+       font-size: 15px;
+       }"
+       ))
+
+control_box <- tags$div(
+  map_control_box, HTML(layer1)
 )  
 
 # text labels 
@@ -362,7 +402,8 @@ cvm <- gcIntermediate(latlon_origin,
   hideGroup(c(layer2,layer3)) %>% 
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
-  addControl(heading_tr, "topright") 
+  addControl(heading_tr, "topright") %>% 
+  addControl(control_box, "topright", className = "control-layers-base") 
  
 cvm 
 
@@ -380,5 +421,6 @@ cv_total_df <- data.frame("Date" = Sys.Date(),
 # append new total to file and save to dir 
 if(cv_total_df$Date!=Sys.Date()){
   write_csv(cv_total_df,paste0(here(),"/cv_total_df.csv"),append = T,col_names = F)
+  cat("New historical data saved to ",here(),"\n\n");Sys.Date()
 }
 
