@@ -183,7 +183,7 @@ custom_tile <- names(providers)[113] # choose tiles
 custom_tile2 <- names(providers)[110]
 colv <- "#F90F40" # cases
 colv2 <- "#FA0303" # deaths
-colv3 <- "#B35E08" # recent cases 
+colv3 <- "#DA740D" # recent cases 
 opac <- 0.7
 colvec_cases <- ifelse(cv_cases > 0, colv,NaN) # get colvec w/o nafta cases
 colvec_deaths <- ifelse(cv_deaths > 0 ,colv2,NaN) # remove 0 points
@@ -209,7 +209,7 @@ ttl <- paste0("<div style=\"color:#F90F40;\">
 heading_tr <- paste(
                     "<strong> Total cases <div style=\"color:#F90F40; font-size:150%\">",format(cv_total_cases,big.mark=",",scientific = F,trim = T),"</div> </strong>", "<br/>",
                     "<strong> Total deaths <div style=\"color:#FA0303; font-size:150%\">",format(cv_total_deaths,big.mark = ",",scientific = F,trim = T),"</div> </strong>","<br/>",
-                    "<strong> Total cases in last 15 days   <div style=\"color:#B35E08; font-size:150%\">",format(cv_total_recent_cases,big.mark = ",",scientific = F,trim = T),"</div> </strong>"
+                    "<strong> Total cases in last 15 days <div style=\"color:#DA740D; font-size:150%\">",format(cv_total_recent_cases,big.mark = ",",scientific = F,trim = T),"</div> </strong>"
                     )
 
 # bl
@@ -248,7 +248,7 @@ popup_deaths <- paste(
 
 popup_recent_cases <- paste(
                              "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
-                             "<strong> Cases in last 15 days </strong>", "<br/>", cv_recent_cases,"<br/>","<br/>",
+                             "<strong> Cases in last 15 days </strong>","<br/>", cv_recent_cases,"<br/>","<br/>",
                             "<strong> Global recent cases ranking </strong>","<br/>", cv_cases_15days_ranked, "/",cv_cases_15days_ranked %>% max
                             )
 
@@ -280,7 +280,7 @@ title <- tags$div(
   map_title, HTML(ttl)
 )  
 
-# control box
+# control box ## not run
 map_control_box <- tags$style( 
   HTML(".leaflet-control-layers-base { 
        text-align: left;
@@ -415,8 +415,8 @@ cvm <- gcIntermediate(latlon_origin,
   hideGroup(c(layer2,layer3)) %>% 
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
-  addControl(heading_tr, "topright") %>% 
-  addControl(control_box, "topright", className = "control-layers-base") 
+  addControl(heading_tr, "topright") 
+  # addControl(control_box, "topright", className = "control-layers-base") 
  
 cvm 
 
