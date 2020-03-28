@@ -62,6 +62,7 @@ cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")
 cv_total <- cv[cv$Deaths %>% length,] # get total count
 cv <- cv[-length(cv$Deaths),] # rm total from country df
 cv <- cv[!cv$Country=="Other",] # remove 'other' country
+cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
 # clean strings
@@ -101,9 +102,13 @@ cv[str_which(cv$Country,"Cura"),"Country"] <- find_lonlat("Curac")$Country
 # remove empty country rows
 # cv <- cv[!cv$Country=="",] 
 
-# rank data in descending order to layer map points 
-cv <- cv %>% arrange(desc(Cases))
-cv %>% head
+# rank data
+cv <- cv %>% arrange(desc(Cases)) # rank data in descending order to layer map points 
+# get global case and death rankings 
+cv <- cv %>% mutate(Cases_ranked = (Cases %>% dense_rank %>% max + 1) - (Cases %>% dense_rank),
+              Deaths_ranked = (Deaths %>% dense_rank %>% max + 1) - (Deaths %>% dense_rank),
+              Cases_15days_ranked = (Cases_last_15_days %>%  dense_rank %>% max + 1) - (Cases_last_15_days %>% dense_rank)
+              ) 
 
 # subset
 cv_country <- cv$Country
@@ -113,6 +118,9 @@ cv_total_cases <- cv_total$Cases
 cv_total_deaths <- cv_total$Deaths
 cv_total_recent_cases <- cv_total$Cases_last_15_days
 cv_recent_cases <- cv$Cases_last_15_days %>% as.numeric()
+cv_cases_ranked <- cv$Cases_ranked %>% as.numeric()
+cv_deaths_ranked <- cv$Deaths_ranked %>% as.numeric()
+cv_cases_15days_ranked <- cv$Cases_15days_ranked %>% as.numeric()
 # recovery data
 cv2_country <- cv2$Location
 cv2_recovered <- cv2$Recovered %>% as.numeric()
@@ -143,9 +151,9 @@ if(any(is.na(cv$Lat))==TRUE){
 }
 
 # find which countries show NAs/anomalies 
-find_lonlat("Other")
+find_lonlat("Asia")
 # get current country name in cv  
-set_country_name("Other") 
+set_country_name("Asia") 
 
 # get numeric
 lon <- cv$Lon 
@@ -170,18 +178,16 @@ death_lat <- cv %>% filter(Deaths>0) %>% select(c("Lat")) %>% unlist
 # get death labels
 cv_deaths_labels <- cv %>% filter(Deaths>0) %>% select(Country) %>% unlist
 
-
 # style -------------------------------------------------------------------
 custom_tile <- names(providers)[113] # choose tiles
 custom_tile2 <- names(providers)[110]
 colv <- "#F90F40" # cases
 colv2 <- "#FA0303" # deaths
-colv3 <- "#FFA447" # recent cases 
+colv3 <- "#B35E08" # recent cases 
 opac <- 0.7
 colvec_cases <- ifelse(cv_cases > 0, colv,NaN) # get colvec w/o nafta cases
 colvec_deaths <- ifelse(cv_deaths > 0 ,colv2,NaN) # remove 0 points
 colvec_recent_cases <- ifelse(cv_recent_cases > 0, colv3,NaN) # remove 0 points
-
 
 # set colvec for if removing nafta polylines # not run 3-3-20
 # nafta_cases <- cv %>% filter(Country %in% nafta_string) %>% select("Cases") %>% unlist
@@ -192,31 +198,31 @@ colvec_recent_cases <- ifelse(cv_recent_cases > 0, colv3,NaN) # remove 0 points
 # cv_deaths_lon <- cv %>% filter(Deaths>0) %>% select("Lon") %>% unlist
 # cv_deaths_lat <- cv %>% filter(Deaths>0) %>% select("Lat") %>% unlist
 
-
 # text --------------------------------------------------------------------
 
 # title 
-ttl <- paste0("<div 
-              style=\"color:#F90F40;\"> 
+ttl <- paste0("<div style=\"color:#F90F40;\"> 
               2019-nCov 
               </div>","global distribution")
 
 # tr
-heading_tr <- paste(sep = "<br>",
-                    "<strong> Total cases </strong>", cv_total_cases,
-                    "",
-                    "<strong> Total deaths </strong>", cv_total_deaths,
-                    "",
-                    "<strong> Total cases in last 15 days </strong>", cv_total_recent_cases)
+heading_tr <- paste(
+                    "<strong> Total cases <div style=\"color:#F90F40; font-size:150%\">",format(cv_total_cases,big.mark=",",scientific = F,trim = T),"</div> </strong>", "<br/>",
+                    "<strong> Total deaths <div style=\"color:#FA0303; font-size:150%\">",format(cv_total_deaths,big.mark = ",",scientific = F,trim = T),"</div> </strong>","<br/>",
+                    "<strong> Total cases in last 15 days   <div style=\"color:#B35E08; font-size:150%\">",format(cv_total_recent_cases,big.mark = ",",scientific = F,trim = T),"</div> </strong>"
+                    )
 
 # bl
-heading_bl <- paste(sep = "<br>",
+heading_bl <- paste(sep = "<br/>",
                     "Data source: <a href=https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases> 
                     ECDC
                     </a>",
                     "Last data scrape: ", Sys.time(),
                     "",
-                    "Github: <a href=https://github.com/darwinanddavis/worldmaps> @darwinanddavis </a>")
+                    "Github: <a href=https://github.com/darwinanddavis/worldmaps> @darwinanddavis </a>"
+                    )
+
+
 
 # labels ## not run 
 label_cases <- paste(
@@ -225,26 +231,26 @@ label_cases <- paste(
 
 
 # popups
-popup_cases <- paste(sep = "<br/>",
-                     "<strong> Country: </strong>", cv_country,
-                     "",
-                     "<strong> Cases: </strong>", cv_cases,
-                     ""
+popup_cases <- paste(
+                     "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
+                     "<strong> Cases </strong>","<br/>", cv_cases,"<br/>","<br/>",
+                     "<strong> Global cases ranking </strong>","<br/>", cv_cases_ranked,"/",cv_cases_ranked %>% max,"<br/>","<br/>"
+                     # "<strong> Total population: </strong>", world_pop$Country,"(1000s)","<br/>",
+                     # "<strong> Percent of population affected: </strong>", cv_cases[1:length(world_pop$Country)]/world_pop$Country,"%","<br/>",
+                     # "<strong> Median age: </strong>", world_medage$Country,"<br/>","<br/>"
 )
 
-popup_deaths <- paste(sep = "<br/>",
-                      "<strong> Country: </strong>", cv_country,
-                      "",
-                      "<strong> Deaths: </strong>", cv_deaths,
-                      ""
+popup_deaths <- paste(
+                      "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
+                      "<strong> Deaths </strong>", "<br/>", cv_deaths,"<br/>","<br/>",
+                      "<strong> Global death ranking </strong>","<br/>", cv_deaths_ranked,"/",cv_deaths_ranked %>% max
 )
 
-popup_recent_cases <- paste(sep = "<br/>",
-                             "<strong> Country: </strong>", cv_country,
-                             "",
-                             "<strong> Cases in last 15 days: </strong>", cv_recent_cases,
-                             ""
-                             )
+popup_recent_cases <- paste(
+                             "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
+                             "<strong> Cases in last 15 days </strong>", "<br/>", cv_recent_cases,"<br/>","<br/>",
+                            "<strong> Global recent cases ranking </strong>","<br/>", cv_cases_15days_ranked, "/",cv_cases_15days_ranked %>% max
+                            )
 
 # controlbox 
 layer1 <- "Cases"
@@ -422,8 +428,7 @@ cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to dir
 
 # save daily totals 
 cv_total_df <- data.frame("Date" = Sys.Date(),
-                          cv_total %>% select(-c(Continent,Country))
-)
+                          cv_total %>% select(-c(Continent,Country)))
 
 # append new total to file and save to dir 
 start_date <- "2020-03-26"
@@ -432,3 +437,94 @@ if(start_date!=Sys.Date()){
   cat("New historical data saved to ",here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
 
+# get pop data ------------------------------------------------------------
+require(tibble)
+
+country_string_vec <- paste(
+  "Iran",
+  "Korea",
+  "Maced",
+  "Pales",
+  "Ser",
+  "Holy",
+  "Brun",
+  "Congo",
+  "Congo",
+  "Eswa",
+  "Ivo",
+  "Baha",
+  "Nether",
+  "Timor",
+  "Turks",
+  "Cura",
+  sep="|")
+country_string <- str_subset(isocodes$Name,country_string_vec)
+country_string <- country_string %>% str_remove_all("Korea, Democratic People's Republic of") # remove second korea 
+
+country_replace <- c(
+  "Iran",
+  "South Korea",
+  "Macedonia",
+  "Palestine* (as neither recognition nor prejudice towards the State)",
+  "Republic of Serbia", 
+  "Vatican",
+  "Brunei",
+  "Republic of the Congo",
+  "Democratic Republic of the Congo",
+  "Swaziland",
+  "Ivory Coast",
+  "The Bahamas",
+  "Netherlands",
+  "East Timor",
+  "Turks and Caicos Islands",
+  "Curacao"
+) %>% str_sort()
+country_string <- country_string[country_string!=""] # remove blank space 
+
+word(country_string, c(1,1)) %>% unique
+
+
+country_string
+country_replace
+
+install.packages("ISOcodes")
+require(ISOcodes)
+isocodes <- ISO_3166_1 %>% select(c("Alpha_2","Name")) # get 2char isocodes
+isocodes_odd <- isocodes %>% filter(Name %in% country_string) %>% 
+  mutate(Name = country_replace)
+isocodes_cv <- isocodes %>% # get everything by misc cases 
+  filter(Name %in% cv_country) 
+isocodes_final <- rbind(isocodes_cv,isocodes_odd) # combine dfs 
+
+# get world stats 
+install.packages("wppExplorer")
+require(wppExplorer)
+wp <- wpp.indicator("tpop")
+wma <- wpp.indicator("medage") 
+
+world_pop <- wpp.by.countries(wp,isocodes$Alpha_2) %>% 
+  filter(Year=="2020") %>% select(-Year)
+world_medage <- wpp.by.countries(wma,isocodes$Alpha_2) %>% 
+  filter(Year=="2020") %>% select(-Year)
+
+# rename dfs
+colnames(isocodes_final) <- c("Country_code","Country")
+colnames(world_pop) <- c("Country_code","Country")
+colnames(world_medage) <- c("Country_code","Country")
+
+isocodes_final %>% head
+world_pop <- world_pop %>% filter(Country_code %in% isocodes_final$Country_code)
+world_medage <- world_medage %>% filter(Country_code %in% isocodes_final$Country_code)
+
+str_count(country_string,country_replace)
+str_order() # apply to final list to match cv (before ranking cv cases)
+str_sort()
+str_starts(country_string,country_replace)
+str_extract(country_string,country_replace) 
+
+# functon to retrieve country codes ## not run 
+replace_country_names <- function(country_original,country_replace){
+  isocodes[str_which(isocodes$Name,country_original),"Name"] <- country_replace
+  # isocodes_2 <- isocodes %>% filter(Name %in% str_subset(isocodes$Name,country_original)) %>% 
+  #   mutate(Name_2 = country_replace)
+}
