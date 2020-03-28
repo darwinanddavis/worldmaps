@@ -280,7 +280,7 @@ title <- tags$div(
   map_title, HTML(ttl)
 )  
 
-# control box ## not run
+# control box
 map_control_box <- tags$style( 
   HTML(".leaflet-control-layers-base { 
        text-align: left;
@@ -292,7 +292,7 @@ map_control_box <- tags$style(
        ))
 
 control_box <- tags$div(
-  map_control_box, HTML(layer1)
+  map_control_box, HTML("")
 )  
 
 # text labels 
@@ -415,8 +415,8 @@ cvm <- gcIntermediate(latlon_origin,
   hideGroup(c(layer2,layer3)) %>% 
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
-  addControl(heading_tr, "topright") 
-  # addControl(control_box, "topright", className = "control-layers-base") 
+  addControl(heading_tr, "topright") %>% 
+  addControl(control_box, "topright", className = "control-layers-base")
  
 cvm 
 
