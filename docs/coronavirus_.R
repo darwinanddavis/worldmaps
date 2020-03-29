@@ -7,7 +7,7 @@
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
-p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets,readxl,httr,readr)
+p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets,readxl,httr,readr,stringi)
 
 # set wd
 here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
@@ -45,25 +45,33 @@ set_country_name <-  function(country_name){
 GET(url2, authenticate(":", ":", type="ntlm"), write_disk(tf <- tempfile(fileext = ".csv")))
 cv_historical <- read_csv(tf)
 cv_historical  %>% head
-write_csv(cv_historical,paste0(here(),"/cv_historical.csv")) # write historical data to file
+# write_csv(cv_historical,paste0(here(),"/cv_historical.csv")) # write historical data to file
 
 # convert cv webtable to tibble \rvest 
 web_data <- url %>% read_html
 tb <- web_data %>% html_table(trim = T) 
 cv <- tb[[1]] # get df
+cv[is.na(cv)] <- 0 # rm nas
 
 # get recovery and cases per million data from google
 web_data_recovered <- url3 %>% read_html
 cv2 <- web_data_recovered %>% html_table(trim = T) 
 cv2 <- cv2[[2]] # get df
-cv2 %>% head
+cv2[is.na(cv2)] <- 0
 
+# mod data
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
-cv_total <- cv[cv$Deaths %>% length,] # get total count
-cv <- cv[-length(cv$Deaths),] # rm total from country df
+cv$Deaths <- cv$Deaths %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","") # remove middle white space
+cv$Deaths <- cv$Deaths %>% as.integer() # set as int
+# get totals
+cv_total <- cv %>% summarise(Total_cases = max(Cases,na.rm = T),
+                             Total_deaths = max(Deaths,na.rm = T),
+                             Total_recent_cases = max(Cases_last_15_days,na.rm = T))
+cv <- cv[!cv$Country=="Total",] # rm total from country df
 cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
+cv %>% tail
 
 # clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
@@ -72,8 +80,8 @@ cv$Country <- cv$Country %>% str_replace_all("_"," ") %>% as.character()
 cv2$Recovered <- cv2$Recovered %>% str_replace_all(",","") %>% as.character()
 
 # fix anomalies in country entries
-cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
-cv <- cv[!cv$Country=="Cases on an international conveyance Japan",] # remove japan duplicate
+# cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
+cv <- cv[!cv$Country==str_subset(cv$Country,"conveyance Japan"),] # remove japan duplicate
 # rename countries for getting centroid later 
 cv[str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
 cv[str_which(cv$Country,"Iran"),"Country"] <- "Iran"
@@ -114,9 +122,9 @@ cv <- cv %>% mutate(Cases_ranked = (Cases %>% dense_rank %>% max + 1) - (Cases %
 cv_country <- cv$Country
 cv_cases <- cv$Cases %>% as.numeric()
 cv_deaths <- cv$Deaths %>% as.numeric()
-cv_total_cases <- cv_total$Cases
-cv_total_deaths <- cv_total$Deaths
-cv_total_recent_cases <- cv_total$Cases_last_15_days
+cv_total_cases <- cv_total$Total_cases
+cv_total_deaths <- cv_total$Total_deaths
+cv_total_recent_cases <- cv_total$Total_recent_cases
 cv_recent_cases <- cv$Cases_last_15_days %>% as.numeric()
 cv_cases_ranked <- cv$Cases_ranked %>% as.numeric()
 cv_deaths_ranked <- cv$Deaths_ranked %>% as.numeric()
@@ -124,6 +132,7 @@ cv_cases_15days_ranked <- cv$Cases_15days_ranked %>% as.numeric()
 # recovery data
 cv2_country <- cv2$Location
 cv2_recovered <- cv2$Recovered %>% as.numeric()
+
 
 # match cv country lonlat to lonlat rgeos database
 lonlat_final <- lonlat[cv_country,] 
@@ -345,6 +354,15 @@ radius_cases <- sqrt(cv_cases) * 2500
 radius_deaths <- sqrt(cv_deaths) * 2500
 radius_recent_cases <- sqrt(cv_recent_cases) * 2500
 
+# easy buttons 
+locate_me <- easyButton( # locate user
+  icon="fa-crosshairs", title="Zoom to my position",
+  onClick=JS("function(btn, map){ map.locate({setView: true}); }"))
+
+reset_zoom <- easyButton( # reset zoom 
+  icon="fa-globe", title="Reset zoom",
+  onClick=JS("function(btn, map){ map.setZoom(3);}"))
+
 # map ---------------------------------------------------------------------
 
 # set arc matrix
@@ -416,9 +434,12 @@ cvm <- gcIntermediate(latlon_origin,
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
   addControl(heading_tr, "topright") %>% 
-  addControl(control_box, "topright", className = "control-layers-base")
+  addControl(control_box, "topright", className = "control-layers-base") %>% 
+  addEasyButton(reset_zoom) %>% 
+  addEasyButton(locate_me) 
  
 cvm 
+
 
 # save outputs ------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and error message
@@ -428,7 +449,7 @@ cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to dir
 
 # save daily totals 
 cv_total_df <- data.frame("Date" = Sys.Date(),
-                          cv_total %>% select(-c(Continent,Country)))
+                          cv_total)
 
 # append new total to file and save to dir 
 start_date <- "2020-03-26"
