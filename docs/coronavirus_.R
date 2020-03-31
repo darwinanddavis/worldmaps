@@ -62,9 +62,11 @@ cv2[is.na(cv2)] <- 0
 # mod data
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
 cv$Deaths <- cv$Deaths %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","") # remove middle white space
-cv$Deaths <- cv$Deaths %>% as.integer() # set as int
 cv$Cases <- cv$Cases %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","")
+cv$Cases_last_15_days <- cv$Cases_last_15_days %>% stri_replace_all_charclass("\\p{WHITE SPACE}","")
+cv$Deaths <- cv$Deaths %>% as.integer() # set as int
 cv$Cases <- cv$Cases %>% as.integer() # set as int
+cv$Cases_last_15_days <- cv$Cases_last_15_days %>% as.integer()
 
 # get totals
 cv_total <- cv %>% summarise(Total_cases = max(Cases,na.rm = T),
@@ -102,6 +104,7 @@ cv[str_which(cv$Country,"Nether"),"Country"][1] <- "Netherlands"
 cv[str_which(cv$Country,"Timor"),"Country"] <- "East Timor"
 cv[str_which(cv$Country,"Turks"),"Country"] <- find_lonlat("Turks")$Country
 cv[str_which(cv$Country,"Cura"),"Country"] <- find_lonlat("Curac")$Country
+cv[str_which(cv$Country,"Falkland"),"Country"] <- find_lonlat("Falk")$Country
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -162,9 +165,9 @@ if(any(is.na(cv$Lat))==TRUE){
 }
 
 # find which countries show NAs/anomalies 
-find_lonlat("Asia")
+find_lonlat("Falkland")
 # get current country name in cv  
-set_country_name("Japan") 
+set_country_name("Falkland") 
 
 # get numeric
 lon <- cv$Lon 
@@ -456,7 +459,9 @@ cv_total_df <- data.frame("Date" = Sys.Date(),
 # append new total to file and save to dir 
 start_date <- "2020-03-26"
 if(start_date!=Sys.Date()){
-  write_csv(cv_total_df,paste0(here(),"/cv_total_df.csv"),append = T,col_names = F)
+  write_delim(cv_total_df,paste0(here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
   cat("New historical data saved to ",here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
+
+
 
