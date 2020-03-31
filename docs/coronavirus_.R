@@ -441,7 +441,7 @@ cvm <- gcIntermediate(latlon_origin,
   addEasyButton(locate_me) 
  
 cvm 
-
+  
 
 # save outputs ------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and error message
