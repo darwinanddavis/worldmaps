@@ -63,6 +63,9 @@ cv2[is.na(cv2)] <- 0
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
 cv$Deaths <- cv$Deaths %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","") # remove middle white space
 cv$Deaths <- cv$Deaths %>% as.integer() # set as int
+cv$Cases <- cv$Cases %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","")
+cv$Cases <- cv$Cases %>% as.integer() # set as int
+
 # get totals
 cv_total <- cv %>% summarise(Total_cases = max(Cases,na.rm = T),
                              Total_deaths = max(Deaths,na.rm = T),
@@ -71,7 +74,6 @@ cv <- cv[!cv$Country=="Total",] # rm total from country df
 cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
-cv %>% tail
 
 # clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
@@ -162,7 +164,7 @@ if(any(is.na(cv$Lat))==TRUE){
 # find which countries show NAs/anomalies 
 find_lonlat("Asia")
 # get current country name in cv  
-set_country_name("Asia") 
+set_country_name("Japan") 
 
 # get numeric
 lon <- cv$Lon 
