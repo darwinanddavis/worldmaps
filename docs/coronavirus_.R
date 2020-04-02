@@ -72,7 +72,7 @@ cv$Cases_last_15_days <- cv$Cases_last_15_days %>% as.integer()
 cv_total <- cv %>% summarise(Total_cases = max(Cases,na.rm = T),
                              Total_deaths = max(Deaths,na.rm = T),
                              Total_recent_cases = max(Cases_last_15_days,na.rm = T))
-cv <- cv[!cv$Country=="Total",] # rm total from country df
+cv <- cv[!cv$Continent=="Total",] # rm total from country df
 cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
