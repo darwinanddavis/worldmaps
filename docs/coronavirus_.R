@@ -156,7 +156,8 @@ if(any(lonlat_final$Country == cv$Country)!=TRUE){
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484) # malaysia
 cv[cv$Country==cv[str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Israel") %>% select(c("Lon","Lat")) + 0.05 # displace Palestine latlon from israel
 cv[cv$Country==cv[str_which(cv$Country,"Gibral"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Spain") %>% select(c("Lon","Lat")) + 0.05 # displace gibraltar latlon from spain
-cv[cv$Country==cv[str_which(cv$Country,"Antill"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Aruba") %>% select(c("Lon","Lat")) + 0.2  # displace gibraltar latlon from spain
+# cv[cv$Country==cv[str_which(cv$Country,"Antill"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Aruba") %>% select(c("Lon","Lat")) + 0.2  # displace dutch caribbean from aruba
+cv[cv$Country==cv[str_which(cv$Country,"Bonai"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Curacao") %>% select(c("Lon","Lat")) + 0.2  # displace dutch caribbean2 latlon from curacao
 
 # check NAs
 if(any(is.na(cv$Lat))==TRUE){
@@ -164,10 +165,11 @@ if(any(is.na(cv$Lat))==TRUE){
   cv[which(is.na(cv$Lat)),"Country"]
 }
 
-# find which countries show NAs/anomalies 
-find_lonlat("Falkland")
+# find which countries show NAs/anomalies from latlon database  
+find_lonlat("Antil")
 # get current country name in cv  
-set_country_name("Falkland") 
+set_country_name("Bonaire") 
+
 
 # get numeric
 lon <- cv$Lon 
