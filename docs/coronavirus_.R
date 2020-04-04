@@ -456,12 +456,14 @@ cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to dir
 
 # save daily totals 
 cv_total_df <- data.frame("Date" = Sys.Date(),
-                          cv_total)
+                          cv_total,
+                          "Space" = NA)
 
 # append new total to file and save to dir 
 start_date <- "2020-03-26"
 if(start_date!=Sys.Date()){
   write_delim(cv_total_df,paste0(here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
+  # write_delim(cv_total_df,paste0(here(),"/cv_total_df2.csv"),append = T,col_names = F, delim=",")
   cat("New historical data saved to ",here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
 
