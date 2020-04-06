@@ -368,8 +368,8 @@ locate_me <- easyButton( # locate user
 
 reset_zoom <- easyButton( # reset zoom 
   icon="fa-globe", title="Reset zoom",
-  onClick=JS("function(btn, map){ map.setZoom(3);}"))
-
+  onClick=JS("function(btn, map){ map.setZoom(3);}"));
+  
 # map ---------------------------------------------------------------------
 
 # set arc matrix
@@ -458,7 +458,7 @@ cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to dir
 cv_total_df <- data.frame("Date" = Sys.Date(),
                           cv_total,
                           "Space" = NA)
-
+  
 # append new total to file and save to dir 
 start_date <- "2020-03-26"
 if(start_date!=Sys.Date()){
