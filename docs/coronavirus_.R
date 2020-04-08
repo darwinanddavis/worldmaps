@@ -105,6 +105,8 @@ cv[str_which(cv$Country,"Timor"),"Country"] <- "East Timor"
 cv[str_which(cv$Country,"Turks"),"Country"] <- find_lonlat("Turks")$Country
 cv[str_which(cv$Country,"Cura"),"Country"] <- find_lonlat("Curac")$Country
 cv[str_which(cv$Country,"Falkland"),"Country"] <- find_lonlat("Falk")$Country
+cv[str_which(cv$Country,"Czech"),"Country"] <- find_lonlat("Czech")$Country
+
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -165,11 +167,11 @@ if(any(is.na(cv$Lat))==TRUE){
   cv[which(is.na(cv$Lat)),"Country"]
 }
 
-# find which countries show NAs/anomalies from latlon database  
-find_lonlat("Antil")
-# get current country name in cv  
-set_country_name("Bonaire") 
 
+# find which countries show NAs/anomalies from latlon database  
+find_lonlat("Czech")
+# get current country name in cv  
+set_country_name("Czech") 
 
 # get numeric
 lon <- cv$Lon 
