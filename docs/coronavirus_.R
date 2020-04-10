@@ -166,11 +166,11 @@ if(any(is.na(cv$Lat))==TRUE){
   cat("\n\n\nLatlon in cv dataset contains NAs\n",rep("*",10),"\n")
   cv[which(is.na(cv$Lat)),"Country"]
 }
-
+   
 
 # find which countries show NAs/anomalies from latlon database  
 find_lonlat("Czech")
-# get current country name in cv  
+# get current country name in cv for replacement   
 set_country_name("Czech") 
 
 # get numeric
