@@ -366,11 +366,11 @@ radius_recent_cases <- sqrt(cv_recent_cases) * 1500
 # easy buttons 
 locate_me <- easyButton( # locate user
   icon="fa-crosshairs", title="Zoom to my position",
-  onClick=JS("function(btn, map){ map.locate({setView: true}); }"))
+  onClick=JS("function(btn, map){ map.locate({setView: true}); }"));
 
 reset_zoom <- easyButton( # reset zoom 
   icon="fa-globe", title="Reset zoom",
-  onClick=JS("function(btn, map){ map.setZoom(3);}"));
+  onClick=JS("function(btn, map){ map.setZoom(3);}"));  
   
 # map ---------------------------------------------------------------------
 
