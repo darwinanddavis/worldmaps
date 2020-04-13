@@ -359,7 +359,7 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- sqrt(cv_cases) * 1500 
+radius_cases <- sqrt(cv_cases) * 1500 # 3rd radius reduction 13-4-20
 radius_deaths <- sqrt(cv_deaths) * 1500
 radius_recent_cases <- sqrt(cv_recent_cases) * 1500
 
@@ -460,7 +460,7 @@ cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to dir
 cv_total_df <- data.frame("Date" = Sys.Date(),
                           cv_total,
                           "Space" = NA)
-  
+    
 # append new total to file and save to dir 
 start_date <- "2020-03-26"
 if(start_date!=Sys.Date()){
