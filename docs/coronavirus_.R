@@ -359,9 +359,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- sqrt(cv_cases) * 2500 
-radius_deaths <- sqrt(cv_deaths) * 2500
-radius_recent_cases <- sqrt(cv_recent_cases) * 2500
+radius_cases <- sqrt(cv_cases) * 1500 
+radius_deaths <- sqrt(cv_deaths) * 1500
+radius_recent_cases <- sqrt(cv_recent_cases) * 1500
 
 # easy buttons 
 locate_me <- easyButton( # locate user
