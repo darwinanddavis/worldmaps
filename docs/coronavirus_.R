@@ -451,10 +451,10 @@ cvm
   
 
 # save outputs  ----------------------------------------------------------------
-last.warning; geterrmessage() # get last warning and error message   
+last.warning; geterrmessage() # get last warning and error message 
 
 cvm %>% saveWidget(here("/coronavirus.html"))
-cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to dir 
+cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to local dir 
 
 # save daily totals 
 cv_total_df <- data.frame("Date" = Sys.Date(),
