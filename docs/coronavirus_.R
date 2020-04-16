@@ -450,7 +450,7 @@ cvm <- gcIntermediate(latlon_origin,
 cvm 
   
 
-# save outputs  ---------------------------------------------------------------------
+# save outputs  --------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and error message 
 
 cvm %>% saveWidget(here("/coronavirus.html"))
