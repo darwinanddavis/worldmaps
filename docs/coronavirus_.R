@@ -7,7 +7,7 @@
 # packages ----------------------------------------------------------------
 # install.packages("pacman")
 require(pacman)
-p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets,readxl,httr,readr,stringi)
+pacman::p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,purrr,rworldmap,rgeos,stringr,here,htmlwidgets,readxl,httr,readr,stringi)
 
 # set wd
 here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
@@ -251,8 +251,8 @@ label_cases <- paste(
 # popups
 popup_cases <- paste(
                      "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
-                     "<strong> Cases </strong>","<br/>", cv_cases,"<br/>","<br/>",
-                     "<strong> Global cases ranking </strong>","<br/>", cv_cases_ranked,"/",cv_cases_ranked %>% max,"<br/>","<br/>"
+                     "<strong> Cases </strong>","<br/>", cv_cases %>% format(big.mark=",",scientific = F,trim = T),"<br/>","<br/>",
+                     "<strong> Global cases ranking </strong>","<br/>", cv_cases_ranked %>% format(big.mark=",",scientific = F,trim = T),"/",cv_cases_ranked %>% max,"<br/>","<br/>"
                      # "<strong> Total population: </strong>", world_pop$Country,"(1000s)","<br/>",
                      # "<strong> Percent of population affected: </strong>", cv_cases[1:length(world_pop$Country)]/world_pop$Country,"%","<br/>",
                      # "<strong> Median age: </strong>", world_medage$Country,"<br/>","<br/>"
@@ -260,13 +260,13 @@ popup_cases <- paste(
 
 popup_deaths <- paste(
                       "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
-                      "<strong> Deaths </strong>", "<br/>", cv_deaths,"<br/>","<br/>",
-                      "<strong> Global death ranking </strong>","<br/>", cv_deaths_ranked,"/",cv_deaths_ranked %>% max
+                      "<strong> Deaths </strong>", "<br/>", cv_deaths %>% format(big.mark=",",scientific = F,trim = T),"<br/>","<br/>",
+                      "<strong> Global death ranking </strong>","<br/>", cv_deaths_ranked %>% format(big.mark=",",scientific = F,trim = T),"/",cv_deaths_ranked %>% max
 )
 
 popup_recent_cases <- paste(
                              "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
-                             "<strong> Cases in last 15 days </strong>","<br/>", cv_recent_cases,"<br/>","<br/>",
+                             "<strong> Cases in last 15 days </strong>","<br/>", cv_recent_cases %>% format(big.mark=",",scientific = F,trim = T),"<br/>","<br/>",
                             "<strong> Global recent cases ranking </strong>","<br/>", cv_cases_15days_ranked, "/",cv_cases_15days_ranked %>% max
                             )
 
