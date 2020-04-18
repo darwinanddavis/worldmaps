@@ -450,7 +450,7 @@ cvm <- gcIntermediate(latlon_origin,
 cvm 
   
 
-# save outputs  --------------------------------------------------------------
+# save outputs  ---------------------------------------------------------
 last.warning; geterrmessage() # get last warning and error message 
 
 cvm %>% saveWidget(here("/coronavirus.html"))
@@ -468,5 +468,6 @@ if(start_date!=Sys.Date()){
   cat("New historical data saved to ",here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
 
+read_delim(paste0(here(),"/cv_total_df.csv"),delim=",") %>% plot(Date,Total_cases)
 
 
