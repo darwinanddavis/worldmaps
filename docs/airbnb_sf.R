@@ -23,10 +23,9 @@ opac <- 0.7
 
 # labels
 text_label <- paste(
-                    "Type: ",airbnb$property_type,
-                    " | ",
-                    "Rating: ", airbnb$review_scores_rating
-)
+  "<strong> Type: </strong>",airbnb$property_type,"<br/>",
+  "<strong> Rating: </strong>", airbnb$review_scores_rating,"<br/>"
+) %>% map(htmltools::HTML)
 
 # fixed heading
 fixed_text <- "Spatial snapshot of Airbnb ratings"
@@ -44,7 +43,8 @@ text_label_opt <- labelOptions(noHide = T, direction = "top",
 )
 
 
-href <- paste0("<p>Source: <a href=http://insideairbnb.com/get-the-data.html>San Francisco open Airbnb data</a></p>")
+href <- paste("Source: <a href=http://insideairbnb.com/get-the-data.html>San Francisco open Airbnb data</a>",
+              "<br/> Date: Dec 4, 2019") 
 
 # map
 wm <- leaflet() %>% 
