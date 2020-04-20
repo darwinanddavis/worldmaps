@@ -451,7 +451,7 @@ cvm
   
 
 # save outputs -----------------------------------------------------------
-last.warning; geterrmessage() # get last warning and error message 
+last.warning; geterrmessage() # get last warning and/or error message 
 
 cvm %>% saveWidget(here("/coronavirus.html"))
 cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to local dir 
