@@ -300,7 +300,7 @@ title <- tags$div(
 
 # control box
 map_control_box <- tags$style( 
-  HTML(".leaflet-control-layers-base { 
+  HTML(".leaflet-control.layers-base { 
        text-align: left;
        padding-left: 10px; 
        padding-right: 10px; 
@@ -327,6 +327,34 @@ style_nafta <- list(
   "font-family" = "Optima",
   "padding" = "3px 3px"
 )
+
+# legend circles
+map_legend_box <-  tags$style(
+  HTML(".leaflet-control.layers-base { 
+      transform: translate(-50%,-20%);
+       position: fixed !important;
+       left: 30%;
+       text-align: center;
+       padding-left: 10px; 
+       padding-right: 10px; 
+       background: white; opacity: 0.5;
+       font-size: 40px;
+       font-family: Optima;
+}    
+                              .full{
+                              background-color: white;
+                              border-radius: 50%;
+                              width: 100px;
+                              height: 100px;
+                              float: right;
+                              opacity:",opac,";
+                              }
+                              "
+                              ))
+
+legend_box <- tags$div(
+  map_legend_box, HTML("")
+)   
 
 # text label options 
 text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "20px",
@@ -443,12 +471,20 @@ cvm <- gcIntermediate(latlon_origin,
   addControl(title, "bottomleft", className = "map-title") %>% 
   addControl(heading_bl,"bottomleft") %>%
   addControl(heading_tr, "topright") %>% 
-  addControl(control_box, "topright", className = "control-layers-base") %>% 
+  addControl(control_box, "topright", className = "layers-base") %>% 
   addEasyButton(reset_zoom) %>% 
-  addEasyButton(locate_me) 
+  addEasyButton(locate_me) #%>% 
+  # addControl(legend_box, "bottomleft", className = c("layers-base","full")) %>%
+  # addLegend(colors = "", labels = c(">10,000"), className='full')
  
 cvm 
-  
+
+colvec <- c(colv,colv2,colv3)
+ss <- radius_cases %>% summary()
+legend_vals <- c(ss[1],ss[3],ss[6])
+
+html_legend <- "<img src='http://leafletjs.com/examples/custom-icons/leaf-green.png'>green<br/>
+<img src='http://leafletjs.com/examples/custom-icons/leaf-red.png'>red"
 
 # save outputs -----------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
