@@ -169,9 +169,9 @@ if(any(is.na(cv$Lat))==TRUE){
    
 
 # find which countries show NAs/anomalies from latlon database  
-find_lonlat("Czech")
+find_lonlat("")
 # get current country name in cv for replacement   
-set_country_name("Czech") 
+set_country_name("") 
 
 # get numeric
 lon <- cv$Lon 
@@ -244,7 +244,7 @@ heading_bl <- paste(sep = "<br/>",
 
 # labels ## not run 
 label_cases <- paste(
-  "<strong> Continent: </strong>", cv$Continent, "<br/>"
+  "<strong> Continent: </strong>", cv$Continent, "<br/> "
 ) %>% map(htmltools::HTML)
 
 
@@ -379,6 +379,14 @@ latlon_origin <- cv %>% filter(Country=="China") %>% select(c("Lon","Lat")) %>% 
 max_bound1 <- c(-150,90)
 max_bound2 <- c(180,-90)
 
+# set map projections 
+# check first !!!
+EPSG3395 <- leaflet() %>% 
+  leafletCRS(crsClass = "L.CRS.EPSG3395", 
+             proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"
+  ) 
+proj_options <- leafletOptions(worldCopyJump = T) 
+
 # layers ------------------------------------------------------------------
 
 # titles
@@ -387,9 +395,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- sqrt(cv_cases) * 1500 # 3rd radius reduction 13-4-20
-radius_deaths <- sqrt(cv_deaths) * 1500
-radius_recent_cases <- sqrt(cv_recent_cases) * 1500
+radius_cases <- sqrt(cv_cases) * 1000 # 3rd radius reduction 13-4-20
+radius_deaths <- sqrt(cv_deaths) * 1000
+radius_recent_cases <- sqrt(cv_recent_cases) * 1000
 
 # easy buttons 
 locate_me <- easyButton( # locate user
@@ -411,8 +419,8 @@ cvm <- gcIntermediate(latlon_origin,
                breakAtDateLine = T,
                sp=T
 ) %>% 
-  leaflet() %>% 
-  setMaxBounds(max_bound1[1],max_bound1[2],max_bound2[1],max_bound2[2]) %>% 
+  leaflet(options=proj_options) %>% 
+  # setMaxBounds(max_bound1[1],max_bound1[2],max_bound2[1],max_bound2[2]) %>%
   setView(latlon_origin[1],latlon_origin[2],zoom=min_zoom) %>% 
   addTiles(custom_tile,
            options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom) # set zoom bounds
@@ -481,10 +489,6 @@ cvm
 
 colvec <- c(colv,colv2,colv3)
 ss <- radius_cases %>% summary()
-legend_vals <- c(ss[1],ss[3],ss[6])
-
-html_legend <- "<img src='http://leafletjs.com/examples/custom-icons/leaf-green.png'>green<br/>
-<img src='http://leafletjs.com/examples/custom-icons/leaf-red.png'>red"
 
 # save outputs -----------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
