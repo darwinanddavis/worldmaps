@@ -487,7 +487,7 @@ cvm <- gcIntermediate(latlon_origin,
  
 cvm 
 
-colvec <- c(colv,colv2,colv3)
+colvec <- c(colv,colv2,colv3)  
 ss <- radius_cases %>% summary()
 
 # save outputs -----------------------------------------------------------
