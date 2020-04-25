@@ -419,7 +419,7 @@ cvm <- gcIntermediate(latlon_origin,
                breakAtDateLine = T,
                sp=T
 ) %>% 
-  leaflet(options=proj_options) %>% 
+  leaflet(options=proj_options) %>% # add world jump 
   # setMaxBounds(max_bound1[1],max_bound1[2],max_bound2[1],max_bound2[2]) %>%
   setView(latlon_origin[1],latlon_origin[2],zoom=min_zoom) %>% 
   addTiles(custom_tile,
@@ -493,7 +493,7 @@ ss <- radius_cases %>% summary()
 # save outputs -----------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 
-cvm %>% saveWidget(here("/coronavirus.html"))
+cvm %>% saveWidget(here("/coronavirus.html"))  
 cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to local dir 
 
 # save daily totals 
