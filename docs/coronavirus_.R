@@ -42,6 +42,7 @@ set_country_name <-  function(country_name){
 }
 
 # save historical data to dir 
+# need to change to scrape csv not html 26-4-20
 GET(url2, authenticate(":", ":", type="ntlm"), write_disk(tf <- tempfile(fileext = ".csv")))
 cv_historical <- read_csv(tf)
 cv_historical  %>% head
@@ -472,7 +473,7 @@ cvm <- gcIntermediate(latlon_origin,
   #                     label=cv_deaths_labels,
   #                     labelOptions = text_label_opt_nafta,
   #                     group=layer2) %>% 
-  addLayersControl( 
+  addLayersControl(
     baseGroups = c(layer1,layer2,layer3),
     options = layer_options) %>% 
   hideGroup(c(layer2,layer3)) %>% 
