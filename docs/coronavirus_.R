@@ -329,34 +329,6 @@ style_nafta <- list(
   "padding" = "3px 3px"
 )
 
-# legend circles
-map_legend_box <-  tags$style(
-  HTML(".leaflet-control.layers-base { 
-      transform: translate(-50%,-20%);
-       position: fixed !important;
-       left: 30%;
-       text-align: center;
-       padding-left: 10px; 
-       padding-right: 10px; 
-       background: white; opacity: 0.5;
-       font-size: 40px;
-       font-family: Optima;
-}    
-                              .full{
-                              background-color: white;
-                              border-radius: 50%;
-                              width: 100px;
-                              height: 100px;
-                              float: right;
-                              opacity:",opac,";
-                              }
-                              "
-                              ))
-
-legend_box <- tags$div(
-  map_legend_box, HTML("")
-)   
-
 # text label options 
 text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "20px",
                                textOnly = F, opacity = 0.5, offset = c(0,0),
@@ -408,6 +380,42 @@ locate_me <- easyButton( # locate user
 reset_zoom <- easyButton( # reset zoom 
   icon="fa-globe", title="Reset zoom",
   onClick=JS("function(btn, map){ map.setZoom(3);}"));  
+
+
+# legend circles
+# get lower, mid, and upper quartiles
+legend_cases <- radius_cases %>% summary(); legend_cases <- legend_cases[c(2:4)] %>% as.numeric() %>% plyr::round_any(1000,f=ceiling)
+legend_deaths <- radius_deaths %>% summary(); legend_deaths <- legend_deaths[c(2:4)] %>% as.numeric() %>% plyr::round_any(1000,f=ceiling)
+legend_recent_cases <- radius_recent_cases %>% summary(); legend_recent_cases <- legend_recent_cases[c(2:4)] %>% as.numeric() %>% plyr::round_any(1000,f=ceiling)
+# convert above cases to css size equivalent, eg 100px 
+
+
+map_legend_box <-  tags$style(
+  HTML(".leaflet-control.layers-base { 
+       transform: translate(-50%,-20%);
+       position: fixed !important;
+       left: 30%;
+       text-align: center;
+       padding-left: 10px; 
+       padding-right: 10px; 
+       background: white; opacity: 0.5;
+       font-size: 40px;
+       font-family: Optima;
+       }    
+       .full{
+       background-color: white;
+       border-radius: 50%;
+       width:", paste0(legend_cases[2] / 100,"px"),";
+       height:", paste0(legend_cases[2] / 100,"px"),";
+       float: right;
+       opacity:",opac,";
+       }
+       "
+  ))
+
+legend_box <- tags$div(
+  map_legend_box, HTML("")
+)   
   
 # map ---------------------------------------------------------------------
 
@@ -482,14 +490,11 @@ cvm <- gcIntermediate(latlon_origin,
   addControl(heading_tr, "topright") %>% 
   addControl(control_box, "topright", className = "layers-base") %>% 
   addEasyButton(reset_zoom) %>% 
-  addEasyButton(locate_me) #%>% 
-  # addControl(legend_box, "bottomleft", className = c("layers-base","full")) %>%
-  # addLegend(colors = "", labels = c(">10,000"), className='full')
+  addEasyButton(locate_me) # %>% 
+  # addControl(legend_box, "bottomleft", className = c("layers-base","full")) %>% 
+  # addLegend(colors = "", labels = c(">10,000"), className='full')  
  
 cvm 
-
-colvec <- c(colv,colv2,colv3)  
-ss <- radius_cases %>% summary()
 
 # save outputs -----------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
