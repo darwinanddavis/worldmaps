@@ -300,6 +300,7 @@ title <- tags$div(
 )  
 
 # control box
+# https://gis.stackexchange.com/questions/176409/changing-colour-of-leaflet-layer-control-box
 map_control_box <- tags$style( 
   HTML(".leaflet-control.layers-base { 
        text-align: left;
@@ -353,7 +354,7 @@ max_bound1 <- c(-150,90)
 max_bound2 <- c(180,-90)
 
 # set map projections 
-# check first !!!
+# check before changing !!!
 EPSG3395 <- leaflet() %>% 
   leafletCRS(crsClass = "L.CRS.EPSG3395", 
              proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"
