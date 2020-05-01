@@ -177,7 +177,7 @@ set_country_name("")
 # get numeric
 lon <- cv$Lon 
 lat <- cv$Lat 
-lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arcs 
+lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arc lines  
 
 # if using nafta coords # not run 3-3-20
 # get character string for nafta to rm from df and get latlon 
