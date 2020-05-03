@@ -504,7 +504,7 @@ cvm %>% saveWidget(here("/coronavirus.html"))
 cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to local dir 
 
 # save daily totals 
-cv_total_df <- data.frame("Date" = Sys.Date(),
+cv_total_df <- data.frame("Date" = Sys.Date(),  
                           cv_total,
                           "Space" = NA)
     
