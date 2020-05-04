@@ -461,7 +461,7 @@ cvm <- gcIntermediate(latlon_origin,
              radius=radius_deaths,
              color=colvec_deaths,
              fillColor=colvec_deaths,
-             label = cv_country,
+             label = cv_country,  
              popup = popup_deaths,
              labelOptions = text_label_opt,
              group = layer2) %>%
