@@ -141,7 +141,6 @@ cv_cases_15days_ranked <- cv$Cases_15days_ranked %>% as.numeric()
 cv2_country <- cv2$Location
 cv2_recovered <- cv2$Recovered %>% as.numeric()
 
-
 # match cv country lonlat to lonlat rgeos database
 lonlat_final <- lonlat[cv_country,] 
 lonlat_final2 <- lonlat[cv2_country,] 
@@ -497,7 +496,7 @@ cvm <- gcIntermediate(latlon_origin,
  
 cvm 
 
-# save outputs -----------------------------------------------------------------
+# save outputs --------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 
 cvm %>% saveWidget(here("/coronavirus.html"))  
