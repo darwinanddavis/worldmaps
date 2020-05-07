@@ -506,6 +506,8 @@ cvm <- gcIntermediate(latlon_origin,
 cvm 
 
 
+
+
 # save outputs -------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 
