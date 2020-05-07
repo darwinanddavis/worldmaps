@@ -417,6 +417,14 @@ legend_box <- tags$div(
   map_legend_box, HTML("")
 )   
   
+# legend option 2
+# html_legend <- "<img src='http://leafletjs.com/examples/custom-icons/leaf-green.png'>green<br/>
+# <img src='http://leafletjs.com/examples/custom-icons/leaf-red.png'>red"
+# # Produce Map:
+# leaflet(data = quakes) %>% addTiles() %>%
+#   addMarkers(~long, ~lat, icon = leafIcons) %>%
+#   addControl(html = html_legend, position = "bottomleft")
+
 # map ---------------------------------------------------------------------
 
 # set arc matrix
@@ -490,13 +498,15 @@ cvm <- gcIntermediate(latlon_origin,
   addControl(heading_tr, "topright") %>% 
   addControl(control_box, "topright", className = "layers-base") %>% 
   addEasyButton(reset_zoom) %>% 
-  addEasyButton(locate_me) # %>% 
+  addEasyButton(locate_me) %>% 
+  addControl(html = html_legend, position = "bottomleft")
   # addControl(legend_box, "bottomleft", className = c("layers-base","full")) %>% 
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
  
 cvm 
 
-# save outputs --------------------------------------------------------------------
+
+# save outputs ------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 
 cvm %>% saveWidget(here("/coronavirus.html"))  
