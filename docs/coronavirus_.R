@@ -360,6 +360,16 @@ EPSG3395 <- leaflet() %>%
   ) 
 proj_options <- leafletOptions(worldCopyJump = T) 
 
+
+# option for clickable twitter/github logos
+# absolutePanel(id = "logo", class = "card", bottom = 20, left = 60, width = 80, fixed=TRUE, draggable = FALSE, height = "auto",
+#               tags$a(href='https://www.lshtm.ac.uk', tags$img(src='lshtm_dark.png',height='40',width='80')))
+# 
+# absolutePanel(id = "logo", class = "card", bottom = 20, left = 20, width = 30, fixed=TRUE, draggable = FALSE, height = "auto",
+#               actionButton("twitter_share", label = "", icon = icon("twitter"),style='padding:5px',
+#                            onclick = sprintf("window.open('%s')", 
+#                                              "https://twitter.com/intent/tweet?text=%20@LSHTM_Vaccines%20outbreak%20mapper&url=https://bit.ly/2uBvnds&hashtags=coronavirus")))
+
 # layers ------------------------------------------------------------------
 
 # titles
@@ -504,8 +514,6 @@ cvm <- gcIntermediate(latlon_origin,
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
  
 cvm 
-
-
 
 
 # save outputs -------------------------------------------------------------
