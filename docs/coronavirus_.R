@@ -12,7 +12,7 @@ pacman::p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,p
 # set wd
 here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
 
-# scrape data from web \xml2 ---------------------------------------------------------------
+# scrape data from web \xml2 --------------------------------------------------------------------
 url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases" # get today's data
 # link: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
 url2 <- "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.csv" # get historical data as of today
