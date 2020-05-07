@@ -499,7 +499,7 @@ cvm <- gcIntermediate(latlon_origin,
   addControl(control_box, "topright", className = "layers-base") %>% 
   addEasyButton(reset_zoom) %>% 
   addEasyButton(locate_me) #%>% 
-  # addControl(html = html_legend, position = "bottomleft")
+  # addControl(html = html_legend, position = "bottomleft") # option 2 legend
   # addControl(legend_box, "bottomleft", className = c("layers-base","full")) %>% 
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
  
