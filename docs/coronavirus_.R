@@ -508,19 +508,20 @@ cvm <- gcIntermediate(latlon_origin,
   addControl(heading_tr, "topright") %>% 
   addControl(control_box, "topright", className = "layers-base") %>% 
   addEasyButton(reset_zoom) %>% 
-  addEasyButton(locate_me) #%>%    
-  # addControl(html = html_legend, position = "bottomleft") # option 2 legend
+  addEasyButton(locate_me) # %>%    
+  # addControl(html = html_legend, position = "topright") # option 2 legend
   # addControl(legend_box, "bottomleft", className = c("layers-base","full")) %>% 
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
  
 cvm 
 
 
+
+
 # save outputs -------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
-
-cvm %>% saveWidget(here("/coronavirus.html"))  
-cvm %>% saveWidget(here("/worldmaps/coronavirus.html")) # save to local dir 
+cvm %>% saveWidget(here::here("/coronavirus.html"))  
+cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
 
 # save daily totals 
 cv_total_df <- data.frame("Date" = Sys.Date(),  
@@ -530,8 +531,8 @@ cv_total_df <- data.frame("Date" = Sys.Date(),
 # append new total to file and save to dir 
 start_date <- "2020-03-26"
 if(start_date!=Sys.Date()){
-  write_delim(cv_total_df,paste0(here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
-  cat("New historical data saved to ",here(),"/cv_total_df.csv\n\n");Sys.Date()
+  write_delim(cv_total_df,paste0(here::here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
+  cat("New historical data saved to ",here::here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
 
 
