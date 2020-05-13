@@ -1,4 +1,4 @@
-# 2019-nCov distribution 
+# 2019-nCov distribution Matt Malishev 
 
 # web scraped data from the european centre for disease control
 # up to date link ---------------------------------------------------------
@@ -115,9 +115,6 @@ cv[str_which(cv$Country,"Czech"),"Country"] <- find_lonlat("Czech")$Country
 # cv_continent_cases$Continent <- cv[,"Continent"] %>% unique
 # cv_continent_deaths$Continent <- cv[,"Continent"] %>% unique
 
-# remove empty country rows
-# cv <- cv[!cv$Country=="",] 
-
 # rank data
 cv <- cv %>% arrange(desc(Cases)) # rank data in descending order to layer map points 
 # get global case and death rankings 
@@ -211,10 +208,6 @@ colvec_recent_cases <- ifelse(cv_recent_cases > 0, colv3,NaN) # remove 0 points
 # nafta_cases <- cv %>% filter(Country %in% nafta_string) %>% select("Cases") %>% unlist
 # colvec_cases <- ifelse(cv_cases %in% nafta_cases,NaN,colv) # get colvec w/o nafta cases
 # colvec_deaths <- ifelse(cv_deaths %in% c(0,nafta_cases),NaN,colv2) # remove 0 points 
-
-# add deaths latlon manually # not run 3-2-20
-# cv_deaths_lon <- cv %>% filter(Deaths>0) %>% select("Lon") %>% unlist
-# cv_deaths_lat <- cv %>% filter(Deaths>0) %>% select("Lat") %>% unlist
 
 # text --------------------------------------------------------------------
 
@@ -363,12 +356,12 @@ proj_options <- leafletOptions(worldCopyJump = T)
 
 # option for clickable twitter/github logos
 # absolutePanel(id = "logo", class = "card", bottom = 20, left = 60, width = 80, fixed=TRUE, draggable = FALSE, height = "auto",
-#               tags$a(href='https://www.lshtm.ac.uk', tags$img(src='lshtm_dark.png',height='40',width='80')))
+#               tags$a(href='https://darwinwanddavis.github.io/DataPortfolio', tags$img(src='lshtm_dark.png',height='40',width='80')))
 # 
 # absolutePanel(id = "logo", class = "card", bottom = 20, left = 20, width = 30, fixed=TRUE, draggable = FALSE, height = "auto",
 #               actionButton("twitter_share", label = "", icon = icon("twitter"),style='padding:5px',
 #                            onclick = sprintf("window.open('%s')", 
-#                                              "https://twitter.com/intent/tweet?text=%20@LSHTM_Vaccines%20outbreak%20mapper&url=https://bit.ly/2uBvnds&hashtags=coronavirus")))
+#                                              "https://twitter.com/intent/tweet?text=Realtime%20global%20covid19%20distribution%20@darwinanddavis&url=https://tinyurl.com/r8nny5n&hashtags=coronavirus")))
 
 # layers ------------------------------------------------------------------
 
