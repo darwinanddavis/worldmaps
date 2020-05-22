@@ -213,7 +213,7 @@ colvec_recent_cases <- ifelse(cv_recent_cases > 0, colv3,NaN) # remove 0 points
 
 # title 
 ttl <- paste0("<div style=\"color:#F90F40;\"> 
-              2019-nCov 
+              COVID19 
               </div>","global distribution")
 
 # tr
@@ -451,11 +451,11 @@ cvm <- gcIntermediate(latlon_origin,
                    ) %>% 
   addPolylines(color=colvec_cases, # cases
                opacity = opac,
-               weight = 0.5,
+               weight = 0.3,
                group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths
                opacity = opac,
-               weight = 0.5,
+               weight = 0.3,
                group = layer2) %>%
   addCircles(lon,lat, # cases
              weight=1,
@@ -507,8 +507,6 @@ cvm <- gcIntermediate(latlon_origin,
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
  
 cvm 
-
-
 
 
 # save outputs -----------------------------------------------------------------------
