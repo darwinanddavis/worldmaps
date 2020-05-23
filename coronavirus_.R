@@ -420,6 +420,7 @@ legend_box <- tags$div(
   map_legend_box, HTML("")
 )   
   
+# add custom legend
 # legend option 2
 # html_legend <- "<img src='http://leafletjs.com/examples/custom-icons/leaf-green.png'>green<br/>
 # <img src='http://leafletjs.com/examples/custom-icons/leaf-red.png'>red"
@@ -427,6 +428,8 @@ legend_box <- tags$div(
 # leaflet(data = quakes) %>% addTiles() %>%
 #   addMarkers(~long, ~lat, icon = leafIcons) %>%
 #   addControl(html = html_legend, position = "bottomleft")
+
+
 
 # map ---------------------------------------------------------------------
 
