@@ -60,6 +60,8 @@ cv2 <- web_data_recovered %>% html_table(trim = T)
 cv2 <- cv2[[2]] # get df
 cv2[is.na(cv2)] <- 0
 
+
+
 # mod data
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
 cv$Deaths <- cv$Deaths %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","") # remove middle white space
@@ -78,11 +80,13 @@ cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
+
 # clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
 cv$Country <- cv$Country %>% str_replace_all("_"," ") %>% as.character()
 cv2$Recovered <- cv2$Recovered %>% str_replace_all(",","") %>% as.character()
+
 
 # fix anomalies in country entries
 # cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
@@ -371,9 +375,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- sqrt(cv_cases) * 1000 # 3rd radius reduction 13-4-20
-radius_deaths <- sqrt(cv_deaths) * 1000
-radius_recent_cases <- sqrt(cv_recent_cases) * 1000
+radius_cases <- (sqrt(cv_cases) * 750) %>% ceiling # 3rd radius reduction 13-4-20
+radius_deaths <- (sqrt(cv_deaths) * 750) %>% ceiling()
+radius_recent_cases <- (sqrt(cv_recent_cases) * 750) %>% ceiling()
 
 # easy buttons 
 locate_me <- easyButton( # locate user
@@ -428,8 +432,6 @@ legend_box <- tags$div(
 # leaflet(data = quakes) %>% addTiles() %>%
 #   addMarkers(~long, ~lat, icon = leafIcons) %>%
 #   addControl(html = html_legend, position = "bottomleft")
-
-
 
 # map ---------------------------------------------------------------------
 
@@ -512,7 +514,7 @@ cvm <- gcIntermediate(latlon_origin,
 cvm 
 
 
-# save outputs ---------------------------------------------------------------------------------
+# save outputs -----------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("/coronavirus.html"))  
 cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
