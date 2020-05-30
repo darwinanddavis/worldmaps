@@ -375,9 +375,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- (sqrt(cv_cases) * 750) %>% ceiling # 3rd radius reduction 13-4-20
-radius_deaths <- (sqrt(cv_deaths) * 750) %>% ceiling()
-radius_recent_cases <- (sqrt(cv_recent_cases) * 750) %>% ceiling()
+radius_cases <- (sqrt(cv_cases) * 500) %>% ceiling # 3rd radius reduction 13-4-20
+radius_deaths <- (sqrt(cv_deaths) * 500) %>% ceiling()
+radius_recent_cases <- (sqrt(cv_recent_cases) * 500) %>% ceiling()
 
 # easy buttons 
 locate_me <- easyButton( # locate user
@@ -514,7 +514,7 @@ cvm <- gcIntermediate(latlon_origin,
 cvm 
 
 
-# save outputs -----------------------------------------------------------------------------------------
+# save outputs --------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("/coronavirus.html"))  
 cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
