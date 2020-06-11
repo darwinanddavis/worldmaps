@@ -50,7 +50,7 @@ cv_historical  %>% head
 
 # convert cv webtable to tibble \rvest 
 web_data <- url %>% read_html
-tb <- web_data %>% html_table(trim = T) 
+tb <- web_data %>% html_table(trim = T)  
 cv <- tb[[1]] # get df
 cv[is.na(cv)] <- 0 # rm nas
 
@@ -59,8 +59,6 @@ web_data_recovered <- url3 %>% read_html
 cv2 <- web_data_recovered %>% html_table(trim = T) 
 cv2 <- cv2[[2]] # get df
 cv2[is.na(cv2)] <- 0
-
-
 
 # mod data
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
@@ -514,7 +512,7 @@ cvm <- gcIntermediate(latlon_origin,
 cvm 
 
 
-# save outputs -----------------------------------------------------------------------------
+# save outputs ------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("/coronavirus.html"))  
 cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
