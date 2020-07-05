@@ -388,6 +388,7 @@ reset_zoom <- easyButton( # reset zoom
 
 
 # legend circles  
+# https://stackoverflow.com/questions/47187835/shiny-leaflet-legend-markers-same-as-map-markers
 # get lower, mid, and upper quartiles
 legend_cases <- radius_cases %>% summary(); legend_cases <- legend_cases[c(2:4)] %>% as.numeric() %>% plyr::round_any(1000,f=ceiling)
 legend_deaths <- radius_deaths %>% summary(); legend_deaths <- legend_deaths[c(2:4)] %>% as.numeric() %>% plyr::round_any(1000,f=ceiling)
@@ -511,7 +512,7 @@ cvm <- gcIntermediate(latlon_origin,
 
 cvm
 
-# save outputs ----------------------------------------------------------------------------------------------------------------------------------------------
+# save outputs -------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("/coronavirus.html"))  
 cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
@@ -527,6 +528,4 @@ if(start_date!=Sys.Date()){
   write_delim(cv_total_df,paste0(here::here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
   cat("New historical data saved to ",here::here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
-
-
 
