@@ -74,11 +74,12 @@ cv_total <- cv %>% summarise(Total_cases = max(Cases,na.rm = T),
                              Total_deaths = max(Deaths,na.rm = T),
                              Total_recent_cases = max(Cases_last_15_days,na.rm = T))
 cv <- cv[!cv$Continent=="Total",] # rm total from country df
+cv <- cv[!cv$Country=="Total",] # rm total from country df
 cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
-
+cv %>% head
 # clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
@@ -148,7 +149,8 @@ lonlat_final  %>%   # write to dir
 
 # add lonlat to df
 cv[,c("Lon","Lat")] <- lonlat_final[,c("Lon","Lat")]
-cv2[,c("Lon","Lat")] <- lonlat_final2[,c("Lon","Lat")] # recovery data
+# cv2[,c("Lon","Lat")] <- lonlat_final2[,c("Lon","Lat")] # recovery data
+
 # check country name with latlon
 if(any(lonlat_final$Country == cv$Country)!=TRUE){
   cat("\n\n\nCheck country lonlat before plotting\n\n\n",rep("*",10))}
@@ -166,7 +168,6 @@ if(any(is.na(cv$Lat))==TRUE){
   cv[which(is.na(cv$Lat)),"Country"]
 }
    
-
 # find which countries show NAs/anomalies from latlon database  
 find_lonlat("")
 # get current country name in cv for replacement   
