@@ -512,8 +512,8 @@ cvm <- gcIntermediate(latlon_origin,
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
 
 cvm
-  
-# save outputs ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# save outputs -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("/coronavirus.html"))  
 cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
