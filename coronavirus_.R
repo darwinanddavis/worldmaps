@@ -374,9 +374,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- (sqrt(cv_cases) * 500) %>% ceiling # 3rd radius reduction 13-4-20
-radius_deaths <- (sqrt(cv_deaths) * 500) %>% ceiling()
-radius_recent_cases <- (sqrt(cv_recent_cases) * 500) %>% ceiling()
+radius_cases <- (sqrt(cv_cases) * 300) #%>% ceiling # 3rd radius reduction 13-4-20
+radius_deaths <- (sqrt(cv_deaths) * 300) #%>% ceiling()
+radius_recent_cases <- (sqrt(cv_recent_cases) * 300) #%>% ceiling()
 
 # easy buttons 
 locate_me <- easyButton( # locate user
@@ -512,6 +512,7 @@ cvm <- gcIntermediate(latlon_origin,
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
 
 cvm
+
 
 # save outputs -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
