@@ -48,7 +48,7 @@ cv_historical <- read_csv(tf)
 cv_historical  %>% head
 # write_csv(cv_historical,paste0(here(),"/cv_historical.csv")) # write historical data to file
 
-# convert cv webtable to tibble \rvest 
+# convert cv webtable to tibble \rvest   
 web_data <- url %>% read_html
 tb <- web_data %>% html_table(trim = T)  
 cv <- tb[[1]] # get df
