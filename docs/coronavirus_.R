@@ -12,7 +12,7 @@ pacman::p_load(maps,dplyr,leaflet,xml2,rvest,ggmap,geosphere,htmltools,mapview,p
 # set wd
 here::set_here("/Users/malishev/Documents/Data/worldmaps/worldmaps/")
 
-# scrape data from web \xml2 --------------------------------------------------------------------
+# scrape data from web \xml2 -----------------------------------------------------------------------
 url <- "https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases" # get today's data
 # link: https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide
 url2 <- "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.csv" # get historical data as of today
@@ -48,9 +48,9 @@ cv_historical <- read_csv(tf)
 cv_historical  %>% head
 # write_csv(cv_historical,paste0(here(),"/cv_historical.csv")) # write historical data to file
 
-# convert cv webtable to tibble \rvest 
+# convert cv webtable to tibble \rvest   
 web_data <- url %>% read_html
-tb <- web_data %>% html_table(trim = T) 
+tb <- web_data %>% html_table(trim = T)  
 cv <- tb[[1]] # get df
 cv[is.na(cv)] <- 0 # rm nas
 
@@ -74,15 +74,18 @@ cv_total <- cv %>% summarise(Total_cases = max(Cases,na.rm = T),
                              Total_deaths = max(Deaths,na.rm = T),
                              Total_recent_cases = max(Cases_last_15_days,na.rm = T))
 cv <- cv[!cv$Continent=="Total",] # rm total from country df
+cv <- cv[!cv$Country=="Total",] # rm total from country df
 cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
+cv %>% head
 # clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
 cv$Country <- cv$Country %>% str_replace_all("_"," ") %>% as.character()
 cv2$Recovered <- cv2$Recovered %>% str_replace_all(",","") %>% as.character()
+
 
 # fix anomalies in country entries
 # cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
@@ -146,7 +149,8 @@ lonlat_final  %>%   # write to dir
 
 # add lonlat to df
 cv[,c("Lon","Lat")] <- lonlat_final[,c("Lon","Lat")]
-cv2[,c("Lon","Lat")] <- lonlat_final2[,c("Lon","Lat")] # recovery data
+# cv2[,c("Lon","Lat")] <- lonlat_final2[,c("Lon","Lat")] # recovery data
+
 # check country name with latlon
 if(any(lonlat_final$Country == cv$Country)!=TRUE){
   cat("\n\n\nCheck country lonlat before plotting\n\n\n",rep("*",10))}
@@ -164,7 +168,6 @@ if(any(is.na(cv$Lat))==TRUE){
   cv[which(is.na(cv$Lat)),"Country"]
 }
    
-
 # find which countries show NAs/anomalies from latlon database  
 find_lonlat("")
 # get current country name in cv for replacement   
@@ -213,7 +216,7 @@ colvec_recent_cases <- ifelse(cv_recent_cases > 0, colv3,NaN) # remove 0 points
 
 # title 
 ttl <- paste0("<div style=\"color:#F90F40;\"> 
-              2019-nCov 
+              COVID19 
               </div>","global distribution")
 
 # tr
@@ -371,9 +374,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- sqrt(cv_cases) * 1000 # 3rd radius reduction 13-4-20
-radius_deaths <- sqrt(cv_deaths) * 1000
-radius_recent_cases <- sqrt(cv_recent_cases) * 1000
+radius_cases <- (sqrt(cv_cases) * 300) #%>% ceiling # 3rd radius reduction 13-4-20
+radius_deaths <- (sqrt(cv_deaths) * 300) #%>% ceiling()
+radius_recent_cases <- (sqrt(cv_recent_cases) * 300) #%>% ceiling()
 
 # easy buttons 
 locate_me <- easyButton( # locate user
@@ -385,7 +388,8 @@ reset_zoom <- easyButton( # reset zoom
   onClick=JS("function(btn, map){ map.setZoom(3);}"));  
 
 
-# legend circles
+# legend circles  
+# https://stackoverflow.com/questions/47187835/shiny-leaflet-legend-markers-same-as-map-markers
 # get lower, mid, and upper quartiles
 legend_cases <- radius_cases %>% summary(); legend_cases <- legend_cases[c(2:4)] %>% as.numeric() %>% plyr::round_any(1000,f=ceiling)
 legend_deaths <- radius_deaths %>% summary(); legend_deaths <- legend_deaths[c(2:4)] %>% as.numeric() %>% plyr::round_any(1000,f=ceiling)
@@ -420,6 +424,7 @@ legend_box <- tags$div(
   map_legend_box, HTML("")
 )   
   
+# add custom legend
 # legend option 2
 # html_legend <- "<img src='http://leafletjs.com/examples/custom-icons/leaf-green.png'>green<br/>
 # <img src='http://leafletjs.com/examples/custom-icons/leaf-red.png'>red"
@@ -451,11 +456,11 @@ cvm <- gcIntermediate(latlon_origin,
                    ) %>% 
   addPolylines(color=colvec_cases, # cases
                opacity = opac,
-               weight = 0.5,
+               weight = 0.3,
                group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths
                opacity = opac,
-               weight = 0.5,
+               weight = 0.3,
                group = layer2) %>%
   addCircles(lon,lat, # cases
              weight=1,
@@ -505,16 +510,15 @@ cvm <- gcIntermediate(latlon_origin,
   # addControl(html = html_legend, position = "topright") # option 2 legend
   # addControl(legend_box, "bottomleft", className = c("layers-base","full")) %>% 
   # addLegend(colors = "", labels = c(">10,000"), className='full')  
- 
-cvm 
+
+cvm
 
 
-
-
-# save outputs -------------------------------------------------------------
+# save outputs -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("/coronavirus.html"))  
 cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
+
 
 # save daily totals 
 cv_total_df <- data.frame("Date" = Sys.Date(),  
@@ -527,5 +531,4 @@ if(start_date!=Sys.Date()){
   write_delim(cv_total_df,paste0(here::here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
   cat("New historical data saved to ",here::here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
-
 
