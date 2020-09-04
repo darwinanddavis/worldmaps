@@ -513,10 +513,10 @@ cvm <- gcIntermediate(latlon_origin,
 
 cvm
 
-# save outputs ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# save outputs ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
-cvm %>% saveWidget(here::here("/coronavirus.html"))  
-cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
+cvm %>% saveWidget(here::here("coronavirus.html"))  
+cvm %>% saveWidget(here::here("worldmaps","coronavirus.html")) # save to local dir 
 
 
 # save daily totals 
