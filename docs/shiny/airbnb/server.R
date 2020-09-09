@@ -58,7 +58,8 @@ criteria_candidates <- c(
 )
 
 # read in web df
-fwd <- repmis::source_data("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/docs/shiny/airbnb/fwd.Rdata?raw=true")
+
+fwd <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/docs/shiny/airbnb/fwd.Rdata?raw=true" %>% url %>% readRDS
 city_names <- fwd$city 
 city_urls <- fwd$url
 shinyServer(function(input, output){
