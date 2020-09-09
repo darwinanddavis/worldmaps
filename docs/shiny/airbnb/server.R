@@ -26,7 +26,8 @@ require(RColorBrewer)
 require(tidyr)
 require(purrr)
 require(lubridate)
-require(repmis)
+require(metathis)
+require(shinycssloaders)
 
 server_dims <- "auto" 
 colvec <- c("Sunset-Dark","Inferno","Brwn-Yl","Burg","Teal")
@@ -298,10 +299,10 @@ shinyServer(function(input, output){
   output$select_criteria <- renderText({input$select_criteria})
   output$entries <- renderText({entries()})
   output$date <- renderText({
-    if(is.null(input$select_city)){
-      "2020"
+    if(input$select_city %>% str_length() > 1){
+      paste0(fwd[fwd$city %>% str_which(input$select_city),"month"] %>% unlist %>% as.character(),", 2020")
     }else{
-      paste0(fwd[fwd$city %>% str_which(input$select_city),"month"][1] %>% unlist %>% as.character(),", 2020")
+      "2020"
     }
     })
   

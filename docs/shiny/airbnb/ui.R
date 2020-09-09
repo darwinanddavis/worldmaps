@@ -26,17 +26,44 @@ require(RColorBrewer)
 require(tidyr)
 require(purrr)
 require(lubridate)
+require(metathis)
+require(shinycssloaders)
 
 # here("worldmaps","docs","shiny","airbnb") %>% runApp()
-# deployApp()
+ 
+# read data ---------------------------------------------------------------
+fwd <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/docs/shiny/airbnb/fwd.Rdata?raw=true" %>% url %>% readRDS
+city_names <- fwd$city 
+city_urls <- fwd$url
 
+# criteria to subset from df 
+criteria_candidates <- c(
+  "Bed type",
+  "Room type",
+  "Property type",
+  "Bathrooms",           
+  "Cancellation policy",
+  "Reviews per month",
+  "Review scores rating",
+  "Security deposit",    
+  "Cleaning fee", 
+  "Accommodates"
+)
+
+# ui ----------------------------------------------------------------------
 colvec <- c("Sunset-Dark","Inferno","Brwn-Yl","Burg","Teal")
 shinyUI(fluidPage(
   theme = shinytheme(theme = "cyborg"),
   tags$style(type = "text/css", "html, body {width:100%;height:100%;background-color:black;}"),
-  textOutput("crit"),
-  # tabPanel("tab1"),
   titlePanel(tags$h1(span("Analysing Airbnb listings from"),span(style="color:#FF385C;","Inside Airbnb"),span("open online data"),.noWS="outside")), # title
+  meta() %>%
+    meta_social(
+      title = "Analysing Airbnb data with R",
+      description = "Analysing Airbnb using spatial analysis in R",
+      url = "https://github.com/darwinanddavis/worldmaps",
+      image = "https://avatars3.githubusercontent.com/u/19680844?s=460&u=efd4ae847340abd1432488844045f95aa6d57f94&v=4",
+      twitter_site = "@darwinanddavis"
+    ),
   fluidRow( # row 1 col 1---------------------------------------------
             column( # row 1, col 1
               width = 4,
@@ -118,7 +145,7 @@ shinyUI(fluidPage(
     tags$p(span(style="text-align:left;",
                 strong("Author: "),"Matt Malishev","|",
                 strong("Github: "),
-                span(style="color:#FF385C;",a(style="color:#FF385C;","@darwinanddavis",href="https://github.com/darwinanddavis")),"|",
+                span(style="color:#FF385C;",a(style="color:#FF385C;","@darwinanddavis",href="https://github.com/darwinanddavis/worldmaps")),"|",
                 strong("Data: "),
                 span(style="color:#FF385C;",a(style="color:#FF385C;","Inside Airbnb",href="http://insideairbnb.com/get-the-data.html")),"|",
                 span(style="text-align:right;",
