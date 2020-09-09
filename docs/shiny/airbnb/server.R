@@ -26,6 +26,7 @@ require(RColorBrewer)
 require(tidyr)
 require(purrr)
 require(lubridate)
+require(repmis)
 
 server_dims <- "auto" 
 colvec <- c("Sunset-Dark","Inferno","Brwn-Yl","Burg","Teal")
@@ -57,7 +58,7 @@ criteria_candidates <- c(
 )
 
 # read in web df
-fwd <- readRDS("https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/docs/shiny/airbnb/fwd.Rda")
+fwd <- repmis::source_data("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/docs/shiny/airbnb/fwd.Rdata?raw=true")
 city_names <- fwd$city 
 city_urls <- fwd$url
 shinyServer(function(input, output){

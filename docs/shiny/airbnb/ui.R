@@ -27,6 +27,9 @@ require(tidyr)
 require(purrr)
 require(lubridate)
 
+# here("worldmaps","docs","shiny","airbnb") %>% runApp()
+# deployApp()
+
 colvec <- c("Sunset-Dark","Inferno","Brwn-Yl","Burg","Teal")
 shinyUI(fluidPage(
   theme = shinytheme(theme = "cyborg"),
