@@ -56,14 +56,6 @@ shinyUI(fluidPage(
   theme = shinytheme(theme = "cyborg"),
   tags$style(type = "text/css", "html, body {width:100%;height:100%;background-color:black;}"),
   titlePanel(tags$h1(span("Analysing Airbnb listings from"),span(style="color:#FF385C;","Inside Airbnb"),span("open online data"),.noWS="outside")), # title
-  meta() %>%
-    meta_social(
-      title = "Analysing Airbnb data with R",
-      description = "Analysing Airbnb using spatial analysis in R",
-      url = "https://github.com/darwinanddavis/worldmaps",
-      image = "https://avatars3.githubusercontent.com/u/19680844?s=460&u=efd4ae847340abd1432488844045f95aa6d57f94&v=4",
-      twitter_site = "@darwinanddavis"
-    ),
   fluidRow( # row 1 col 1---------------------------------------------
             column( # row 1, col 1
               width = 4,

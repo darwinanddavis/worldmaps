@@ -59,7 +59,6 @@ criteria_candidates <- c(
 )
 
 # read in web df
-
 fwd <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/docs/shiny/airbnb/fwd.Rdata?raw=true" %>% url %>% readRDS
 city_names <- fwd$city 
 city_urls <- fwd$url
