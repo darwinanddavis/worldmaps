@@ -111,7 +111,6 @@ cv[str_which(cv$Country,"Cura"),"Country"] <- find_lonlat("Curac")$Country
 cv[str_which(cv$Country,"Falkland"),"Country"] <- find_lonlat("Falk")$Country
 cv[str_which(cv$Country,"Czech"),"Country"] <- find_lonlat("Czech")$Country
 
-
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
 # cv_continent_deaths <- cv %>% filter(Country=="") %>% select(Deaths)
@@ -161,13 +160,14 @@ cv[cv$Country==cv[str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv
 cv[cv$Country==cv[str_which(cv$Country,"Gibral"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Spain") %>% select(c("Lon","Lat")) + 0.05 # displace gibraltar latlon from spain
 # cv[cv$Country==cv[str_which(cv$Country,"Antill"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Aruba") %>% select(c("Lon","Lat")) + 0.2  # displace dutch caribbean from aruba
 cv[cv$Country==cv[str_which(cv$Country,"Bonai"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Curacao") %>% select(c("Lon","Lat")) + 0.2  # displace dutch caribbean2 latlon from curacao
+cv <- cv[complete.cases(cv),] # rm final empty row
 
 # check NAs
 if(any(is.na(cv$Lat))==TRUE){
   cat("\n\n\nLatlon in cv dataset contains NAs\n",rep("*",10),"\n")
   cv[which(is.na(cv$Lat)),"Country"]
 }
-   
+
 # find which countries show NAs/anomalies from latlon database  
 find_lonlat("")
 # get current country name in cv for replacement   
@@ -513,11 +513,10 @@ cvm <- gcIntermediate(latlon_origin,
 
 cvm
 
-
-# save outputs -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# save outputs --------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
-cvm %>% saveWidget(here::here("/coronavirus.html"))  
-cvm %>% saveWidget(here::here("/worldmaps/coronavirus.html")) # save to local dir 
+cvm %>% saveWidget(here::here("coronavirus.html"))  
+cvm %>% saveWidget(here::here("worldmaps","coronavirus.html")) # save to local dir 
 
 # save daily totals 
 cv_total_df <- data.frame("Date" = Sys.Date(),  
@@ -530,4 +529,7 @@ if(start_date!=Sys.Date()){
   write_delim(cv_total_df,paste0(here::here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
   cat("New historical data saved to ",here::here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
+
+
+
 
