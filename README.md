@@ -28,7 +28,7 @@ An interactive map of my favourite coffee spots around the world using Mapbox St
 ### Tools   
 
 R       
-R packages: `dplyr`, `mapdeck`, `readr`, `purrr`, `stringr`, `tibble`, `htmltools`, `sf`, `sfheaders`, `data.table`, `stringr`, `tigris`, `sp , `here`         
+R packages: `dplyr`, `mapdeck`, `readr`, `purrr`, `stringr`, `tibble`, `htmltools`, `sf`, `sfheaders`, `data.table`, `stringr`, `tigris`, `sp` , `here`           
 
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 
