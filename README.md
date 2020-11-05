@@ -34,7 +34,7 @@ R packages: `dplyr`, `mapdeck`, `readr`, `purrr`, `stringr`, `tibble`, `htmltool
 
 Using geolocation data to map a roadtrip across the southern US with `R`.  
 
-### Tools    
+### Tools      
 ```  
 pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)            
 ```
@@ -45,6 +45,35 @@ pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2
 
 ### Links      
 [`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)        
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+### Day 4: Hexagons
+
+Mapping my Lyft ride activity from June 2018 to March 2020. 
+
+Using geolocation data for my Lyft rides as a passenger to create an interactive map that shows my destination and origin locations. The data covers the USA.       
+
+* Zoom out to see the cities where I used Lyft to get around. Cities with labels contain data, sometimes only a few points.       
+* Note the legend in the below images in case the legend in the link is chopped off.          
+
+### [Mapping Lyft ride data](https://darwinanddavis.github.io/worldmaps/30daymap2020/day4)  
+
+Atlanta, USA (where I lived during this time)        
+<div align="center"; text-align:center>
+  <img src="img/day4.png", width = "100%", height = "25%">    
+</div>  
+
+### Tools     
+  
+R         
+R packages: `dplyr`, `mapdeck`, `tibble`, `htmltools`, `sf`, `sfheaders`, `data.table`, `stringr`, `tigris`, `sp` , `here`,`maps`, `colorspace`   
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
 
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 

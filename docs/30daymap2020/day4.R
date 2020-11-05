@@ -24,7 +24,7 @@ city_text <- latlon_data %>% filter(country == "USA" & city %in% city_labels ) %
 
 # map ---------------------------------------------------------------------
 my_style <- "mapbox://styles/darwinanddavis/ckh4kmfdn0u6z19otyhapiui3" # style  
-mapdeck(
+mp4 <- mapdeck(
   location = c(od$lon[1],od$lat[1]), 
   zoom = 10,
   pitch =  30,
@@ -58,6 +58,7 @@ mapdeck(
            font_family = "Lato Regular",
            size=15
   )
-
+mp4
+mp4 %>% saveWidget(here::here("worldmaps","30daymap2020","day4.html"))  
 
 
