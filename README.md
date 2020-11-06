@@ -97,10 +97,10 @@ Squirrels! The NYC Open Data Squirrel Census on squirrel sightings.
 
 I've seen these data used many times and I hadn't tried them yet. There are detailed behaviour data too, but location data are fine for this exercise.       
                
-### [Cinnamon squirrel locations in NYC Central Park](https://darwinanddavis.github.io/worldmaps/30daymap2020/day5)    
+### [Cinnamon squirrel locations in NYC Central Park](https://darwinanddavis.github.io/worldmaps/30daymap2020/day6)    
   
 <div align="center"; text-align:center>
-  <img src="img/day5.png", width = "100%", height = "25%">    
+  <img src="img/day6.png", width = "100%", height = "25%">    
 </div>  
 
 ### Tools     

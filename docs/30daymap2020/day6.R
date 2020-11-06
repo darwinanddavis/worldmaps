@@ -1,6 +1,6 @@
 # --------------------------------------------------------------------
 # 30 day map challenge 2020
-# day 4
+# day 6
 # author: Matt Malishev
 # @darwinanddavis  
 
@@ -32,7 +32,7 @@ pitch <- 0
 bearing <- 280
 
 my_style <- "mapbox://styles/darwinanddavis/ckh68ceou0j2119p3jys0yzud" # style  
-mp5 <- mapdeck(
+mp6 <- mapdeck(
   location = c(red$X %>% mean,red$Y %>% mean), 
   zoom = zoom,
   pitch =  pitch, bearing = bearing,
@@ -49,22 +49,22 @@ mp5 <- mapdeck(
   add_text(data=main,lat = "Y", lon = "X", 
            layer_id = "label", text = "title",
            alignment_baseline = "bottom",anchor = "end",
-           fill_colour = "#6D0026", angle = 61,
+           fill_colour = "#B90E36", angle = 61,
            billboard = F,update_view = F,
            font_family = "BREVE SC",
-           size=35
+           size=45
   ) %>% 
   add_text(data=data_source,lat = "Y", lon = "X", 
            layer_id = "datasource", text = "title",
            alignment_baseline = "bottom",anchor = "end",
-           fill_colour = "#6D0026", angle = 61,
+           fill_colour = "#B90E36", angle = 61,
            billboard = F,update_view = F,
            font_family = "BREVE SC",
-           size=20
+           size=25
   ) %>% 
   add_title(title = title_text, layer_id = "title")
-mp5
-mp5 %>% saveWidget(here::here("worldmaps","30daymap2020","day5.html"))  
+mp6
+mp6 %>% saveWidget(here::here("worldmaps","30daymap2020","day6.html"))  
 
 
 
