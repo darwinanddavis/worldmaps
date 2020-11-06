@@ -107,6 +107,7 @@ I've seen these data used many times and I hadn't tried them yet. There are deta
   
 R           
 R packages: `dplyr`, `mapdeck`, `tibble`, `readr`  
+Data: [OpenData NYC squirrel census](https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw)      
 
 ### Links      
 [`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)     
