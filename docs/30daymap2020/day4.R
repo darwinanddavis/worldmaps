@@ -14,8 +14,6 @@ p_load(mapdeck,readr,ggmap,dplyr,sf,sfheaders,data.table,tigris,sp,maps,colorspa
 # read data --------------------------------------------------------
 od <- paste0("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/day4_od.Rda?raw=true") %>% url %>% readRDS
 dd <- paste0("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/day4_dd.Rda?raw=true") %>% url %>% readRDS
-od[,c("lat","lon")] <- od[,c("lat","lon")] %>% round(3)
-dd[,c("lat","lon")] <- dd[,c("lat","lon")] %>% round(3)
 
 # labels ------------------------------------------------------------------
 latlon_data <- with(world.cities, data.frame( # //maps
@@ -42,6 +40,7 @@ mp4 <- mapdeck(
 ) %>%
   add_hexagon(data = dd, lat = "lat", lon = "lon", 
               radius = 100,
+              digits = 3,
               elevation = "lat",
               elevation_scale = 15,
               elevation_function = "sum",
@@ -52,8 +51,9 @@ mp4 <- mapdeck(
               colour_range = colorspace::sequential_hcl(6,"OrYel")) %>%
   add_hexagon(data = od, lat = "lat", lon = "lon", 
               radius = 100,
+              digits = 3,
               elevation = "lat",
-              elevation_scale = 5,
+              elevation_scale = 5, 
               elevation_function = "sum",
               layer_id = "origin",
               legend = T, update_view = F,
