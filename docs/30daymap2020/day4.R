@@ -22,6 +22,9 @@ latlon_data <- with(world.cities, data.frame( # //maps
 city_labels <- c("San Francisco","Memphis","New Orleans","Saint Louis","Chicago","Atlanta","Asheville","Raleigh","Washington","New York")
 city_text <- latlon_data %>% filter(country == "USA" & city %in% city_labels ) %>% select(city,lat,lon)
 
+od[,c("lat","lon")] <- od[,c("lat","lon")] %>% round(3)
+dd[,c("lat","lon")] <- dd[,c("lat","lon")] %>% round(3)
+
 # map ---------------------------------------------------------------------
 my_style <- "mapbox://styles/darwinanddavis/ckh4kmfdn0u6z19otyhapiui3" # style  
 mp4 <- mapdeck(
@@ -39,7 +42,7 @@ mp4 <- mapdeck(
               legend = T, update_view = F,
               legend_options = list(title="Destination"),
               auto_highlight = T, highlight_colour = "#FFFFFFFF",
-              colour_range = colorspace::sequential_hcl(6,"Peach")) %>%
+              colour_range = colorspace::sequential_hcl(6,"OrYel")) %>%
   add_hexagon(data = od, lat = "lat", lon = "lon", 
               radius = 100,
               elevation = "lat",
@@ -49,7 +52,7 @@ mp4 <- mapdeck(
               legend = T, update_view = F,
               legend_options = list(title="Origin"),
               auto_highlight = T, highlight_colour = "#FFFFFFFF",
-              colour_range = colorspace::sequential_hcl(6,"BluGrn")) %>% 
+              colour_range = colorspace::sequential_hcl(6,"Purp")) %>% 
   add_text(data=city_text,lon = "lon", lat = "lat",
            layer_id = "label", text = "city",
            alignment_baseline = "top",anchor = "end",
