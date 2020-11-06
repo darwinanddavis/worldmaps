@@ -14,6 +14,8 @@ p_load(mapdeck,readr,ggmap,dplyr,sf,sfheaders,data.table,tigris,sp,maps,colorspa
 # read data --------------------------------------------------------
 od <- paste0("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/day4_od.Rda?raw=true") %>% url %>% readRDS
 dd <- paste0("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/day4_dd.Rda?raw=true") %>% url %>% readRDS
+od[,c("lat","lon")] <- od[,c("lat","lon")] %>% round(3)
+dd[,c("lat","lon")] <- dd[,c("lat","lon")] %>% round(3)
 
 # labels ------------------------------------------------------------------
 latlon_data <- with(world.cities, data.frame( # //maps
@@ -21,9 +23,14 @@ latlon_data <- with(world.cities, data.frame( # //maps
 )
 city_labels <- c("San Francisco","Memphis","New Orleans","Saint Louis","Chicago","Atlanta","Asheville","Raleigh","Washington","New York")
 city_text <- latlon_data %>% filter(country == "USA" & city %in% city_labels ) %>% select(city,lat,lon)
+title_text <- list(title = 
+              "<strong>Mapping Lyft ride data</strong> <br/>
+              Author: <a href=https://darwinanddavis.github.io/DataPortfolio/> Matt Malishev </a> <br/>
+               Github: <a href=https://github.com/darwinanddavis/worldmaps> @darwinanddavis </a> <br/>
+               Spot an error? <a href=https://github.com/darwinanddavis/worldmaps/issues> Submit an issue </a> <br/>" ,
+              css = "font-size: 8px; background-color: rgba(255,255,255,0.5);"
+)
 
-od[,c("lat","lon")] <- od[,c("lat","lon")] %>% round(3)
-dd[,c("lat","lon")] <- dd[,c("lat","lon")] %>% round(3)
 
 # map ---------------------------------------------------------------------
 my_style <- "mapbox://styles/darwinanddavis/ckh4kmfdn0u6z19otyhapiui3" # style  
@@ -60,7 +67,8 @@ mp4 <- mapdeck(
            billboard = T,update_view = F,
            font_family = "Lato Regular",
            size=15
-  )
+  ) %>% 
+  add_title(title = title_text, layer_id = "title")
 mp4
 mp4 %>% saveWidget(here::here("worldmaps","30daymap2020","day4.html"))  
 
