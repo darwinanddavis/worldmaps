@@ -41,7 +41,7 @@ mp6 <- mapdeck(
   style = my_style
 ) %>%
   add_grid(data = red, lat = "Y", lon = "X", 
-           cell_size = 25, extruded = F,
+           cell_size = 40, extruded = F,
            elevation = 2,elevation_scale = 1,
            layer_id = "red", update_view = F,
            legend = T, legend_options = list(title="Cinnamon squirrels"), 
