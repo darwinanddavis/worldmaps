@@ -1,8 +1,11 @@
-# https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw
-
+# --------------------------------------------------------------------
+# 30 day map challenge 2020
+# day 4
+# author: Matt Malishev
+# @darwinanddavis  
 
 # pkgs --------------------------------------------------------------------
-pacman::p_load(here,mapdeck,dplyr,purrr,readr,mapdeck)
+pacman::p_load(here,mapdeck,dplyr,purrr,readr)
 
 # read data ---------------------------------------------------------------
 url <- "https://data.cityofnewyork.us/api/views/vfnx-vebw/rows.csv?accessType=DOWNLOAD"

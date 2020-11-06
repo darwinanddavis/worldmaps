@@ -90,6 +90,33 @@ R packages: `dplyr`, `mapdeck`, `tibble`, `htmltools`, `sf`, `sfheaders`, `data.
  <!--  -->  
  <!--  -->
 
+
+### Day 6: Red
+
+Squirrels! The NYC Open Data Squirrel Census on squirrel sightings.  
+
+I've seen these data used many times and I hadn't tried them yet. There are detailed behaviour data too, but location data are fine for this exercise.       
+               
+### [Cinnamon squirrel locations in NYC Central Park](https://darwinanddavis.github.io/worldmaps/30daymap2020/day5)    
+  
+<div align="center"; text-align:center>
+  <img src="img/day5.png", width = "100%", height = "25%">    
+</div>  
+
+### Tools     
+  
+R           
+R packages: `dplyr`, `mapdeck`, `tibble`, `readr`  
+
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)     
+
+******   
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 
 [![eRum2020::CovidR](https://badgen.net/https/runkit.io/erum2020-covidr/badge/branches/master/malishev-covid19?cache=300)](https://milano-r.github.io/erum2020-covidr-contest/malishev-covid19.html)    
