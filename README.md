@@ -118,6 +118,36 @@ Data: [OpenData NYC squirrel census](https://data.cityofnewyork.us/Environment/2
  <!--  -->  
  <!--  -->
 
+### Day 8: Yellow      
+
+Australia's global honey export trade              
+
+Mapping Australia's honey exports from publicly available trade data for 2017. Australia is in the top five major exporters for honey. China is #1, FYI.     
+
+### [Australian honey exports for 2017](https://darwinanddavis.github.io/worldmaps/30daymap2020/day8)      
+  
+<div align="center"; text-align:center>
+  <img src="img/day8.jpg", width = "100%", height = "25%">    
+</div>    
+  
+### Tools     
+  
+R             
+Leaflet    
+```{r}    
+pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext)  
+```  
+    
+### Links          
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)        
+[BACI International Trade Database](https://legacy.oec.world/en/resources/data/)           
+
+******   
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 
 [![eRum2020::CovidR](https://badgen.net/https/runkit.io/erum2020-covidr/badge/branches/master/malishev-covid19?cache=300)](https://milano-r.github.io/erum2020-covidr-contest/malishev-covid19.html)    
