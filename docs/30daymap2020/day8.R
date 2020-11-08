@@ -5,7 +5,7 @@
 # @darwinanddavis  
 
 # pkgs --------------------------------------------------------------------
-pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext,geosphere)
+pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext,geosphere,htmlwidgets)
 
 # data --------------------------------------------------------------------
 honey <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/day8.Rda?raw=true" %>% url %>% readRDS
@@ -43,14 +43,11 @@ custom_tile <- "Esri.WorldGrayCanvas"
 colv <- "#AD9000"
 opac <- 0.9
 min_zoom <- 3
-
-require(magick)
-
+ttl_img <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/img/day8_ttl.png?raw=true"
 
 # options
 layer1 <- "2017"
 proj_options <- leafletOptions(worldCopyJump = T) 
-ttl_img <- "https://github.com/darwinanddavis/darwinanddavis/blob/master/header.jpeg?raw=true"
 
 style <- list(
   "font-weight" = "normal",
@@ -93,14 +90,7 @@ ttl_opt <- labelOptions(noHide = T, direction = "top", textsize = "50px",sticky 
 
 # map ---------------------------------------------------------------------
 
-mp8 <- gcIntermediate(om,
-                      dm,
-                      n=100,
-                      addStartEnd=T,
-                      breakAtDateLine = T,
-                      sp=T
-) %>% 
-  leaflet() %>% 
+mp8 <- leaflet() %>% 
   setView(90,0,zoom=min_zoom) %>% 
   setMaxBounds(190,-90,-130,90) %>% 
   addProviderTiles(custom_tile,
@@ -110,13 +100,13 @@ mp8 <- gcIntermediate(om,
   #   color = colv,
   #   label = point_label, labelOptions = text_label_opt) %>%
   addCircleMarkers(data=dm,dm[,1],dm[,2],
-             radius = oo$export_val %>% sqrt / 50,
-             weight=1,
-             color=colv,
-             fillColor=colv,
-             opacity = opac,
-             label = point_label, labelOptions = text_label_opt
-             ) %>% 
+                   radius = oo$export_val %>% sqrt / 50,
+                   weight=1,
+                   color=colv,
+                   fillColor=colv,
+                   opacity = opac,
+                   label = point_label, labelOptions = text_label_opt
+  ) %>% 
   addLabelOnlyMarkers(88,-40,
                       label=ttl,
                       labelOptions = ttl_opt) %>%
@@ -126,14 +116,3 @@ mp8
 mp8 %>% saveWidget(here::here("worldmaps","30daymap2020","day8.html"))  
 
 
-icons <- awesomeIcons(
-  icon = 'hexagon',
-  iconColor = "black",
-  library = "fa",
-  markerColor = NULL
-)
-
-icons <- iconList(hex = makeIcon(
-  "http://leafletjs.com/examples/custom-icons/leaf-green.png", 
-  oo$export_val %>% sqrt / 50,oo$export_val %>% sqrt / 50)
-)
