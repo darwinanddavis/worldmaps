@@ -146,7 +146,7 @@ Mapping Australia's honey exports from publicly available trade data for 2017. A
 R             
 Leaflet    
 ```{r}    
-pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext)  
+pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext,geosphere,htmlwidgets)  
 ```  
     
 ### Links            
