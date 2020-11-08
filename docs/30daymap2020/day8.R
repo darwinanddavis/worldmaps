@@ -17,13 +17,11 @@ lonlat <- getMap(resolution="low") %>% # get country lonlats from rgeos database
 lonlat$Country <- rownames(lonlat) # add country col
 colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
 
-# get file name  from fontbook.app 
-newfonts <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/AHundredMiles.ttf?raw=true"
-fontlib <- c("ahundredmiles")
-
 # load font
-font_add(fontlib,regular = newfonts,bold = newfonts)
-showtext_auto(enable = T) # auto showtext
+# newfonts <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/AHundredMiles.ttf?raw=true"
+# fontlib <- c("ahundredmiles")
+# font_add(fontlib,regular = newfonts,bold = newfonts)
+# showtext_auto(enable = T) # auto showtext
 
 # filter data 
 oo <- honey %>% filter(origin == "Australia") %>% select(-import_val) %>% mutate_at(vars(export_val) ,funs(as.numeric)) %>% arrange(dest) 
@@ -86,7 +84,7 @@ text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "15px",
 
 ttl_opt <- labelOptions(noHide = T, direction = "top", textsize = "35px",sticky = T,
                                      textOnly = T, opacity = 1, offset = c(0,0),
-                                    permanent = T, style = list("font-family" = "A Hundred Miles", "line-height" = 0.9,"text-align"="right"))
+                                    permanent = T, style = list("font-family" = "Avenir Next Condensed", "line-height" = 0.9,"text-align"="right"))
 
 # map ---------------------------------------------------------------------
 
@@ -107,7 +105,7 @@ mp8 <- leaflet() %>%
                    opacity = opac,
                    label = point_label, labelOptions = text_label_opt
   ) %>% 
-  addLabelOnlyMarkers(82,-40,  
+  addLabelOnlyMarkers(75,-42,  
                       label=ttl,
                       labelOptions = ttl_opt) %>%
   addControl(heading_bl,"bottomleft") %>% 
