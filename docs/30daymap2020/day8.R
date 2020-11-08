@@ -43,7 +43,7 @@ custom_tile <- "Esri.WorldGrayCanvas"
 colv <- "#AD9000"
 opac <- 0.9
 min_zoom <- 3
-ttl_img <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/img/day8_ttl.png?raw=true"
+ttl_img <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/img/day8_hex.png?raw=true"
 
 # options
 layer1 <- "2017"
