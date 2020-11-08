@@ -18,8 +18,8 @@ lonlat$Country <- rownames(lonlat) # add country col
 colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
 
 # get file name  from fontbook.app 
-newfonts <- c("A DAY WITHOUT SUN.otf") 
-fontlib <- c("adaywithoutsun")
+newfonts <- c("AHundredMiles.ttf") 
+fontlib <- c("ahundredmiles")
 
 # load font
 font_add(fontlib,regular = newfonts,bold = newfonts)
@@ -86,7 +86,7 @@ text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "15px",
 
 ttl_opt <- labelOptions(noHide = T, direction = "top", textsize = "50px",sticky = T,
                                      textOnly = T, opacity = 1, offset = c(0,0),
-                                    permanent = T, style = list("font-family" = "A DAY WITHOUT SUN", "line-height" = 0.9,"text-align"="right"))
+                                    permanent = T, style = list("font-family" = "A Hundred Miles", "line-height" = 0.9,"text-align"="right"))
 
 # map ---------------------------------------------------------------------
 
