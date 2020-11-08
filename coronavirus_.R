@@ -233,7 +233,9 @@ heading_bl <- paste(sep = "<br/>",
                     </a>",
                     "Last data scrape: ", Sys.time(),
                     "",
-                    "Github: <a href=https://github.com/darwinanddavis/worldmaps> @darwinanddavis </a>"
+                    "Github: <a href=https://github.com/darwinanddavis/worldmaps> @darwinanddavis </a>",
+                    "Website: <a href=https://darwinanddavis.github.io/DataPortfolio/> Matt Malishev </a>",
+                    "Spot an error? <a href=https://github.com/darwinanddavis/worldmaps/issues> Submit an issue </a>"
                     )
 
 
@@ -350,11 +352,11 @@ max_bound2 <- c(180,-90)
 
 # set map projections 
 # check before changing !!!
-EPSG3395 <- leaflet() %>% 
-  leafletCRS(crsClass = "L.CRS.EPSG3395", 
-             proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"
-  ) 
-proj_options <- leafletOptions(worldCopyJump = T) 
+# EPSG3395 <- leaflet() %>% 
+#   leafletCRS(crsClass = "L.CRS.EPSG3395", 
+#              proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"
+#   ) 
+proj_options <- leafletOptions(worldCopyJump = T)
 
 
 # option for clickable twitter/github logos
@@ -374,9 +376,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- (sqrt(cv_cases) * 300) #%>% ceiling # 3rd radius reduction 13-4-20
-radius_deaths <- (sqrt(cv_deaths) * 300) #%>% ceiling()
-radius_recent_cases <- (sqrt(cv_recent_cases) * 300) #%>% ceiling()
+radius_cases <- (sqrt(cv_cases) * 150) #%>% ceiling # 5th radius reduction nov 6
+radius_deaths <- (sqrt(cv_deaths) * 150) #%>% ceiling()
+radius_recent_cases <- (sqrt(cv_recent_cases) * 150) #%>% ceiling()
 
 # easy buttons 
 locate_me <- easyButton( # locate user
@@ -454,10 +456,10 @@ cvm <- gcIntermediate(latlon_origin,
                    group = c(layer1,layer2,layer3),
                    options = providerTileOptions(minZoom=min_zoom, maxZoom=max_zoom) # set zoom bounds
                    ) %>% 
-  addPolylines(color=colvec_cases, # cases
-               opacity = opac,
-               weight = 0.3,
-               group = layer1) %>%
+  # addPolylines(color=colvec_cases, # cases
+  #              opacity = opac,
+  #              weight = 0.3,
+  #              group = layer1) %>%
   addPolylines(color=colvec_deaths, # deaths
                opacity = opac,
                weight = 0.3,
