@@ -18,7 +18,7 @@ lonlat$Country <- rownames(lonlat) # add country col
 colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
 
 # get file name  from fontbook.app 
-newfonts <- c("AHundredMiles.ttf") 
+newfonts <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/AHundredMiles.ttf?raw=true"
 fontlib <- c("ahundredmiles")
 
 # load font
@@ -66,7 +66,7 @@ point_label <- paste(
 # title 
 ttl <- paste0("<div style=\"color:",colv,";\">
               <img style='vertical-align:middle' 
-              src=",ttl_img," width='60' height='60'>
+              src=",ttl_img," width='45' height='45'>
               <b>MAKING HONEY</b></div>",
              "AUSTRALIA'S HONEY TRADE, 2017<br>",  
              "Total export: $",oo$export_val %>% sum %>% format(big.mark=",",scientific = F,trim = T)) %>% map(htmltools::HTML)
@@ -84,7 +84,7 @@ text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "15px",
                                textOnly = F, opacity = 0.7, offset = c(0,0),
                                style = style, permanent = T)
 
-ttl_opt <- labelOptions(noHide = T, direction = "top", textsize = "50px",sticky = T,
+ttl_opt <- labelOptions(noHide = T, direction = "top", textsize = "35px",sticky = T,
                                      textOnly = T, opacity = 1, offset = c(0,0),
                                     permanent = T, style = list("font-family" = "A Hundred Miles", "line-height" = 0.9,"text-align"="right"))
 
@@ -107,7 +107,7 @@ mp8 <- leaflet() %>%
                    opacity = opac,
                    label = point_label, labelOptions = text_label_opt
   ) %>% 
-  addLabelOnlyMarkers(88,-40,
+  addLabelOnlyMarkers(82,-40,  
                       label=ttl,
                       labelOptions = ttl_opt) %>%
   addControl(heading_bl,"bottomleft") %>% 
