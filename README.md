@@ -29,8 +29,12 @@ An interactive map of my favourite coffee spots around the world using Mapbox St
 
 ### Tools   
 
-R       
-R packages: `dplyr`, `mapdeck`, `readr`, `purrr`, `stringr`, `tibble`, `htmltools`, `sf`, `sfheaders`, `data.table`, `stringr`, `tigris`, `sp` , `here`    
+R  
+Mapbox        
+```{r}    
+pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)          
+```  
+  
 
 ### Links      
 [`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)   
@@ -49,10 +53,13 @@ Using geolocation data to map a roadtrip across the southern US with `R`.
   <img src="img/day2.png", width = "100%", height = "25%">  
 </div>  
 
-### Tools      
-```  
-pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)            
-```       
+### Tools  
+
+R  
+Mapbox        
+```{r}  
+pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)          
+```      
 
 ******     
 
@@ -78,7 +85,8 @@ Atlanta, USA (where I lived during this time)
 
 ### Tools     
   
-R         
+R   
+Mapbox          
 R packages: `dplyr`, `mapdeck`, `tibble`, `htmltools`, `sf`, `sfheaders`, `data.table`, `stringr`, `tigris`, `sp` , `here`,`maps`, `colorspace`   
 
 ### Links      
@@ -106,11 +114,14 @@ I've seen these data used many times and I hadn't tried them yet. There are deta
 ### Tools     
   
 R           
-R packages: `dplyr`, `mapdeck`, `tibble`, `readr`  
-Data: [OpenData NYC squirrel census](https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw)      
+Mapbox  
+```{r}  
+pacman::p_load(here,mapdeck,dplyr,purrr,readr)
+```      
 
 ### Links      
-[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)     
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)       
+Data: [OpenData NYC squirrel census](https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw)      
 
 ******   
 
@@ -122,7 +133,7 @@ Data: [OpenData NYC squirrel census](https://data.cityofnewyork.us/Environment/2
 
 Australia's global honey export trade              
 
-Mapping Australia's honey exports from publicly available trade data for 2017. Australia is in the top five major exporters for honey. China is #1, FYI.     
+Mapping Australia's honey exports from publicly available trade data for 2017. Australia is in the top five major exporters for honey.    
 
 ### [Australian honey exports for 2017](https://darwinanddavis.github.io/worldmaps/30daymap2020/day8)      
   
@@ -138,9 +149,9 @@ Leaflet
 pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext)  
 ```  
     
-### Links          
+### Links            
 [`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)        
-[BACI International Trade Database](https://legacy.oec.world/en/resources/data/)           
+[BACI International Trade Database](https://legacy.oec.world/en/resources/data/)             
 
 ******   
 

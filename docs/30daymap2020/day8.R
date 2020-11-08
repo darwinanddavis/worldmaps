@@ -5,11 +5,10 @@
 # @darwinanddavis  
 
 # pkgs --------------------------------------------------------------------
-pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext)
+pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,showtext,geosphere)
 
 # data --------------------------------------------------------------------
 honey <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/day8.Rda?raw=true" %>% url %>% readRDS
-# honey <- readRDS(here::here("worldmaps","data","day8.Rda"))
 
 # get geocode \ ggmap rworldmaps
 lonlat <- getMap(resolution="low") %>% # get country lonlats from rgeos database
@@ -22,17 +21,14 @@ colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
 newfonts <- c("A DAY WITHOUT SUN.otf") 
 fontlib <- c("adaywithoutsun")
 
-# load font in r
-font_add(fontlib,
-         regular = newfonts,
-         bold = newfonts
-)
+# load font
+font_add(fontlib,regular = newfonts,bold = newfonts)
 showtext_auto(enable = T) # auto showtext
 
 # filter data 
 oo <- honey %>% filter(origin == "Australia") %>% select(-import_val) %>% mutate_at(vars(export_val) ,funs(as.numeric)) %>% arrange(dest) 
 oo <- oo %>% na.omit
-oo[str_which(oo$dest,"Hong"),"dest"] <- "Hong Kong S.A.R."
+oo[str_which(oo$dest,"Hong"),"dest"] <- "Hong Kong S.A.R." # match country names 
 
 # get matrix of latlon from rgeos
 om <- lonlat[lonlat$Country %in% oo$origin,c("Lon","Lat")] %>% data.matrix(rownames.force = NA) 
@@ -45,12 +41,17 @@ oo <- oo %>% filter(dest %in% dm_$dest) # use retrieved latlon data
 # map ---------------------------------------------------------------------
 custom_tile <- "Esri.WorldGrayCanvas"
 colv <- "#AD9000"
-opac <- 0.8
+opac <- 0.9
 min_zoom <- 3
+
+require(magick)
+
 
 # options
 layer1 <- "2017"
 proj_options <- leafletOptions(worldCopyJump = T) 
+ttl_img <- "https://github.com/darwinanddavis/darwinanddavis/blob/master/header.jpeg?raw=true"
+
 style <- list(
   "font-weight" = "normal",
   "font-family" = "Avenir",
@@ -66,8 +67,11 @@ point_label <- paste(
 ) %>% map(htmltools::HTML)
 
 # title 
-ttl <- paste0("<div style=\"color:",colv,";\"><b>AUSTRALIAN HONEY TRADE</b></div>",
-             "Year: 2017<br>",
+ttl <- paste0("<div style=\"color:",colv,";\">
+              <img style='vertical-align:middle' 
+              src=",ttl_img," width='60' height='60'>
+              <b>MAKING HONEY</b></div>",
+             "AUSTRALIA'S HONEY TRADE, 2017<br>",  
              "Total export: $",oo$export_val %>% sum %>% format(big.mark=",",scientific = F,trim = T)) %>% map(htmltools::HTML)
 
 # bl
@@ -85,27 +89,35 @@ text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "15px",
 
 ttl_opt <- labelOptions(noHide = T, direction = "top", textsize = "50px",sticky = T,
                                      textOnly = T, opacity = 1, offset = c(0,0),
-                                    permanent = T, style = list("font-family" = "A DAY WITHOUT SUN", "line-height" = 0.8,"text-align"="right"))
+                                    permanent = T, style = list("font-family" = "A DAY WITHOUT SUN", "line-height" = 0.9,"text-align"="right"))
 
 # map ---------------------------------------------------------------------
 
-mp8 <- leaflet() %>% 
+mp8 <- gcIntermediate(om,
+                      dm,
+                      n=100,
+                      addStartEnd=T,
+                      breakAtDateLine = T,
+                      sp=T
+) %>% 
+  leaflet() %>% 
   setView(90,0,zoom=min_zoom) %>% 
   setMaxBounds(190,-90,-130,90) %>% 
   addProviderTiles(custom_tile,
                    options = providerTileOptions(minZoom=min_zoom, maxZoom=min_zoom)) %>% 
-  # addPolylines(weight = oo$export_val %>% sqrt / 250,
-  #   opacity = opac,
+  # addPolylines(weight = 1,
+  #   opacity = 0.3,
   #   color = colv,
-  #   label = dm %>% rownames, labelOptions = text_label_opt) %>%
+  #   label = point_label, labelOptions = text_label_opt) %>%
   addCircleMarkers(data=dm,dm[,1],dm[,2],
              radius = oo$export_val %>% sqrt / 50,
              weight=1,
              color=colv,
              fillColor=colv,
+             opacity = opac,
              label = point_label, labelOptions = text_label_opt
              ) %>% 
-  addLabelOnlyMarkers(90,-45,
+  addLabelOnlyMarkers(88,-40,
                       label=ttl,
                       labelOptions = ttl_opt) %>%
   addControl(heading_bl,"bottomleft") %>% 
@@ -113,3 +125,15 @@ mp8 <- leaflet() %>%
 mp8
 mp8 %>% saveWidget(here::here("worldmaps","30daymap2020","day8.html"))  
 
+
+icons <- awesomeIcons(
+  icon = 'hexagon',
+  iconColor = "black",
+  library = "fa",
+  markerColor = NULL
+)
+
+icons <- iconList(hex = makeIcon(
+  "http://leafletjs.com/examples/custom-icons/leaf-green.png", 
+  oo$export_val %>% sqrt / 50,oo$export_val %>% sqrt / 50)
+)
