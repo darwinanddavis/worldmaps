@@ -159,6 +159,31 @@ pacman::p_load(here,dplyr,rworldmap,leaflet,readr,rgeos,purrr,stringr,ggthemes,s
  <!--  -->  
  <!--  -->
 
+### Day 9: Monochrome         
+
+Exploring digital elevation models (DEM) of the Appalachian Trail, USA, with my camping and hiking spots for 2018–2020.              
+  
+<div align="center"; text-align:center>
+  <img src="img/day9.png", width = "75%", height = "75%">    
+</div>    
+  
+### Tools     
+  
+R             
+```{r}    
+pacman::p_load(dplyr,readr,rvest,xml2,magrittr,ggplot2,stringr,ggthemes,ggnetwork,elevatr,raster,colorspace,ggtext,ggsn,ggspatial)
+```  
+    
+### Links            
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)        
+
+
+ ******   
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 
 [![eRum2020::CovidR](https://badgen.net/https/runkit.io/erum2020-covidr/badge/branches/master/malishev-covid19?cache=300)](https://milano-r.github.io/erum2020-covidr-contest/malishev-covid19.html)    
