@@ -10,7 +10,8 @@ p_load(mapdeck,readr,purrr,stringr,dplyr,tibble,htmltools,sf,sfheaders,data.tabl
 
 # key_m <- readr::read_lines("<mapdeck key>")
 # set_token(key_m) # mapbox key
-id_df <- here("snackmap","id_df.csv") %>% read_csv() # read in current data
+# read in current data
+id_df <- "https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/data/id_df.csv" %>% read_csv
 
 # read in latlon data -----------------------------------------------------
 

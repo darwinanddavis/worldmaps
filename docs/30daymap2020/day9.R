@@ -4,28 +4,12 @@
 # author: Matt Malishev
 # @darwinanddavis  
 
-
 # pkgs --------------------------------------------------------------------
-pacman::p_load(dplyr,readr,rvest,xml2,magrittr,ggplot2,stringr,ggthemes,ggnetwork,elevatr,raster,colorspace,ggtext,ggsn,ggspatial)
-
+pacman::p_load(dplyr,readr,rvest,xml2,magrittr,ggplot2,stringr,ggthemes,ggnetwork,elevatr,raster,colorspace,ggtext,ggsn,ggspatial,magick,cowplot)
 
 # data --------------------------------------------------------------------
-site <- data.frame("lon" = c(-83.969131,
-                             -83.920288,
-                             -80.9359098,
-                             -82.306137,
-                             -78.292694), 
-                   "lat" = c(34.221867,
-                             34.767090,
-                             36.5187419,
-                             35.768803,
-                             38.700516),
-                   "sites" = c("**Lake Lanier, GA**",
-                              "**Vogel State Park, GA**",
-                              "**Blue Ridge, NC**",
-                              "**Mt Mitchell, NC**",
-                              "**Shenandoah National<br> Park, VA**")
-)  
+site <- here::here("worldmaps","data","day9_site.Rda") %>% readRDS
+rrdf_ <- here::here("worldmaps","data","day9_raster.Rda") %>% readRDS
 
 plat <- 0 # 34.866215 # lat for proj centre 
 plon <- 0 # -84.326248 # lon for proj centre
@@ -40,12 +24,9 @@ rrdf <- get_elev_raster(site,z = zoom, prj, expand = 5) %>%  # get elev raster
 # transform data
 rrdf_ <- rrdf %>% 
   mutate_at(vars(layer), funs(sqrt))
-
-rrdf_ %>% purrr::map(min)
 rrdf_$layer[is.nan(rrdf_$layer)] <- 0 # change nan to 0 
 
 # labels
-
 bg <- "#802A07"
 colv <- "#FFFFFF"
 alpha <- 0.7
@@ -61,8 +42,8 @@ ttl <- data.frame("lon" = site[5,"lon"]+5,
                   "main" = "Hiking the <br> Appalachian Trail")
 
 credits <- data.frame("lon" = ttl[1,"lon"]+3.5,
-                  "lat" = ttl[1,"lat"]-8,
-                  "main" = "Matt Malishev <br> @darwinanddavis")
+                      "lat" = ttl[1,"lat"]-8,
+                      "main" = "**Matt Malishev <br> @darwinanddavis**")
 
 
 # map
@@ -79,9 +60,9 @@ p <- ggplot(data=rrdf_) +
                              size=ttl_size,family = family),
                 color=colv, size = ttl_size, fill = NA, label.color = NA,alpha = 1) +
   geom_richtext(data=credits,aes(lon,lat,label=main, # add credits
-                             size=credits_size,family = family),
+                                 size=credits_size,family = family),
                 color=colv, size = credits_size, fill = NA, label.color = NA,alpha = 1) +
-theme_blank() +
+  theme_blank() +
   annotation_north_arrow(location = "bl", which_north = "true", 
                          pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
                          style = north_arrow_minimal(
@@ -93,14 +74,13 @@ theme_blank() +
                            text_face = NULL,
                            text_size = 1.5
                          ))
-  north(rrdf_,location = "bottomleft",symbol = 3)
 p <- p + ggsn::scalebar(data = site,
-    x.min = -76, x.max = -75.5,
-    y.min = 29, y.max = 28.5,
-    dist = 100, st.size=3, height=0.01, dd2km = TRUE,dist_unit = "km", 
-    location = "bottomleft",
-    # st.bottom = T, st.color = bg, 
-    transform = T, model = "WGS84")
+                        x.min = -76, x.max = -75.5,
+                        y.min = 29, y.max = 28.5,
+                        dist = 500, st.size=3, height=0.5, dd2km = TRUE,dist_unit = "km", 
+                        location = "bottomleft",
+                        # st.bottom = T, st.color = bg, 
+                        transform = T, model = "WGS84")
 p
 
 # save --------------------------------------------------------------------
