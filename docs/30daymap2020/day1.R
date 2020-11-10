@@ -6,7 +6,7 @@
 
 # pcks --------------------------------------------------------------------
 require(pacman)
-p_load(mapdeck,readr,purrr,stringr,dplyr,tibble,htmltools,sf,sfheaders,data.table,stringr,tigris,sp,here)
+p_load(mapdeck,readr,purrr,stringr,dplyr,tibble,htmltools,sf,sfheaders,data.table,stringr,tigris,sp,here,htmlwidgets)
 
 # key_m <- readr::read_lines("<mapdeck key>")
 # set_token(key_m) # mapbox key
@@ -17,7 +17,7 @@ id_df <- "https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/da
 
 fh <- "coffee"
 m <- paste0("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/",fh,".Rda?raw=true") %>% url %>% readRDS
-m$name <- m$name %>% paste0("\n \n") # add linebreaks to names
+m$name <- m$name %>% paste0("\n \n \n") # add linebreaks to names
 m_ttl <- tibble(lon=-43,lat=31, # add title
                 name=paste0(fh %>% stringr::str_to_title(),"\nsnackmap")
 )
@@ -56,7 +56,7 @@ mp <- mapdeck(data=m,
                     size=35
   )
 mp
-mp %>% saveWidget(here::here("worldmaps","30daymap2020","day1.html"))  
+mp %>% htmlwidgets::saveWidget(here::here("worldmaps","30daymap2020","day1.html"))  
 
 
 
