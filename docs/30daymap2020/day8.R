@@ -113,4 +113,3 @@ mp8 <- leaflet() %>%
 mp8  
 mp8 %>% saveWidget(here::here("worldmaps","30daymap2020","day8.html"))  
 
-
