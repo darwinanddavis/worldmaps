@@ -8,17 +8,14 @@
 pacman::p_load(dplyr,readr,rvest,xml2,magrittr,sp,sf,rgdal,ggmap,ggplot2,stringr,ggthemes,ggnetwork,colorspace,ggtext,ggsn,ggspatial,showtext,here)
 
 # data --------------------------------------------------------------------
-url <- "/Users/malishev/Downloads/2018_Building_Footprints.kml"
+url <- "https://data.melbourne.vic.gov.au/api/geospatial/pq2z-35fu?method=export&format=KML"
 melb <- url %>% sf::st_read()
 bb <- melb$geometry %>% attr(which = "bbox") # get bbox for clipping plot
 
 # get geo elements 
 methods(class = "sf")
 bb <- melb$geometry %>% attr(which = "bbox") # bbox
-ll <- melb$geometry %>% st_coordinates() %>% .[1,c("X","Y")] # first latlon
-
-
-newfonts <- "/Users/malishev/Library/Fonts/BREVE2.ttf"
+newfonts <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/BREVE2.ttf?raw=true"
 fontlib <- "breve"
 font_add(fontlib,regular = newfonts,bold = newfonts)
 showtext_auto(enable = T) # auto showtext
@@ -36,7 +33,7 @@ ttl <- data.frame("main" = "**MELBOURNE  \  AUS**",
 ttl_coord <- data.frame("main" = "**37° 48' 49'' S <br> 144° 57' 47'' E**",
                         "x" = bb[3] + 0.005,
                         "y" = bb[4] - 0.01,
-                        "size" = 120,
+                        "size" = 200,
                         "family" = fontlib,
                         "angle" = 270)
 
@@ -57,10 +54,6 @@ p <- ggplot() +
                              angle = angle), show.legend = F,
                 color=colv, fill = NA, label.color = NA,alpha = 1) +
   geom_richtext(data=ttl_coord,aes(x,y,label=main, # add title
-                                   family = family, size = size,
-                                   angle = angle), show.legend = F,
-                color=colv, fill = NA, label.color = NA, alpha = 1) +
-  geom_richtext(data=credits,aes(x,y,label=main, # add title
                                    family = family, size = size,
                                    angle = angle), show.legend = F,
                 color=colv, fill = NA, label.color = NA, alpha = 1) 
