@@ -77,7 +77,7 @@ p <- ggplot(data=rrdf_) +
 p <- p + ggsn::scalebar(data = site,
                         x.min = -76, x.max = -75.5,
                         y.min = 29, y.max = 28.5,
-                        dist = 500, st.size=3, height=0.5, dd2km = TRUE,dist_unit = "km", 
+                        dist = 500, st.size=3, height=0.5,dist_unit = "km", 
                         location = "bottomleft",
                         # st.bottom = T, st.color = bg, 
                         transform = T, model = "WGS84")
