@@ -182,7 +182,64 @@ Terrain raster 3DEP data courtesy of the U.S. Geological Survey
 Terrain tiles obtained from [Amazon Web Services](https://registry.opendata.aws/terrain-tiles/)  
 
 
- ******   
+******     
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+### Day 10 - Grid  
+
+A city footprint of Melbourne, Australia, my home city. There are tonnes of detailed data on the [City of Melbourne open data portal](https://data.melbourne.vic.gov.au/) for some future analyses. I wanted to make a minimal sketch design map that showcases the classic grid structure of Melbourne.  
+  
+<div align="center"; text-align:center>
+  <img src="img/day10.jpg", width = "100%", height = "100%">  
+</div>  
+
+### Tools  
+
+R     
+```{r}  
+pacman::p_load(dplyr,readr,rvest,xml2,magrittr,sp,sf,rgdal,ggmap,ggplot2,stringr,ggthemes,ggnetwork,colorspace,ggtext,ggsn,ggspatial,showtext)
+```   
+
+### Data      
+[City of Melbourne Open Data](https://data.melbourne.vic.gov.au/)  
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+### Day 11 - 3D   
+
+Vulnerability of Melbourne's urban forest    
+
+I found some comprehensive data on tree canopy coverage in Melbourne from 2019 on the [City of Melbourne Open Data](https://data.melbourne.vic.gov.au/) site and tree traits are always fun to plot in 3D.  
+
+The data cover species, genera, height (DBH), life expectancy, latlons, year and date planted, precinct location, to name a few. I plotted tree locations and height to show some patterns, e.g. you can see where tall trees have been cleared in areas that are known to have high rise apartments buildings. I added life expectancy as the colour factor to get a snapshot idea of planting activity by the city council and choice of species over time. Lots more to explore.  
+
+
+<div align="center"; text-align:center>
+  <img src="img/day11.jpg", width = "100%", height = "100%">  
+</div> 
+  
+### Tools     
+  
+R             
+Mapbox    
+```{r}    
+pacman::p_load(here,mapdeck,dplyr,purrr,readr,showtext,stringr,colorspace,htmltools)  
+```  
+    
+### Links            
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)        
+
+
+### Data      
+[City of Melbourne Open Data](https://data.melbourne.vic.gov.au/)    
+
+
+******   
 
  <!--  -->
  <!--  -->  

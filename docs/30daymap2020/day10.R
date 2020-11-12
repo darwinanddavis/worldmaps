@@ -22,20 +22,23 @@ showtext_auto(enable = T) # auto showtext
 
 # map ---------------------------------------------------------------------
 
-colv <- "#FF637D"
+colv <- "#EA415D"
 bg <- "#FFB2BF"
-ttl <- data.frame("main" = "**MELBOURNE  \  AUS**",
-                  "x" = bb[1] - 0.005,
-                  "y" = bb[2] + 0.01,
-                  "size" = 300,
+ttl <- data.frame("main" = "MELBOURNE  /  AUS",
+                  "x" = bb[1] - 0.007,
+                  "y" = bb[2] + 0.02,
+                  # "size" = 300,
                   "family" = fontlib,
                   "angle" = 90)
 ttl_coord <- data.frame("main" = "**37° 48' 49'' S <br> 144° 57' 47'' E**",
                         "x" = bb[3] + 0.005,
                         "y" = bb[4] - 0.01,
-                        "size" = 200,
+                        # "size" = 200,
                         "family" = fontlib,
                         "angle" = 270)
+
+ttl_s <- 13
+ttl_coord_s <- 7
 
 # map
 quartz() # load plot window first (polygon edge error)
@@ -50,17 +53,17 @@ p <- ggplot() +
   ) + 
   theme(plot.margin=unit(rep(1.1,4),"cm")) +
   geom_richtext(data=ttl,aes(x,y,label=main, # add title
-                             family = family, size = size,
+                             family = family, #size = size,
                              angle = angle), show.legend = F,
-                color=colv, fill = NA, label.color = NA,alpha = 1) +
+                color=colv, size = ttl_s, fill = NA, label.color = NA,alpha = 1) +
   geom_richtext(data=ttl_coord,aes(x,y,label=main, # add title
-                                   family = family, size = size,
+                                   family = family, #size = size,
                                    angle = angle), show.legend = F,
-                color=colv, fill = NA, label.color = NA, alpha = 1) 
+                color=colv, size = ttl_coord_s, fill = NA, label.color = NA, alpha = 1) 
 p  
 
 # save --------------------------------------------------------------------
-p %>% ggsave(here::here("worldmaps","img","day10.png"),width=15,height=15,units = "cm", dpi="screen")
+ggsave(here::here("worldmaps","img","day10__.png"),p, device = "png", dpi = "retina", width = 30, height = 30, units = "cm")
 
 
 

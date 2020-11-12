@@ -84,5 +84,5 @@ p <- p + ggsn::scalebar(data = site,
 p
 
 # save --------------------------------------------------------------------
-ggsave(p, here::here("worldmaps","img","day9.png"),width=15,height=15,units = "cm", dpi="screen")
+ggsave(here::here("worldmaps","img","day9.png"),p, device = "png", width=15,height=15,units = "cm", dpi="screen")
 
