@@ -83,5 +83,5 @@ mp11 <- mapdeck(
            ) %>% 
   add_title(title = title_text, layer_id = "title")
 mp11
-mp11 %>% htmlwidgets::saveWidget(here::here("worldmaps","30daymap2020","day11.html"))  
+mp11 %>% htmlwidgets::saveWidget(here::here("worldmaps","30daymap2020","day11.html")) # saved without heading 
 
