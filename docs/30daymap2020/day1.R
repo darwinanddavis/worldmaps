@@ -19,9 +19,10 @@ fh <- "coffee"
 m <- paste0("https://github.com/darwinanddavis/worldmaps/blob/gh-pages/data/",fh,".Rda?raw=true") %>% url %>% readRDS
 m$name <- m$name %>% paste0("\n \n \n") # add linebreaks to names
 m_ttl <- tibble(lon=-43,lat=31, # add title
-                name=paste0(fh %>% stringr::str_to_title(),"\nsnackmap")
+                name=paste0(fh %>% stringr::str_to_upper(),"\nSNACKMAP")
 )
 
+family <- "Avenir"
 # map
 mp <- mapdeck(data=m,
         location = c(m$lon[1],m$lat[1]), 
@@ -44,7 +45,7 @@ mp <- mapdeck(data=m,
                     alignment_baseline = "top",anchor = "end",
                     fill_colour = id_df %>% filter(Name == fh) %>% pull(Col),
                     billboard = T,update_view = F,
-                    font_family = "Quicksand",
+                    font_family = family,
                     size=15
   ) %>% 
   mapdeck::add_text(m_ttl,lon = "lon", lat = "lat",
@@ -52,7 +53,7 @@ mp <- mapdeck(data=m,
                     alignment_baseline = "top",anchor = "end",
                     fill_colour = id_df %>% filter(Name == fh) %>% pull(Col),
                     billboard = T, update_view = F,
-                    font_family = "Cinzel",
+                    font_family = family, font_weight = "bold",
                     size=35
   )
 mp

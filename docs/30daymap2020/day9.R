@@ -33,13 +33,14 @@ alpha <- 0.7
 hjust <- c(0.5,1.1,0.1,0.2,0.5)
 vjust <- c(1.1,0.5,1,1.1,1)*1.3
 size <- 1.6
-ttl_size <- 5
+site_size <- 1.2
+ttl_size <- 4
 credits_size <- 1.6
 family <- "Cinzel"
 
 ttl <- data.frame("lon" = site[5,"lon"]+5,
                   "lat" = site[5,"lat"]-8,
-                  "main" = "Hiking the <br> Appalachian Trail")
+                  "main" = "Scaling the <br> Appalachian Trail")
 
 credits <- data.frame("lon" = ttl[1,"lon"]+3.5,
                       "lat" = ttl[1,"lat"]-8,
@@ -51,7 +52,7 @@ p <- ggplot(data=rrdf_) +
   geom_raster(aes(x,y,fill=layer),show.legend = F) +
   scale_fill_gradientn(name = "Elevation",
                        colors = sequential_hcl(9,"Oranges")) +
-  geom_point(data=site,aes(lon,lat),shape=24,size=3,colour = colv,fill=colv, alpha=0.8) +
+  geom_point(data=site,aes(lon,lat),shape=24,size=size,colour = colv,fill=colv, alpha=0.8) +
   geom_richtext(data=site,aes(lon,lat,label=sites, # add sites
                               hjust=hjust,vjust=vjust,
                               size=site_size,family = family),
@@ -63,6 +64,13 @@ p <- ggplot(data=rrdf_) +
                                  size=credits_size,family = family),
                 color=colv, size = credits_size, fill = NA, label.color = NA,alpha = 1) +
   theme_blank() +
+  theme(
+    plot.margin=unit(rep(0,4),"cm"),
+    panel.background = element_rect(fill = bg), 
+    plot.background = element_rect(fill = NULL, color = bg), 
+    legend.background = element_rect(fill = bg),
+    legend.box.background = element_rect(fill = bg)
+  ) +
   annotation_north_arrow(location = "bl", which_north = "true", 
                          pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
                          style = north_arrow_minimal(
@@ -84,5 +92,5 @@ p <- p + ggsn::scalebar(data = site,
 p
 
 # save --------------------------------------------------------------------
-ggsave(here::here("worldmaps","img","day9.png"),p, device = "png", width=15,height=15,units = "cm", dpi="screen")
+ggsave(here::here("worldmaps","img","day9__.png"),p, device = "png", width=15,height=15,units = "cm", dpi="screen")
 
