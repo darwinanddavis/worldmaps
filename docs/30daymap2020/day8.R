@@ -72,7 +72,7 @@ ttl <- paste0("<div style=\"color:",colv,";\">
 # bl
 heading_bl <- paste0("Data source: <a style=color:",colv,"; href=https://legacy.oec.world/en/resources/data/> 
                      BACI International Trade Database </a><br><br>",
-                    "Github: <a style=color:",colv,"; href=https://github.com/darwinanddavis/worldmaps> @darwinanddavis </a><br>",
+                    "Github: <a style=color:",colv,"; href=https://github.com/darwinanddavis/worldmaps/tree/gh-pages> @darwinanddavis </a> <br/>",
                     "Website: <a style=color:",colv,"; href=https://darwinanddavis.github.io/DataPortfolio/> Matt Malishev </a><br>",
                     "Spot an error? <a style=color:",colv,"; href=https://github.com/darwinanddavis/worldmaps/issues> Submit an issue </a>"
 )
