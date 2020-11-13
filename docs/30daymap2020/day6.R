@@ -31,7 +31,7 @@ title_text <- list(title =
                    Github: <a style=color:",colv,"; href=https://github.com/darwinanddavis/worldmaps/tree/gh-pages> @darwinanddavis </a> <br/>
                    Data source: <a style=color:",colv,"; href=https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw> 2018 Central Park Squirrel Census </a> <br/>
                    Spot an error? <a style=color:",colv,"; href=https://github.com/darwinanddavis/worldmaps/issues> Submit an issue </a> <br/>"),
-                   css = "font-size: 11px; background-color: rgba(255,255,255,0.5);"
+                   css = "font-size: 11px; font-family: Avenir; background-color: rgba(255,255,255,0.5);"
 )
 
 
@@ -50,7 +50,7 @@ mp6 <- mapdeck(
   style = my_style
 ) %>%
   add_grid(data = red, lat = "Y", lon = "X", 
-           cell_size = 40, extruded = F,
+           cell_size = 60, extruded = F,
            elevation = 2,elevation_scale = 1,
            layer_id = "red", update_view = F,
            legend = T, legend_options = list(title="Cinnamon squirrels"), 
@@ -73,7 +73,7 @@ mp6 <- mapdeck(
   ) %>% 
   add_title(title = title_text, layer_id = "title")
 mp6
-mp6 %>% saveWidget(here::here("worldmaps","30daymap2020","day6.html"))  
+mp6 %>% htmlwidgets::saveWidget(here::here("worldmaps","30daymap2020","day6.html"))  
 
 
 

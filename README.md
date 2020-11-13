@@ -108,7 +108,7 @@ I've seen these data used many times and I hadn't tried them yet. There are deta
 ### [Cinnamon squirrel locations in NYC Central Park](https://darwinanddavis.github.io/worldmaps/30daymap2020/day6)    
   
 <div align="center"; text-align:center>
-  <img src="img/day6.png", width = "100%", height = "25%">    
+  <img src="img/day6.jpg", width = "100%", height = "25%">    
 </div>  
 
 ### Tools     
