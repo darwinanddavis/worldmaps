@@ -19,9 +19,9 @@ Map entries for the #30dayMapChallenge for November 2020.
 
 ### Day 1 - Points  
 
-An interactive map of my favourite coffee spots around the world using Mapbox Studio and `mapdeck` in `R`.       
+An interactive map of my favourite coffee spots around the world using Mapbox Studio and `R`.         
 
-### [Interactive mobile map of favourite coffee places around the world](https://darwinanddavis.github.io/worldmaps/30daymap2020/day1)           
+### [Interactive mobile map of my favourite coffee places around the world](https://darwinanddavis.github.io/worldmaps/30daymap2020/day1)           
 
 <div align="center"; text-align:center>
   <img src="img/day1.jpg", width = "100%", height = "25%">  

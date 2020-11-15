@@ -21,9 +21,28 @@ m$name <- m$name %>% paste0("\n \n \n") # add linebreaks to names
 m_ttl <- tibble(lon=-43,lat=31, # add title
                 name=paste0(fh %>% stringr::str_to_upper(),"\nSNACKMAP")
 )
+m %>% names
 
-family <- "Avenir"
-# map
+# labels ------------------------------------------------------------------
+family <- "Chalkboard"
+colv <- "#E1B69B"
+
+style <- list( # css label style 
+  "font-weight" = "normal",
+  "padding" = "8px",
+  "color" = colv
+)
+
+point_label <- paste0( # add label tooltip  
+  "<div style=\"color:",style$color,"; padding:",style$padding,"; font-family:",family,";\">
+  <b>",m$name,"<b><br><br>
+  <b>Address: <b><br>", m$address %>% str_to_upper(),"<br><br> 
+  <b>Type: <b><br>", m$type %>% str_to_upper() %>% str_replace_all("_"," "), 
+  "</div>") %>% map(htmltools::HTML)
+
+m$label <- point_label # add css text tooltip to df
+
+# map ---------------------------------------------------------------------
 mp <- mapdeck(data=m,
         location = c(m$lon[1],m$lat[1]), 
         zoom = 2,
@@ -34,13 +53,13 @@ mp <- mapdeck(data=m,
                  layer_id = "latlon",id = "latlon",
                  fill_colour = id_df %>% filter(Name == fh) %>% pull(Col),
                  auto_highlight = T, 
-                 highlight_colour = "#FFFFFFFF",
-                 elevation = 1,
+                 highlight_colour = paste0(colv,"00"),
+                 elevation = 0,
                  radius = 10, 
                  update_view = F,
-                 tooltip = "info"
+                 tooltip = "label"
   ) %>% 
-  mapdeck::add_text(lon = "lon", lat = "lat",
+  mapdeck::add_text(lon = "lon", lat = "lat", # location names 
                     layer_id = "label", text = "name",
                     alignment_baseline = "top",anchor = "end",
                     fill_colour = id_df %>% filter(Name == fh) %>% pull(Col),
@@ -48,7 +67,7 @@ mp <- mapdeck(data=m,
                     font_family = family,
                     size=15
   ) %>% 
-  mapdeck::add_text(m_ttl,lon = "lon", lat = "lat",
+  mapdeck::add_text(m_ttl,lon = "lon", lat = "lat", # title
                     layer_id = "title", text = "name",
                     alignment_baseline = "top",anchor = "end",
                     fill_colour = id_df %>% filter(Name == fh) %>% pull(Col),
@@ -58,6 +77,4 @@ mp <- mapdeck(data=m,
   )
 mp
 mp %>% htmlwidgets::saveWidget(here::here("worldmaps","30daymap2020","day1.html"))  
-
-
 
