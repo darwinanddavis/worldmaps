@@ -71,7 +71,7 @@ mp <- mapdeck(data=m,
                     layer_id = "title", text = "name",
                     alignment_baseline = "top",anchor = "end",
                     fill_colour = id_df %>% filter(Name == fh) %>% pull(Col),
-                    billboard = T, update_view = F,
+                    billboard = F, update_view = F,
                     font_family = family, font_weight = "bold",
                     size=35
   )
