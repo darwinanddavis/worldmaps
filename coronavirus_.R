@@ -32,7 +32,7 @@ colnames(lonlat) <- c("Lon", "Lat","Country") # rename cols
 # function for getting lonlat from rgeos database 
 find_lonlat <- function(country_string){
   country_string_return <- lonlat %>% filter(Country %in% str_subset(lonlat$Country,country_string))
-  country_string_return_name <- country_string_return %>% select("Country") # get country string
+  country_string_return_name <- country_string_return %>% dplyr::select("Country") # get country string
   print(country_string_return)
 }
 
@@ -156,10 +156,10 @@ if(any(lonlat_final$Country == cv$Country)!=TRUE){
 
 # fix misc latlon
 cv[cv$Country=="Malaysia",c("Lon","Lat")] <- c(101.975769,4.210484) # malaysia
-cv[cv$Country==cv[str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Israel") %>% select(c("Lon","Lat")) + 0.05 # displace Palestine latlon from israel
-cv[cv$Country==cv[str_which(cv$Country,"Gibral"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Spain") %>% select(c("Lon","Lat")) + 0.05 # displace gibraltar latlon from spain
+cv[cv$Country==cv[str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Israel") %>% dplyr::select(c("Lon","Lat")) + 0.05 # displace Palestine latlon from israel
+cv[cv$Country==cv[str_which(cv$Country,"Gibral"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Spain") %>% dplyr::select(c("Lon","Lat")) + 0.05 # displace gibraltar latlon from spain
 # cv[cv$Country==cv[str_which(cv$Country,"Antill"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Aruba") %>% select(c("Lon","Lat")) + 0.2  # displace dutch caribbean from aruba
-cv[cv$Country==cv[str_which(cv$Country,"Bonai"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Curacao") %>% select(c("Lon","Lat")) + 0.2  # displace dutch caribbean2 latlon from curacao
+cv[cv$Country==cv[str_which(cv$Country,"Bonai"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Curacao") %>% dplyr::select(c("Lon","Lat")) + 0.2  # displace dutch caribbean2 latlon from curacao
 cv <- cv[complete.cases(cv),] # rm final empty row
 
 # check NAs
@@ -190,11 +190,11 @@ lonlat_matrix <- matrix(c(lon,lat), ncol = 2) # get matrix for arc lines
 # nafta_lat <- cv %>% filter(Country %in% nafta_string) %>% select(c("Lat")) %>% unlist
 
 # death latlon
-death_lon <- cv %>% filter(Deaths>0) %>% select(c("Lon")) %>% unlist
-death_lat <- cv %>% filter(Deaths>0) %>% select(c("Lat")) %>% unlist
+death_lon <- cv %>% filter(Deaths>0) %>% dplyr::select(c("Lon")) %>% unlist
+death_lat <- cv %>% filter(Deaths>0) %>% dplyr::select(c("Lat")) %>% unlist
 
 # get death labels
-cv_deaths_labels <- cv %>% filter(Deaths>0) %>% select(Country) %>% unlist
+cv_deaths_labels <- cv %>% filter(Deaths>0) %>% dplyr::select(Country) %>% unlist
 
 # style -------------------------------------------------------------------
 custom_tile <- names(providers)[113] # choose tiles
@@ -346,7 +346,7 @@ min_zoom <- 3
 max_zoom <- 10
 
 # set max map bounds
-latlon_origin <- cv %>% filter(Country=="China") %>% select(c("Lon","Lat")) %>% as.numeric() # china lonlat
+latlon_origin <- cv %>% filter(Country=="China") %>% dplyr::select(c("Lon","Lat")) %>% as.numeric() # china lonlat
 max_bound1 <- c(-150,90)
 max_bound2 <- c(180,-90)
 
@@ -531,7 +531,6 @@ if(start_date!=Sys.Date()){
   write_delim(cv_total_df,paste0(here::here(),"/cv_total_df.csv"),append = T,col_names = F, delim=",")
   cat("New historical data saved to ",here::here(),"/cv_total_df.csv\n\n");Sys.Date()
 }
-
 
 # cp ~/Documents/Data/worldmaps/coronavirus_.R ~/Documents/Data/worldmaps/worldmaps/coronavirus_.R 
 
