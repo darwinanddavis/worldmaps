@@ -243,6 +243,42 @@ pacman::p_load(here,mapdeck,dplyr,purrr,readr,showtext,stringr,colorspace,htmlto
 
 ******   
 
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Day 14: Climate change  
+
+The climate risk of crops in Vietnam     
+
+Exploring exposure of coffee, cashew, and cassava crops in Vietnam to climate risk.       
+
+There are tonnes of open data on climate change impacts and I've worked a lot with gridded climate, microclimate, environment, and habitat data in the past. I originally planned on doing a risk map for coffee plantations in Colombia (maybe down the track), but the good stuff is paywalled by UNESCO under heritage listing and, of course, there's a daily deadline for this mapping challenge.  
+
+I stumbled across these data from the International Center for Tropical Agriculture (CIAT) on Vietnam, including shp files, and I had to dive in. The risk indices are defined by summed values of climate change representative concentration pathway (8.5 2050), which is an international standard, county exposure to natural hazards, poverty rate (measured by the Gini coefficient), health care, infrastructure, organisational capacity, and education.        
+  
+### [Click for full map](https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/img/day14.jpg)      
+  
+<div align="center"; text-align:center>
+  <img src="img/day14.jpg", width = "100%", height = "100%">  
+</div> 
+  
+### Tools    
+  
+R               
+```{r}    
+pacman::p_load(ggfortify,dplyr,here,foreign,rgdal,sp,sf,mapdata,patchwork,readr,purrr,ggplot2,ggthemes,ggnetwork,elevatr,raster,colorspace,ggtext,ggsn,ggspatial,showtext)
+```  
+    
+### Links            
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)        
+
+### Data        
+[CIAT - International Center for Tropical Agriculture Dataverse (CGIAR)](https://ciat.cgiar.org/datasets/)           
+Parker, Louis; Bourgoin, Clement; Martinez Valle, Armando; Läderach, Peter, 2018, "VN_CRVA.zip", Climate Risk Vulnerability Assessment to inform sub-national decision making in Vietnam, Nicaragua and Uganda, [https://doi.org/10.7910/DVN/O8GOHP/QZT3YQ, Harvard Dataverse, V2](https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/O8GOHP/QZT3YQ)      
+
+******  
+
  <!--  -->
  <!--  -->  
  <!--  -->
