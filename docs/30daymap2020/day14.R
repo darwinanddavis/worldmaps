@@ -5,7 +5,7 @@
 # @darwinanddavis  
 
 # pkgs --------------------------------------------------------------------
-pacman::p_load(ggfortify,dplyr,here,foreign,rgdal,sp,sf,mapdata,patchwork,readr,purrr,ggplot2,ggthemes,ggnetwork,elevatr,raster,colorspace,ggtext,ggsn,ggspatial,showtext,ggtext)
+pacman::p_load(ggfortify,dplyr,here,foreign,rgdal,sp,sf,mapdata,patchwork,stringr,readr,purrr,ggplot2,ggthemes,ggnetwork,elevatr,raster,colorspace,ggtext,ggsn,ggspatial,showtext,ggtext)
 
 # data --------------------------------------------------------------------
 # read df and shp data 
@@ -52,7 +52,7 @@ plotv <- function(dd,name){
   colnames(dd) <- c("id","geometry") # change col names
   colvec <- sequential_hcl(dd[,1] %>% nrow,palette=ldf[ldf$name==name,"pal"]) %>% rev
   b <- dd %>% st_drop_geometry() # get breaks for legend 
-  bks <- c(b %>% min,b %>% unlist %>% mean,b %>% max)
+  bks <- c(b %>% min,b %>% unlist %>% median,b %>% max)
   ggplot() +
     geom_polygon(data=wm,aes(long,lat,group=group),col=colvec %>% tail(1), fill=alpha(colv,opac), size = 0.2) +
     geom_sf(data = dd, 
