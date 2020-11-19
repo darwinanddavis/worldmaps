@@ -283,6 +283,39 @@ Parker, Louis; Bourgoin, Clement; Martinez Valle, Armando; Läderach, Peter, 201
  <!--  -->  
  <!--  -->
 
+
+### Day 16: Islands    
+
+For the Miyazaki fans AKA seeing if I could bend `R` to my will.      
+
+My maps are usually data-driven because there are never enough data, but this was a simpler design one where I set the challenge of plotting images/arrays within geom polygons in `R`. An easy enough task in design and image software, but not so trivial in `R`. Turns out it can be done. Shout out to user [@inscaven](https://stackoverflow.com/questions/28206611/adding-custom-image-to-geom-polygon-fill-in-ggplot) on Stackoverflow for the code base.    
+
+I also figured out how to plot images/arrays within polygons for different map projections. I may do a write up on this in the future. For now, this is a useful tool to have in my arsenal.    
+
+There is also the [`ggpattern` package](https://coolbutuseless.github.io/package/ggpattern/index.html) for filling geoms with geometric patterns that I want to dive into to test some of the capabilities.    
+ 
+### [Click for full map](https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/img/day16.png)   
+
+<div align="center"; text-align:center>
+  <img src="img/day16.png", width = "100%", height = "100%">  
+</div>      
+  
+### Tools       
+  
+R             
+```{r}    
+pacman::p_load(dplyr,readr,rnaturalearth,rnaturalearthdata,sf,raster,png,plyr,cowplot,mapdata,sp,ggplot2,ggtext)
+```  
+      
+### Links            
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2020)        
+
+******  
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 
 [![eRum2020::CovidR](https://badgen.net/https/runkit.io/erum2020-covidr/badge/branches/master/malishev-covid19?cache=300)](https://milano-r.github.io/erum2020-covidr-contest/malishev-covid19.html)    

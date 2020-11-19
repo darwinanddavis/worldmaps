@@ -24,7 +24,6 @@ ggplot_rasterdf <- function(color_matrix, bottom = 0, top = 1, left = 0, right =
   for (i in 1:dim(color_matrix)[1])
     for (j in 1:dim(color_matrix)[2]) 
       outMatrix[i, j] <- rgb(color_matrix[i,j,1], color_matrix[i,j,2], color_matrix[i,j,3], ifelse(hasalpha, color_matrix[i,j,4], 1))
-  
   colnames(outMatrix) <- seq(1, ncol(outMatrix))
   rownames(outMatrix) <- seq(1, nrow(outMatrix))
   as.data.frame(outMatrix) %>% mutate(Y = nrow(outMatrix):1) %>% gather(X, color, -Y) %>% 
@@ -46,7 +45,7 @@ imgr_dfp <- imgr_df[point.in.polygon(imgr_df$X, imgr_df$Y,
 colv <- "#090613"
 bg <- "#9F9986"
 family <- "Bauhaus 93"
-cred <- "Matt Malishev<br>@darwinanddavis"
+cred <- "Matt Malishev | @darwinanddavis"
 xx <- 140
 yy <- 25
 cs <- 2
@@ -56,11 +55,11 @@ m16 <- ggplot() +
   geom_polygon(data=d, aes(x=long, y=lat, group=group),colour=colv, fill = colv) +
   geom_tile(data = imgr_dfp, aes(x = X, y = Y), fill = imgr_dfp$color) + 
   draw_image(imgr2,  x = xx, y = yy, scale = 10) +
-  geom_richtext(aes(xx,yy-1),label=cred, family = family, show.legend = F,color=colv, size = cs, fill = NA, label.color = NA) +
+  geom_richtext(aes(xx+1,yy-0.5),label=cred, family = family, show.legend = F,color=colv, size = cs, fill = NA, label.color = NA) +
   theme_blank() + 
   theme(panel.background = element_rect(fill = bg, colour = bg), 
         plot.background = element_rect(fill = bg, colour = colv))
 m16
-ggsave(here::here("worldmaps","img","day16.png"),m16,device = "png",width = 15,height = 20, units = "cm")
+ggsave(here::here("worldmaps","img","day16.png"),m16,device = "png",width = 9,height = 11, units = "cm")
 
 
