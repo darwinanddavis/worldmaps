@@ -70,7 +70,7 @@ zoom <- 21
 pitch <- 30
 bearing <- 40
 opac <- 1
-cs <- 7
+cs <- 5 
 
 mp20 <- mapdeck(
   location = c(tt_$x %>% max,tt_$y %>% mean),
