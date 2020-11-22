@@ -66,11 +66,11 @@ title_text <- list(title =
                      )
 
 # map vars 
-zoom <- 21
+zoom <- 22
 pitch <- 30
 bearing <- 40
 opac <- 1
-cs <- 5 
+cs <- 7
 
 mp20 <- mapdeck(
   location = c(tt_$x %>% max,tt_$y %>% mean),

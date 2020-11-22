@@ -7,15 +7,21 @@
 # https://stackoverflow.com/questions/28206611/adding-custom-image-to-geom-polygon-fill-in-ggplot
 
 # pkgs --------------------------------------------------------------------
-pacman::p_load(dplyr,readr,rnaturalearth,rnaturalearthdata,sf,raster,png,jpeg,plyr,cowplot,mapdata,rvest,xml2,magrittr,sp,ggplot2,stringr,ggthemes,ggnetwork,colorspace,ggtext,ggsn,ggspatial)
+pacman::p_load(dplyr,readr,tidyr,rnaturalearth,rnaturalearthdata,sf,raster,png,jpeg,plyr,cowplot,mapdata,rvest,xml2,magrittr,sp,ggplot2,stringr,ggthemes,ggnetwork,colorspace,ggtext,ggsn,ggspatial)
 
 # get map poly --------------------------------------------------------------------
 d <- map_data("world","japan") # \mapdata
 hon <- d$group[which(d$subregion == "Honshu")][1] # choose polygon 
 
 # img ---------------------------------------------------------------------
+
+# totoro
 imgr <- here::here("worldmaps","img","day16_img.png") %>%  readPNG()
 imgr2 <- here::here("worldmaps","img","day16_img2.png") %>%  readPNG()
+
+# akira
+imgr <- here::here("worldmaps","img","akira.jpg") %>%  readJPEG()
+imgr2 <- here::here("worldmaps","img","akira2.jpg") %>%  readJPEG()
 
 # convert raster img to plottable df
 ggplot_rasterdf <- function(color_matrix, bottom = 0, top = 1, left = 0, right = 1) {
@@ -42,20 +48,32 @@ imgr_dfp <- imgr_df[point.in.polygon(imgr_df$X, imgr_df$Y,
                                     d[d$group==hon,]$long , 
                                     d[d$group==hon,]$lat) %>% as.logical(),]
 
+# totoro
 colv <- "#090613"
 bg <- "#9F9986"
 family <- "Bauhaus 93"
-cred <- "Matt Malishev | @darwinanddavis"
 xx <- 140
 yy <- 25
 cs <- 2
+
+# akira
+colv <- "#C6D4D7"
+bg <- "#14192C"
+family <- "Bauhaus 93"
+xx <- 140
+yy <- 25
+cs <- 1.5
+
+cred <- "Matt Malishev<br>@darwinanddavis"
 
 # map 
 m16 <- ggplot() + 
   geom_polygon(data=d, aes(x=long, y=lat, group=group),colour=colv, fill = colv) +
   geom_tile(data = imgr_dfp, aes(x = X, y = Y), fill = imgr_dfp$color) + 
-  draw_image(imgr2,  x = xx, y = yy, scale = 10) +
+  draw_image(imgr2,  x = xx, y = yy, scale = 10) + # totoro
   geom_richtext(aes(xx+1,yy-0.5),label=cred, family = family, show.legend = F,color=colv, size = cs, fill = NA, label.color = NA) +
+  # draw_image(imgr2,  x = xx, y = yy, scale = 4) + # akira 
+  # geom_richtext(aes(xx+0.5,yy-1.5),label=cred, family = family, show.legend = F,color=colv, size = cs, fill = NA, label.color = NA) +
   theme_blank() + 
   theme(panel.background = element_rect(fill = bg, colour = bg), 
         plot.background = element_rect(fill = bg, colour = colv))
