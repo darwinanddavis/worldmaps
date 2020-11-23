@@ -299,7 +299,17 @@ There is also the [`ggpattern` package](https://coolbutuseless.github.io/package
 <div align="center"; text-align:center>
   <img src="img/day16.png", width = "100%", height = "100%">  
 </div>      
-  
+
+AKIRA  
+
+### [Click for full map](https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/img/day16_2.png)          
+
+<div align="center"; text-align:center>
+  <img src="img/day16_2.png", width = "100%", height = "100%">  
+</div>                
+<br>  
+
+
 ### Tools       
   
 R             
@@ -332,7 +342,7 @@ I found these data online from [Northern Territory's Department of the Environme
 <div align="center"; text-align:center>
   <img src="img/day20.jpg", width = "100%", height = "100%">  
 </div>                
-<br>  
+<br>   
   
 ### Tools     
   
