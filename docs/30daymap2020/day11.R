@@ -82,7 +82,7 @@ mp11 <- mapdeck(
            fill_colour = colv[1], angle = 82,
            billboard = F,update_view = F,
            font_weight = "bold",
-           font_family = "Avenir"
+           font_family = "Avenir" 
            ) %>% 
   add_title(title = title_text,layer_id = "heading")
 mp11
