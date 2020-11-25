@@ -381,8 +381,8 @@ Notes
 * Hover over the lines to view the refugee migration numbers for that country 
 * Zoom and tilt (hold CMD/CTRL) around the map to explore   
 
-### [Click for full interactive map](https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/img/day23.html)           
-(Best viewed in Safari and full screen)       
+### [Click for full interactive map](https://darwinanddavis.github.io/worldmaps/30daymap2020/day23)    
+(Best viewed in Safari and full screen)         
      
 <div align="center"; text-align:center>
   <img src="img/day23.jpg", width = "100%", height = "100%">  
