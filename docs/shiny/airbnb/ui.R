@@ -29,8 +29,8 @@ require(lubridate)
 require(metathis)
 require(shinycssloaders)
 
-# here("worldmaps","docs","shiny","airbnb") %>% runApp()
- 
+# here("worldmaps","docs","shiny","airbnb") %>% runApp() / deployApp()  
+
 # read data ---------------------------------------------------------------
 fwd <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/docs/shiny/airbnb/fwd.Rdata?raw=true" %>% url %>% readRDS
 city_names <- fwd$city 
@@ -112,7 +112,10 @@ shinyUI(fluidPage(
   sidebarLayout( # sidebar ---------------------------------------------
                  sidebarPanel(
                    width = "100%", # width of main frame
-                   h2("Airbnb data for ", textOutput("select_city",inline = T), textOutput("date", inline = T)), # heading
+                   h2("Airbnb listings ", 
+                      textOutput("select_city",inline = T) 
+                      # textOutput("date", inline = T) # add date 
+                      ), # heading
                    splitLayout(#cellWidths = rep("33%",3), # top header
                      tags$h4(span(style="color:#FF385C;","Price")),  # match X with server 'output$X'
                      tags$h4(span(style="color:#FF385C;","Criteria")),

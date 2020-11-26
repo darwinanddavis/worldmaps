@@ -5,6 +5,6 @@ account: darwinanddavis
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2244102
-bundleId: 3618329
+bundleId: 3907098
 url: https://darwinanddavis.shinyapps.io/airbnb/
-when: 1599816088.73516
+when: 1606351823.90311

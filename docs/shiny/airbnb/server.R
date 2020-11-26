@@ -292,17 +292,21 @@ shinyServer(function(input, output){
   }) # end observe action button
   
   # print outputs 
-  output$select_city <- renderText({paste0(input$select_city,",")})
+  output$select_city <- renderText({
+    if(input$select_city %>% str_length() > 1){
+      paste0("for ",input$select_city)
+    }else{
+      "2020"
+    }})
   output$bedrooms <- renderText({input$bedrooms})
   output$price <- renderText({paste0("$",input$price[1],"—$",input$price[2])})
   output$select_criteria <- renderText({input$select_criteria})
   output$entries <- renderText({entries()})
   output$date <- renderText({
     if(input$select_city %>% str_length() > 1){
-      paste0(fwd[fwd$city %>% str_which(input$select_city),"month"] %>% unlist %>% as.character(),", 2020")
+      # paste0(fwd[fwd$city %>% str_which(input$select_city),"month"] %>% unlist %>% as.character(),", 2020") # add month
     }else{
       "2020"
-    }
-    })
+    }})
   
 }) # end server 
