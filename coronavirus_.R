@@ -227,18 +227,13 @@ heading_tr <- paste(
                     )
 
 # bl
-heading_bl <- paste(sep = "<br/>",
-                    "Data source: <a href=https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases> 
-                    ECDC
-                    </a>",
-                    "Last data scrape: ", Sys.time(),
-                    "",
-                    "Github: <a href=https://github.com/darwinanddavis/worldmaps> @darwinanddavis </a>",
-                    "Website: <a href=https://darwinanddavis.github.io/DataPortfolio/> Matt Malishev </a>",
-                    "Spot an error? <a href=https://github.com/darwinanddavis/worldmaps/issues> Submit an issue </a>"
+heading_bl <- paste0(
+                    "Data source: <a style=color:",colv,"; href=https://www.ecdc.europa.eu/en/geographical-distribution-2019-ncov-cases>ECDC</a><br>
+                    Last data scrape: ", Sys.time(),"<br>
+                    Designer: <a style=color:",colv,"; href=https://darwinanddavis.github.io/DataPortfolio/> Matt Malishev </a><br>
+                    Twitter/Github: <a style=color:",colv,"; href=https://github.com/darwinanddavis/worldmaps/tree/gh-pages> @darwinanddavis </a><br>
+                    Spot an error? <a style=color:",colv,"; href=https://github.com/darwinanddavis/worldmaps/issues> Submit an issue </a>"
                     )
-
-
 
 # labels ## not run 
 label_cases <- paste(
@@ -247,26 +242,26 @@ label_cases <- paste(
 
 
 # popups
-popup_cases <- paste(
-                     "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
-                     "<strong> Cases </strong>","<br/>", cv_cases %>% format(big.mark=",",scientific = F,trim = T),"<br/>","<br/>",
-                     "<strong> Global cases ranking </strong>","<br/>", cv_cases_ranked %>% format(big.mark=",",scientific = F,trim = T),"/",cv_cases_ranked %>% max,"<br/>","<br/>"
-                     # "<strong> Total population: </strong>", world_pop$Country,"(1000s)","<br/>",
-                     # "<strong> Percent of population affected: </strong>", cv_cases[1:length(world_pop$Country)]/world_pop$Country,"%","<br/>",
-                     # "<strong> Median age: </strong>", world_medage$Country,"<br/>","<br/>"
-)
+popup_cases <- paste0(
+  "<strong>",cv_country,"</strong><br/><br/>",
+  "<strong> Cases </strong><br/><span style=color:",colv,";>", cv_cases %>% format(big.mark=",",scientific = F,trim = T),"</span><br/>",
+  "<strong> Global cases ranking </strong>","<br/>", cv_cases_ranked %>% format(big.mark=",",scientific = F,trim = T),"/",cv_cases_ranked %>% max,"<br/>"
+  # "<strong> Total population: </strong>", world_pop$Country,"(1000s)","<br/>",
+  # "<strong> Percent of population affected: </strong>", cv_cases[1:length(world_pop$Country)]/world_pop$Country,"%","<br/>",
+  # "<strong> Median age: </strong>", world_medage$Country,"<br/>","<br/>"
+) %>% map(htmltools::HTML)
 
-popup_deaths <- paste(
-                      "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
-                      "<strong> Deaths </strong>", "<br/>", cv_deaths %>% format(big.mark=",",scientific = F,trim = T),"<br/>","<br/>",
-                      "<strong> Global death ranking </strong>","<br/>", cv_deaths_ranked %>% format(big.mark=",",scientific = F,trim = T),"/",cv_deaths_ranked %>% max
-)
+popup_deaths <- paste0(
+  "<strong>",cv_country,"</strong><br/><br/>",
+  "<strong> Deaths </strong><br/><span style=color:",colv2,";>", cv_deaths %>% format(big.mark=",",scientific = F,trim = T),"</span><br/>",
+  "<strong> Global death ranking </strong>","<br/>", cv_deaths_ranked %>% format(big.mark=",",scientific = F,trim = T),"/",cv_deaths_ranked %>% max
+) %>% map(htmltools::HTML)
 
-popup_recent_cases <- paste(
-                             "<strong> Country </strong>","<br/>", cv_country,"<br/>","<br/>",
-                             "<strong> Cases in last 15 days </strong>","<br/>", cv_recent_cases %>% format(big.mark=",",scientific = F,trim = T),"<br/>","<br/>",
-                            "<strong> Global recent cases ranking </strong>","<br/>", cv_cases_15days_ranked, "/",cv_cases_15days_ranked %>% max
-                            )
+popup_recent_cases <- paste0(
+  "<strong>",cv_country,"</strong><br/><br/>",
+  "<strong> Cases in last 15 days </strong><br/><span style=color:",colv3,";>", cv_recent_cases %>% format(big.mark=",",scientific = F,trim = T),"</span><br/>",
+  "<strong> Global recent cases ranking </strong>","<br/>", cv_cases_15days_ranked, "/",cv_cases_15days_ranked %>% max
+) %>% map(htmltools::HTML)
 
 # controlbox 
 layer1 <- "Cases"
@@ -317,24 +312,24 @@ style <- list(
   "color" = "black",
   "font-weight" = "normal",
   "font-family" = "Optima",
-  "padding" = "3px 3px"
+  "padding" = "8px"
 )
 
 style_nafta <- list(
   "color" = "#F90F40",
   "font-weight" = "normal",
   "font-family" = "Optima",
-  "padding" = "3px 3px"
+  "padding" = "8px"
 )
 
 # text label options 
-text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "20px",
-                               textOnly = F, opacity = 0.5, offset = c(0,0),
+text_label_opt <- labelOptions(noHide = F, direction = "top", textsize = "15px",
+                               textOnly = F, opacity = 0.7, offset = c(0,0),
                                style = style, permanent = T
 )
 
 text_label_opt_nafta <- labelOptions(noHide = T, direction = "top", textsize = "15px",
-                               textOnly = F, opacity = 0.5, offset = c(0,0),
+                               textOnly = F, opacity = 0.7, offset = c(0,0),
                                style = style_nafta, permanent = T
 )
 
@@ -376,9 +371,9 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- (sqrt(cv_cases) * 150) #%>% ceiling # 5th radius reduction nov 6
-radius_deaths <- (sqrt(cv_deaths) * 150) #%>% ceiling()
-radius_recent_cases <- (sqrt(cv_recent_cases) * 150) #%>% ceiling()
+radius_cases <- (sqrt(cv_cases) / 70) #%>% ceiling # 5th radius reduction nov 6
+radius_deaths <- (sqrt(cv_deaths) / 70) #%>% ceiling()
+radius_recent_cases <- (sqrt(cv_recent_cases) / 70) #%>% ceiling()
 
 # easy buttons 
 locate_me <- easyButton( # locate user
@@ -464,32 +459,35 @@ cvm <- gcIntermediate(latlon_origin,
                opacity = opac,
                weight = 0.3,
                group = layer2) %>%
-  addCircles(lon,lat, # cases
+  addCircleMarkers(lon,lat, # cases
              weight=1,
              radius= radius_cases,
              color=colv,
              fillColor=colv,
-             label = cv_country,
+             label = popup_cases,
              popup = popup_cases,
              labelOptions = text_label_opt,
+             popupOptions = text_label_opt,
              group = layer1) %>% 
-  addCircles(lon,lat, # deaths 
+  addCircleMarkers(lon,lat, # deaths 
              weight=1,
              radius=radius_deaths,
              color=colvec_deaths,
              fillColor=colvec_deaths,
-             label = cv_country,  
+             label = popup_deaths,  
              popup = popup_deaths,
              labelOptions = text_label_opt,
+             popupOptions = text_label_opt,
              group = layer2) %>%
-  addCircles(lon,lat, # recent cases 
+  addCircleMarkers(lon,lat, # recent cases 
              weight=1,
              radius=radius_recent_cases,
              color=colvec_recent_cases,
              fillColor=colvec_recent_cases,
-             label = cv_country,
+             label = popup_recent_cases,
              popup = popup_recent_cases,
-             labelOptions = text_label_opt,
+             labelOptions = text_label_opt, 
+             popupOptions = text_label_opt,
              group = layer3) %>%
   # addLabelOnlyMarkers(nafta_lon,nafta_lat, # add labels for cases outside of polylines
   #                     label=nafta_string,
