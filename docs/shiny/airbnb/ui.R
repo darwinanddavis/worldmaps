@@ -138,9 +138,10 @@ shinyUI(fluidPage(
   ), 
   mainPanel( # footer 
     tags$p(span(style="text-align:left;",
-                strong("Author: "),"Matt Malishev","|",
+                strong("Author: "), 
+                span(style="color:#FF385C;",a(style="color:#FF385C;","Matt Malishev",href="https://darwinanddavis.github.io/DataPortfolio/")),"|",
                 strong("Github: "),
-                span(style="color:#FF385C;",a(style="color:#FF385C;","@darwinanddavis",href="https://github.com/darwinanddavis/worldmaps")),"|",
+                span(style="color:#FF385C;",a(style="color:#FF385C;","@darwinanddavis",href="https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/shiny/airbnb")),"|",
                 strong("Data: "),
                 span(style="color:#FF385C;",a(style="color:#FF385C;","Inside Airbnb",href="http://insideairbnb.com/get-the-data.html")),"|",
                 span(style="text-align:right;",

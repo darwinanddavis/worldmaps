@@ -403,11 +403,57 @@ pacman::p_load(here,dplyr,rworldmap,mapdeck,sf,sfheaders,data.table,readr,rgeos,
 ### Data  
 [UN Refugee Agency](https://data.world/unhcr)  
 
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+
+******  
+
+<br>
+<a id="day26"></a>  
+[](#day26)  
+# Day 26: Mapping with a new tool
+
+### Using Framer and Mapbox to design a mobile interface   
+
+I've been meaning to dive into Framer ever since I watched a webinar a few months ago. It's really fun and intuitive. You can integrate Mapbox's features and preload data using imported tilesets, then prototype the interface in Framer.
+
+Lots of things to map for a first project, so here are biking directions from Framer HQ in Amsterdam to my favourite brewery.   
+
+### [Click for interactive mobile prototype](https://framer.com/share/day26--gX1W1or5rDdqG3Rm93n2/ajGqv8pI7?fullscreen=1)       
+     
+<div align="center"; text-align:center>
+  <img src="img/day26.jpg", width = "100%", height = "100%">  
+</div>                
+<br>   
+
+If you don't know what Framer is, it's a prototyping tool. Tons of features, interactions, device platforms, graphics, icon sets.  
+
+Here's the process:  
+
+* Import the directional KML data into Mapbox Studio  
+* Design the map in Mapbox Studio  
+* Link the Mapbox API into Framer and use features such as SequentialLocationMap from the Mapbox components package
+* Design the interface (layout, transitions, buttons, etc) in Framer using an iPhone 11 as a template    
+
+The cool thing is you can open the prototype on your own mobile and use regular gestures to navigate the interface. 
+  
+### Tools     
+  
+Framer  
+Mapbox    
+    
+### Links            
+[Framer](https://www.framer.com/)  
+
 ******  
 
  <!--  -->
  <!--  -->  
  <!--  -->
+
 
 ## Realtime interactive map of coronavirus 2019-nCov global distribution   
 
