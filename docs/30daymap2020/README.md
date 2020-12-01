@@ -9,7 +9,7 @@
 ## [Check out my entries here](https://darwinanddavis.github.io/DataPortfolio/30daymapchallenge/)  
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/img/summary.png" width="100%" height="200" >
+  <img src="https://raw.githubusercontent.com/darwinanddavis/worldmaps/gh-pages/img/summary.png" width="100%" height="400%" >
 </div>
 
 <br>          
