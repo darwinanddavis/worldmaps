@@ -87,29 +87,24 @@ cv$Country <- cv$Country %>% str_replace_all("_"," ") %>% as.character()
 cv2$Recovered <- cv2$Recovered %>% str_replace_all(",","") %>% as.character()
 
 
-# fix anomalies in country entries
-# cv[cv$Country=="Japan",c("Cases","Deaths")] <- cv[cv$Country=="Japan",c("Cases","Deaths")] %>% as.numeric + cv[cv$Country=="Cases on an international conveyance Japan",c("Cases","Deaths")] %>% as.numeric
+# rename erroneous/repeated countries for getting centroid  /rgeos
 cv <- cv[!cv$Country==str_subset(cv$Country,"conveyance Japan"),] # remove japan duplicate
-# rename countries for getting centroid later 
-cv[str_which(cv$Country,"Korea"),"Country"] <- "South Korea" 
-cv[str_which(cv$Country,"Iran"),"Country"] <- "Iran"
-cv[str_which(cv$Country,"Maced"),"Country"] <- "Macedonia"
-cv[str_which(cv$Country,"Pales"),"Country"] <- "Palestine* (as neither recognition nor prejudice towards the State)"
-cv[str_which(cv$Country,"Ser"),"Country"] <- "Republic of Serbia" # match geocode country string in lonlat /rgeos
-cv[str_which(cv$Country,"Holy"),"Country"] <- "Vatican" # match geocode country string in lonlat /rgeos 
-cv[str_which(cv$Country,"Brun"),"Country"] <- "Brunei" # match geocode country string in lonlat /rgeos 
-cv[str_which(cv$Country,"Congo"),"Country"][1] <- "Republic of the Congo" # republic of the congo
-cv[str_which(cv$Country,"Democratic"),"Country"] <- "Democratic Republic of the Congo" # DRC
-cv[str_which(cv$Country,"Eswa"),"Country"] <- "Swaziland" # swaziland
-cv[str_which(cv$Country,"Ivo"),"Country"] <- "Ivory Coast" # ivory coast
-cv[str_which(cv$Country,"Baha"),"Country"] <- "The Bahamas" # bahamas
-cv[str_which(cv$Country,"Nether"),"Country"][1] <- "Netherlands"
-# cv[str_which(cv$Country,"Nether"),"Country"][2] <- "Netherlands Antilles"
-cv[str_which(cv$Country,"Timor"),"Country"] <- "East Timor"
+cv[str_which(cv$Country,"Maced"),"Country"] <- find_lonlat("Maced")$Country 
+cv[str_which(cv$Country,"Ser"),"Country"] <- find_lonlat("Serb")$Country 
+cv[str_which(cv$Country,"Holy"),"Country"] <- find_lonlat("Vatic")$Country  
+cv[str_which(cv$Country,"Brun"),"Country"] <- find_lonlat("Brun")$Country 
+cv[str_which(cv$Country,"Eswa"),"Country"] <- find_lonlat("Swazi")$Country
+cv[str_which(cv$Country,"Ivo"),"Country"] <- find_lonlat("Ivo")$Country 
+cv[str_which(cv$Country,"Baha"),"Country"] <- find_lonlat("Baha")$Country
+cv[str_which(cv$Country,"Timor"),"Country"] <- find_lonlat("Timor")$Country
 cv[str_which(cv$Country,"Turks"),"Country"] <- find_lonlat("Turks")$Country
 cv[str_which(cv$Country,"Cura"),"Country"] <- find_lonlat("Curac")$Country
 cv[str_which(cv$Country,"Falkland"),"Country"] <- find_lonlat("Falk")$Country
 cv[str_which(cv$Country,"Czech"),"Country"] <- find_lonlat("Czech")$Country
+# repeated geocodes
+cv[str_which(cv$Country,"Pales"),"Country"] <- "Palestine* (as neither recognition nor prejudice towards the State)"
+cv[str_which(cv$Country,"Congo"),"Country"][1] <- find_lonlat("Congo")$Country[2]
+cv[str_which(cv$Country,"Democratic"),"Country"] <- find_lonlat("Congo")$Country[1]
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
@@ -262,11 +257,6 @@ popup_recent_cases <- paste0(
   "<strong> Cases in last 15 days </strong><br/><span style=color:",colv3,";>", cv_recent_cases %>% format(big.mark=",",scientific = F,trim = T),"</span><br/>",
   "<strong> Global recent cases ranking </strong>","<br/>", cv_cases_15days_ranked, "/",cv_cases_15days_ranked %>% max
 ) %>% map(htmltools::HTML)
-
-# controlbox 
-layer1 <- "Cases"
-layer2 <- "Deaths"
-layer3 <- "Cases in last 15 days"  
 
 # style options -----------------------------------------------------------
 
