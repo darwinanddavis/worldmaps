@@ -361,9 +361,10 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-radius_cases <- (sqrt(cv_cases) / 70) #%>% ceiling # 5th radius reduction nov 6
-radius_deaths <- (sqrt(cv_deaths) / 70) #%>% ceiling()
-radius_recent_cases <- (sqrt(cv_recent_cases) / 70) #%>% ceiling()
+cex <- 50
+radius_cases <- (sqrt(cv_cases) / cex) #%>% ceiling # 5th radius reduction nov 6
+radius_deaths <- (sqrt(cv_deaths) / cex) #%>% ceiling()
+radius_recent_cases <- (sqrt(cv_recent_cases) / cex) #%>% ceiling()
 
 # easy buttons 
 locate_me <- easyButton( # locate user
