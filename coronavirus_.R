@@ -62,6 +62,7 @@ cv2[is.na(cv2)] <- 0
 
 # mod data
 cv <- setNames(cv,c("Continent","Country","Cases","Deaths","Cases_last_15_days")) # set names 
+cv <- cv[,c("Continent","Country","Cases","Deaths","Cases_last_15_days")] # rm other rows 
 cv$Deaths <- cv$Deaths %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","") # remove middle white space
 cv$Cases <- cv$Cases %>% stri_replace_all_charclass("\\p{WHITE_SPACE}","")
 cv$Cases_last_15_days <- cv$Cases_last_15_days %>% stri_replace_all_charclass("\\p{WHITE SPACE}","")
@@ -504,7 +505,7 @@ cvm <- gcIntermediate(latlon_origin,
 
 cvm
 
-# save outputs ---------------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# save outputs ------------------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("coronavirus.html"))  
 cvm %>% saveWidget(here::here("worldmaps","coronavirus.html")) # save to local dir 
