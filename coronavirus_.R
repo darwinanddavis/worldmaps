@@ -71,6 +71,7 @@ cv$Cases <- cv$Cases %>% as.integer() # set as int
 cv$Cases_last_15_days <- cv$Cases_last_15_days %>% as.integer()
 
 # get totals
+
 cv_total <- cv %>% summarise(Total_cases = max(Cases,na.rm = T),
                              Total_deaths = max(Deaths,na.rm = T),
                              Total_recent_cases = max(Cases_last_15_days,na.rm = T))
@@ -80,7 +81,7 @@ cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
-cv %>% tail
+
 # clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
@@ -106,6 +107,7 @@ cv[str_which(cv$Country,"Czech"),"Country"] <- find_lonlat("Czech")$Country
 cv[str_which(cv$Country,"Pales"),"Country"] <- "Palestine* (as neither recognition nor prejudice towards the State)"
 cv[str_which(cv$Country,"Congo"),"Country"][1] <- find_lonlat("Congo")$Country[2]
 cv[str_which(cv$Country,"Democratic"),"Country"] <- find_lonlat("Congo")$Country[1]
+cv[str_which(cv$Country,"Micronesia"),"Country"] <- find_lonlat("Micronesia")$Country
 
 # get totals per continent ## not run 24-2-20  
 # cv_continent_cases <- cv %>% filter(Country=="") %>% select(Cases)
