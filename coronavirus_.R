@@ -424,7 +424,7 @@ legend_box <- tags$div(
 #   addMarkers(~long, ~lat, icon = leafIcons) %>%
 #   addControl(html = html_legend, position = "bottomleft")
 
-# map ---------------------------------------------------------------------
+# map -------------------------------------------------------------------------
 
 # set arc matrix
 cvm <- gcIntermediate(latlon_origin,
