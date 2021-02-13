@@ -364,7 +364,7 @@ layer2 <- "Deaths"
 layer3 <- "Cases in last 15 days"  
 
 # point size
-cex <- 50
+cex <- 75
 radius_cases <- (sqrt(cv_cases) / cex) #%>% ceiling # 5th radius reduction nov 6
 radius_deaths <- (sqrt(cv_deaths) / cex) #%>% ceiling()
 radius_recent_cases <- (sqrt(cv_recent_cases) / cex) #%>% ceiling()
