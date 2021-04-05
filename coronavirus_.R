@@ -81,7 +81,6 @@ cv <- cv[!cv$Country=="Other",] # remove 'other' country
 cv <- cv[!cv$Country=="Asia",] # remove 'other' country
 # cv <- cv[!cv$Country==stringr::str_subset(cv$Country,"Place"),] # remove descriptive row header
 
-
 # clean strings
 cv$Cases <- cv$Cases %>% str_replace(" ","") %>% as.numeric()
 cv$Deaths <- cv$Deaths %>% str_replace(" ","") %>%  as.numeric()
@@ -158,6 +157,7 @@ cv[cv$Country==cv[str_which(cv$Country,"Pales"),"Country"],c("Lon","Lat")] <- cv
 cv[cv$Country==cv[str_which(cv$Country,"Gibral"),"Country"],c("Lon","Lat")] <- cv %>% filter(Country=="Spain") %>% dplyr::select(c("Lon","Lat")) + 0.05 # displace gibraltar latlon from spain
 # cv[cv$Country==cv[str_which(cv$Country,"Antill"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Aruba") %>% select(c("Lon","Lat")) + 0.2  # displace dutch caribbean from aruba
 cv[cv$Country==cv[str_which(cv$Country,"Bonai"),"Country"],c("Lon","Lat")] <- lonlat %>% filter(Country=="Curacao") %>% dplyr::select(c("Lon","Lat")) + 0.2  # displace dutch caribbean2 latlon from curacao
+cv <- cv[!cv$Country=="Europe",] # rm Europe as country
 cv <- cv[complete.cases(cv),] # rm final empty row
 
 # check NAs
@@ -507,7 +507,7 @@ cvm <- gcIntermediate(latlon_origin,
 
 cvm
 
-# save outputs ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# save outputs ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("coronavirus.html"))  
 cvm %>% saveWidget(here::here("worldmaps","coronavirus.html")) # save to local dir 
