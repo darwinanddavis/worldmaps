@@ -144,9 +144,8 @@ shinyUI(fluidPage(
                 span(style="color:#FF385C;",a(style="color:#FF385C;","@darwinanddavis",href="https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/shiny/airbnb")),"|",
                 strong("Data: "),
                 span(style="color:#FF385C;",a(style="color:#FF385C;","Inside Airbnb",href="http://insideairbnb.com/get-the-data.html")),"|",
-                span(style="text-align:right;",
-                     strong("Spot an error? "),
-                     span(style="color:#FF385C;",a(style="color:#FF385C;","Submit an issue",href="https://github.com/darwinanddavis/worldmaps/issues/new")))
+                strong("Spot an error? "),
+                span(style="color:#FF385C;",a(style="color:#FF385C;","Submit an issue",href="https://github.com/darwinanddavis/worldmaps/issues/new"))
     ))
   )
 )) # end ui

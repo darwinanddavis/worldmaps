@@ -236,7 +236,7 @@ heading_bl <- paste0(
 # labels ## not run 
 label_cases <- paste(
   "<strong> Continent: </strong>", cv$Continent, "<br/> "
-) %>% map(htmltools::HTML)
+) %>% purrr::map(htmltools::HTML)
 
 
 # popups
@@ -247,19 +247,19 @@ popup_cases <- paste0(
   # "<strong> Total population: </strong>", world_pop$Country,"(1000s)","<br/>",
   # "<strong> Percent of population affected: </strong>", cv_cases[1:length(world_pop$Country)]/world_pop$Country,"%","<br/>",
   # "<strong> Median age: </strong>", world_medage$Country,"<br/>","<br/>"
-) %>% map(htmltools::HTML)
+) %>% purrr::map(htmltools::HTML)
 
 popup_deaths <- paste0(
   "<strong>",cv_country,"</strong><br/><br/>",
   "<strong> Deaths </strong><br/><span style=color:",colv2,";>", cv_deaths %>% format(big.mark=",",scientific = F,trim = T),"</span><br/>",
   "<strong> Global death ranking </strong>","<br/>", cv_deaths_ranked %>% format(big.mark=",",scientific = F,trim = T),"/",cv_deaths_ranked %>% max
-) %>% map(htmltools::HTML)
+) %>% purrr::map(htmltools::HTML)
 
 popup_recent_cases <- paste0(
   "<strong>",cv_country,"</strong><br/><br/>",
   "<strong> Cases in last 15 days </strong><br/><span style=color:",colv3,";>", cv_recent_cases %>% format(big.mark=",",scientific = F,trim = T),"</span><br/>",
   "<strong> Global recent cases ranking </strong>","<br/>", cv_cases_15days_ranked, "/",cv_cases_15days_ranked %>% max
-) %>% map(htmltools::HTML)
+) %>% purrr::map(htmltools::HTML)
 
 # style options -----------------------------------------------------------
 
@@ -345,7 +345,6 @@ max_bound2 <- c(180,-90)
 #              proj4def = "+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"
 #   ) 
 proj_options <- leafletOptions(worldCopyJump = T)
-
 
 # option for clickable twitter/github logos
 # absolutePanel(id = "logo", class = "card", bottom = 20, left = 60, width = 80, fixed=TRUE, draggable = FALSE, height = "auto",
@@ -507,7 +506,7 @@ cvm <- gcIntermediate(latlon_origin,
 
 cvm
 
-# save outputs ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# save outputs -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 last.warning; geterrmessage() # get last warning and/or error message 
 cvm %>% saveWidget(here::here("coronavirus.html"))  
 cvm %>% saveWidget(here::here("worldmaps","coronavirus.html")) # save to local dir 

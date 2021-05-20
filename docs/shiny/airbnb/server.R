@@ -296,7 +296,7 @@ shinyServer(function(input, output){
     if(input$select_city %>% str_length() > 1){
       paste0("for ",input$select_city)
     }else{
-      "2020"
+      "2021"
     }})
   output$bedrooms <- renderText({input$bedrooms})
   output$price <- renderText({paste0("$",input$price[1],"—$",input$price[2])})
@@ -306,7 +306,7 @@ shinyServer(function(input, output){
     if(input$select_city %>% str_length() > 1){
       # paste0(fwd[fwd$city %>% str_which(input$select_city),"month"] %>% unlist %>% as.character(),", 2020") # add month
     }else{
-      "2020"
+      "2021"
     }})
   
 }) # end server 
