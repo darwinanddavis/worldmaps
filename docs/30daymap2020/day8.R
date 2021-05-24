@@ -38,7 +38,7 @@ oo <- oo %>% filter(dest %in% dm_$dest) # use retrieved latlon data
 
 # map ---------------------------------------------------------------------
 custom_tile <- "Esri.WorldGrayCanvas"
-colv <- "#AD9000"
+colv <- "#877104"
 opac <- 0.9
 min_zoom <- 3
 ttl_img <- "https://github.com/darwinanddavis/worldmaps/blob/gh-pages/img/day8_hex_.png?raw=true"
@@ -59,7 +59,7 @@ point_label <- paste(
   <b>",oo$dest %>% str_to_upper,"</b>
   </div>",
   "<b> Export value </b>","<br/>", paste0("$",oo$export_val %>% format(big.mark=",",scientific = F,trim = T))
-) %>% map(htmltools::HTML)
+) %>% purrr::map(htmltools::HTML)
 
 # title 
 ttl <- paste0("<div style=\"color:",colv,";\">
@@ -67,7 +67,7 @@ ttl <- paste0("<div style=\"color:",colv,";\">
               src=",ttl_img," width='45' height='45'>
               <b>MAKING HONEY</b></div>",
              "AUSTRALIA'S HONEY TRADE, 2017<br>",  
-             "Total export: $",oo$export_val %>% sum %>% format(big.mark=",",scientific = F,trim = T)) %>% map(htmltools::HTML)
+             "Total export: $",oo$export_val %>% sum %>% format(big.mark=",",scientific = F,trim = T)) %>% purrr::map(htmltools::HTML)
 
 # bl
 heading_bl <- paste0("Data source: <a style=color:",colv,"; href=https://legacy.oec.world/en/resources/data/> 
@@ -108,8 +108,7 @@ mp8 <- leaflet() %>%
   addLabelOnlyMarkers(75,-42,  
                       label=ttl,
                       labelOptions = ttl_opt) %>%
-  addControl(heading_bl,"bottomleft") %>% 
+  addControl(heading_bl,"bottomleft") %>%
   addScaleBar(position = "bottomright",options = scaleBarOptions(maxWidth = 100))
 mp8  
 mp8 %>% saveWidget(here::here("worldmaps","30daymap2020","day8.html"))  
-
