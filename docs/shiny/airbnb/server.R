@@ -170,7 +170,7 @@ shinyServer(function(input, output){
       pull(`Review scores communication`) # comm
     rating_accuracy <- map_event() %>%
       pull(`Review scores accuracy`) # accuracy 
-    href <- paste0("<strong><a href=",host_url,">",host_name,"</a></strong>") # web link
+    href <- paste0("<strong><a style=\"color:#FF385C;\" href=",host_url,">",host_name,"</a></strong>") # web link
     site_names <- paste(
       "<div style=\"font-size:20px;\"> ","<br/>",href,"</div>","<br/>",
       "<strong> Neighbourhood </strong>","<br/>",neighbourhood,"<br/>",
