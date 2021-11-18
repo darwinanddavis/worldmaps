@@ -45,8 +45,6 @@ shp_desig$fraction = shp_desig$n / sum(shp_desig$n)
 shp_desig$ymax = cumsum(shp_desig$fraction)
 shp_desig$ymin = c(0, head(shp_desig$ymax, n=-1))
 
-
-
 # world data ----------------------------------------------------
 dd <- rnaturalearth::ne_countries("large", 
                                   type = "sovereignty",

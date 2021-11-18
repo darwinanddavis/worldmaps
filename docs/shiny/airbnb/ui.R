@@ -14,6 +14,7 @@ require(shinythemes)
 require(dplyr)
 require(here)
 require(readr)
+require(rvest)
 require(leaflet)
 require(colorspace)
 require(leaflet.extras)
@@ -38,17 +39,18 @@ city_urls <- fwd$url
 
 # criteria to subset from df 
 criteria_candidates <- c(
-  "Bed type",
   "Room type",
   "Property type",
   "Bathrooms",           
-  "Cancellation policy",
+  # "Cancellation policy",
+  # "Security deposit",    
+  # "Cleaning fee", 
   "Reviews per month",
   "Review scores rating",
-  "Security deposit",    
-  "Cleaning fee", 
-  "Accommodates"
+  "Accommodates",
+  "Number of active listings"
 )
+
 
 # ui ----------------------------------------------------------------------
 colvec <- c("Sunset-Dark","Inferno","Brwn-Yl","Burg","Teal")

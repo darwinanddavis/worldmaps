@@ -12,6 +12,7 @@
 require(shiny)
 require(shinythemes)
 require(dplyr)
+require(rvest)
 require(readr)
 require(leaflet)
 require(colorspace)
@@ -35,27 +36,27 @@ colvec <- c("Sunset-Dark","Inferno","Brwn-Yl","Burg","Teal")
 # funcs ---------------------------------------------------------------------
 # webscrape func
 url <- "http://insideairbnb.com/get-the-data.html"
-web_info <- function(node,node2){
-  # pull just first row of table  
-  if(node2==""){  
-    url %>% read_html %>% html_nodes(node) %>% html_text(trim = T)
-  }else{
-    url %>% read_html %>% html_nodes(node) %>% html_node(node2)
-  }
-}
+web_info <- function(node) url %>% read_html %>% html_nodes(node)
+
+# get web data
+fwd <- tibble(
+  "city" = web_info("h3") %>% html_text,
+  "url" = web_info("tbody") %>% html_node("a") %>% html_attr("href"),
+  "month" = web_info("tbody") %>% html_node("td") %>% html_text() %>% str_replace(",","") %>% str_split_fixed(" ", 3) %>% .[,2]
+); # saveRDS(fwd,here::here("worldmaps","docs","shiny","airbnb","fwd.Rdata"))
 
 # criteria to subset from df 
 criteria_candidates <- c(
-  "Bed type",
   "Room type",
   "Property type",
-  "Bathrooms",           
-  "Cancellation policy",
+  "Bathrooms",     
+  # "Cancellation policy",
+  # "Security deposit",    
+  # "Cleaning fee", 
   "Reviews per month",
   "Review scores rating",
-  "Security deposit",    
-  "Cleaning fee", 
-  "Accommodates"
+  "Accommodates",
+  "Number of active listings"
 )
 
 # read in web df
@@ -74,11 +75,15 @@ shinyServer(function(input, output){
     cols_clean <- airbnb %>% names %>% str_to_title() %>% str_replace_all("_", " ") # make cols title case 
     colnames(airbnb) <- cols_clean 
     # change char to num
-    airbnb <- airbnb %>% mutate(`Price` = `Price` %>% str_sub(2) %>% str_trim("both") %>% as.numeric,
-                                `Cleaning fee` = `Cleaning fee` %>% str_sub(2) %>% str_trim("both") %>% as.numeric,
-                                `Security deposit` = `Security deposit` %>% str_sub(2) %>% str_trim("both") %>% as.numeric,
-                                `Cancellation policy` = `Cancellation policy` %>% str_to_title() %>% str_replace_all("_", " ")
-    ) %>% 
+    airbnb <- airbnb %>% 
+      select(!Bathrooms) %>% # rm incorrect bathroom col
+      rename("Number of active listings" = "Calculated host listings count",
+             "Bathrooms" = "Bathrooms text") %>%
+      mutate(`Price` = `Price` %>% str_sub(2) %>% str_trim("both") %>% as.numeric
+                                # , `Cleaning fee` = `Cleaning fee` %>% str_sub(2) %>% str_trim("both") %>% as.numeric
+                                # , `Security deposit` = `Security deposit` %>% str_sub(2) %>% str_trim("both") %>% as.numeric
+                                # , `Cancellation policy` = `Cancellation policy` %>% str_to_title() %>% str_replace_all("_", " ")
+    ) %>%
       select(`Host name`, # subset data 
              `Host url`,
              Longitude, Latitude,
@@ -91,15 +96,16 @@ shinyServer(function(input, output){
              criteria_candidates) # add criteria candidates 
     airbnb <- airbnb %>% mutate_at("Neighbourhood",replace_na,"NA") # replace NAs in neighbourhood
     airbnb <- airbnb %>% # round off data 
-      mutate_at("Security deposit",funs(plyr::round_any(.,100))) %>% 
-      mutate_at("Cleaning fee",funs(plyr::round_any(.,100))) %>% 
+      # mutate_at("Security deposit",funs(plyr::round_any(.,100))) %>% 
+      # mutate_at("Cleaning fee",funs(plyr::round_any(.,100))) %>% 
       mutate_at("Accommodates",funs(plyr::round_any(.,1))) %>% 
       mutate_at("Reviews per month",funs(plyr::round_any(.,5))) %>% 
       mutate_at("Review scores rating",funs(plyr::round_any(.,10))) %>% 
-      mutate_at("Bathrooms",funs(plyr::round_any(.,1))) 
+      mutate_at("Bathrooms", ~str_split_fixed(.," ",2) %>% .[,1] %>% as.factor %>% na.omit) 
     airbnb <- airbnb %>% mutate_all(replace_na, 0) # replace NAs
     airbnb
   })
+  
   
   # map tile
   custom_tile <- "Esri.WorldGrayCanvas"
