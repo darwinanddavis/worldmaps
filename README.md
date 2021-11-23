@@ -45,28 +45,6 @@ pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2
  <!--  -->  
  <!--  -->
 
-### Day 2: Lines      
-
-Using geolocation data to map a roadtrip across the southern US with `R`.  
-  
-<div align="center"; text-align:center>
-  <img src="img/day2.png", width = "100%", height = "25%">  
-</div>  
-
-### Tools  
-
-R  
-Mapbox        
-```{r}  
-pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)          
-```      
-
-******     
-
- <!--  -->
- <!--  -->  
- <!--  -->
-
 ### Day 4: Hexagons
 
 Mapping my Lyft ride activity from June 2018 to March 2020. 
