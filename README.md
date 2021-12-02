@@ -41,7 +41,7 @@ pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2
  <!--  -->  
  <!--  -->
 
-### Where do Melburnians eats? Exploring restaurant seating capacity per area    
+### Where do Melburnians eat? Exploring restaurant seating capacity per area    
 #### Day 4 - Hexagons  
 
 <div align="center"; text-align:center>
@@ -349,6 +349,8 @@ pacman::p_load(dplyr,readr,rvest,xml2,magrittr,sp,sf,rgdal,ggmap,ggplot2,stringr
 
 ### Data      
 [City of Melbourne Open Data](https://data.melbourne.vic.gov.au/)  
+
+******     
 
  <!--  -->
  <!--  -->  

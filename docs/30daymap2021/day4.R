@@ -94,8 +94,7 @@ mapdeck(
            billboard = F,update_view = F,
            font_family = "Avenir" 
   ) %>% 
-  add_title(title = title_text, layer_id = "heading") #%>% 
-# htmlwidgets::saveWidget(here::here("worldmaps","30daymap2021","day4.html"))
+  add_title(title = title_text, layer_id = "heading")
 
+# save --------------------------------------------------------------------
 mp4 %>% htmlwidgets::saveWidget(here::here("worldmaps","30daymap2021","day4.html")) # saved without heading 
-

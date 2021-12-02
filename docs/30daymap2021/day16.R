@@ -4,7 +4,7 @@
 ##                            author: Matt Malishev                         
 ##                               @darwinanddavis                            
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-citation <- ""
+citation <- "https://data.melbourne.vic.gov.au/"
 
 
 # pcks -----------------------------------------------------
@@ -18,10 +18,9 @@ ggplot() +
 # spatial data -----------------------------------------------------------
 dd <- rnaturalearth::ne_states(c("Australia","New Zealand"), returnclass = "sf") 
 
-
 ## ggmap
 # ggmap::get_map()  
-# The different types of background graphics you can use as a base to your map  
+# different base maps
 maptypes <- c("terrain", "terrain-background", "satellite", "roadmap", "hybrid", "toner", "watercolor", "terrain-labels", "terrain-lines", "toner-2010", "toner-2011", "toner-background", "toner-hybrid", "toner-labels", "toner-lines", "toner-lite");maptypes
 
 # ggmap::get_googlemap()

@@ -1,4 +1,10 @@
-
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                            #30daymapchallenge2021                        ----
+##                              day 18 - water                                 ~~~~
+##                            author: Matt Malishev                         
+##                               @darwinanddavis                            
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+citation <- "Natural Earth"
 
 # pcks -----------------------------------------------------
 pacman::p_load(here,dplyr,readr,ggplot2,sf,sp,ggmap,rnaturalearth,rnaturalearthdata,maptools,scales,rgdal,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,grid,ggtext,rworldxtra,stringr,ggtext,showtext)
@@ -56,16 +62,9 @@ dd <- dd %>% st_transform(crs = prj)
 dd2 <- dd2 %>% st_transform(crs = prj)
 
 ggplot() +
-  geom_sf(data = bath_full %>% filter(depth == 200), aes(fill = colv, col = colv) ,size = 0.05, show.legend = F) +
-  geom_sf(data = bath_full %>% filter(depth == 1000), aes(fill = colv %>% darken(0.5), col = colv %>% darken(0.5)) ,size = 0.05, show.legend = F) +
+  geom_sf(data = bath_full, aes(fill = col, col = "#FFFFFF"), size = 0.05, show.legend = F) +
   geom_sf(data = dd, fill = "#000000", col = NA, size = 0) + # country base
   geom_sf(data = dd2, fill = "#000000", col = NA, size = 0) + # country base
-  # geom_sf(data = bath1000, fill = darken(bg, 0.3),size = 0, col = NA) +
-  # geom_sf(data = bath2000, fill = darken(bg, 0.4),size = 0, col = NA) +
-  # geom_sf(data = bath3000, fill = darken(bg, 0.5),size = 0, col = NA) +
-  # geom_sf(data = bath5000, fill = darken(bg, 0.6),size = 0, col = NA) +
-  # geom_sf(data = bath8000, fill = darken(bg, 0.7),size = 0, col = NA) +
-  # geom_sf(data = bath10000, fill = darken(bg, 0.8),size = 0, col = NA) +
   coord_sf(xlim = c(bbox[1],bbox[3]), ylim = c(bbox[2],bbox[4])) + # use bbox from proj data ie pathm
   theme_nothing() +
   theme(panel.grid.major = element_line(colour = "transparent"),

@@ -101,9 +101,3 @@ m1 <- ggplot() +
 
 # save --------------------------------------------------------------------
 ggsave(here::here("img","30daymap2021/") %>% paste0(fh,".png"),m1, device = "jpg", dpi = "retina", width = 20, height = 20, units = "cm")
-
-
-
-
-
-
