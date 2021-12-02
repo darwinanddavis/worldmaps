@@ -17,12 +17,11 @@ File extensions:
 
 Map entries for the #30dayMapChallenge for 2021.                 
 
-### Day 1 - Points  
-
-Rumble in south east Asia: 500 years of earthquake data              
+### Rumble in south east Asia: 500 years of earthquake data              
+#### Day 1 - Points    
 
 <div align="center"; text-align:center>
-  <img src="img/30daymap2021/day1.jpg", width = "100%", height = "25%">  
+  <img src="img/30daymap2021/day1.jpeg", width = "100%", height = "25%">  
 </div>  
 
 ### Tools   
@@ -42,9 +41,8 @@ pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2
  <!--  -->  
  <!--  -->
 
-### Day 4 - Hexagons
-
-Where do Melburnians eats? Exploring restaurant seating capacity per area  
+### Where do Melburnians eats? Exploring restaurant seating capacity per area    
+#### Day 4 - Hexagons  
 
 <div align="center"; text-align:center>
   <img src="img/30daymap2021/day4_2.jpg", width = "100%", height = "25%">  
@@ -67,12 +65,11 @@ pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlit
  <!--  -->  
  <!--  -->
 
-### Day 7 - Hexagons
-
-Classifying major ecoregions in Brazil    
+### Classifying major ecoregions in Brazil    
+#### Day 7 - Hexagons  
 
 <div align="center"; text-align:center>
-  <img src="img/30daymap2021/day7.png", width = "50%", height = "50%">  
+  <img src="img/30daymap2021/day7.png", width = "100%", height = "100%">  
 </div>  
 
 ### Tools   
@@ -91,9 +88,8 @@ pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlit
  <!--  -->  
  <!--  -->
 
-### Day 11 and 12 - 3D and population      
-
-Avian Airstrike: Aircraft-bird strikes across Australia (2012–2017)  
+### Avian Airstrike: Aircraft-bird strikes across Australia (2012–2017)    
+#### Day 11 and 12 - 3D and population        
 
 <div align="center"; text-align:center>
   <img src="img/30daymap2021/day11_1.jpg", width = "100%", height = "50%">  
@@ -116,12 +112,11 @@ pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,readr,d
  <!--  -->  
  <!--  -->
 
-### Day 22 - Boundaries    
-
-The Human Lifeline      
+### The Human Lifeline        
+#### Day 22 - Boundaries      
 
 <div align="center"; text-align:center>
-  <img src="img/30daymap2021/day22.png", width = "50%", height = "100%">  
+  <img src="img/30daymap2021/day22.png", width = "100%", height = "200%">  
 </div>  
 
 ### Tools   
@@ -139,6 +134,50 @@ pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,readr,d
  <!--  -->
  <!--  -->  
  <!--  -->
+
+## Inside Airbnb: Mapping and analysing Airbnb’s global property listings      
+
+<div align="center"; text-align:center>
+  <img src="img/airbnb_gui.jpg", width = "100%", height = "200%">  
+</div>  
+
+Create a web app that mimics that Airbnb site, but maps available listings to comapre cities around the world based on user criteria rather than simply listing price and availability.         
+  
+The criteria users can select to compare among cities  
+
+* Bed type    
+* Room type    
+* Property type  
+* Bathrooms       
+* Cancellation policy  
+* Reviews per month  
+* Review scores rating  
+
+### [Launch app](https://darwinanddavis.shinyapps.io/airbnb/)              
+
+### Tools  
+
+R
+Shiny               
+Leaflet  
+HTML  
+CSS   
+
+```{r}    
+pacman::p_load(shiny,shinythemes,dplyr,here,leaflet,rgdal,sp,sf,raster,colorspace,mapdata,ggmap,jpeg)  
+```  
+    
+### Links            
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/shiny/airbnb)          
+
+### Data  
+[Inside Airbnb](http://insideairbnb.com/get-the-data.html) open data  
+
+ ******     
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->  
 
 ## 30 day map challenge     
 
