@@ -1,4 +1,4 @@
-# Some spatial data analysis projects 
+# Spatial data analysis projects 
 
 ### Matt Malishev      
 
@@ -12,6 +12,133 @@ File extensions:
 .html      
 
 ******      
+
+## 30 day map challenge     
+
+Map entries for the #30dayMapChallenge for 2021.                 
+
+### Day 1 - Points  
+
+Rumble in south east Asia: 500 years of earthquake data              
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2021/day1.jpg", width = "100%", height = "25%">  
+</div>  
+
+### Tools   
+
+R  
+```{r}    
+pacman::p_load(here,sf,RColorBrewer,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)          
+```  
+  
+
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2021)   
+
+******     
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+### Day 4 - Hexagons
+
+Where do Melburnians eats? Exploring restaurant seating capacity per area  
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2021/day4_2.jpg", width = "100%", height = "25%">  
+</div>  
+
+### Tools   
+
+R  
+Mapbox  
+```{r}    
+pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)          
+```  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2021)   
+
+******     
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+### Day 7 - Hexagons
+
+Classifying major ecoregions in Brazil    
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2021/day7.png", width = "50%", height = "50%">  
+</div>  
+
+### Tools   
+
+R  
+```{r}    
+pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlite,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,reshape2,grid,rnaturalearth,rnaturalearthdata,ggtext,purrr)          
+```  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2021)   
+
+******     
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+### Day 11 and 12 - 3D and population      
+
+Avian Airstrike: Aircraft-bird strikes across Australia (2012–2017)  
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2021/day11_1.jpg", width = "100%", height = "50%">  
+</div>  
+
+### Tools   
+
+R  
+Mapbox  
+```{r}    
+pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,rnaturalearth,rnaturalearthdata,ggtext)          
+```  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2021)   
+
+******     
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
+
+### Day 22 - Boundaries    
+
+The Human Lifeline      
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2021/day22.png", width = "50%", height = "100%">  
+</div>  
+
+### Tools   
+
+R     
+```{r}    
+pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,readr,devtools,colorspace,mapdata,ggsn,mapview,mapproj,ggthemes,rnaturalearth,rnaturalearthdata,ggtext)          
+```  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2021)   
+
+******     
+
+ <!--  -->
+ <!--  -->  
+ <!--  -->
 
 ## 30 day map challenge     
 
