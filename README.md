@@ -66,7 +66,7 @@ pacman::p_load(here,mapdeck,dplyr,ggmap,sp,maptools,scales,rgdal,ggplot2,jsonlit
  <!--  -->
 
 ### Classifying major ecoregions in Brazil    
-#### Day 7 - Hexagons  
+#### Day 7 - Green   
 
 <div align="center"; text-align:center>
   <img src="img/30daymap2021/day7.png", width = "100%", height = "100%">  
