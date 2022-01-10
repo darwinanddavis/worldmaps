@@ -29,6 +29,7 @@ require(purrr)
 require(lubridate)
 require(metathis)
 require(shinycssloaders)
+require(shinyWidgets)
 
 # here("worldmaps","docs","shiny","airbnb") %>% runApp() / deployApp()  
 
@@ -54,6 +55,8 @@ criteria_candidates <- c(
 
 # ui ----------------------------------------------------------------------
 colvec <- c("Sunset-Dark","Inferno","Brwn-Yl","Burg","Teal")
+colv <- "#FF385C" # main col
+
 shinyUI(fluidPage(
   theme = shinytheme(theme = "cyborg"),
   tags$style(type = "text/css", "html, body {width:100%;height:100%;background-color:black;}"),
@@ -68,6 +71,13 @@ shinyUI(fluidPage(
                              options = list(maxItems = 1, placeholder = 'Select city or start typing',
                                             onInitialize = I('function() { this.setValue(""); }')),
                              width = "100%"),
+              # update slider base colour
+              setSliderColor(colv, 1),
+              tags$style(HTML(paste0(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar
+                                     {background:",colv,";
+                                     border-top: 1px solid",colv,";
+                                     border-bottom: 1px solid",colv,";}"
+                                     ))),
               sliderInput("price", 
                           "Choose price range",
                           value = c(50,200),
