@@ -9,10 +9,10 @@ fh <- "day3"
 
 
 # pcks ----------------------------------------------------------
-pacman::p_load(here,ggplot2,lubridate,stringr, dplyr,tibble,readr,palmerpenguins,plotly,htmlwidgets,cowplot,gridExtra,colorspace,readxl,sf,htmltools)
+pacman::p_load(here,ggplot2,lubridate,stringr, dplyr,tibble,readr,plotly,htmlwidgets,cowplot,gridExtra,colorspace,readxl,sf,htmltools)
 
 # data ----------------------------------------------------------
-df <- here::here("jips_test","jips_data.xlsx") %>% readxl::read_xlsx()
+df <- here::here("data","30daymap2022","day3") %>% list.files("xlsx", full.names = T) %>% readxl::read_xlsx()
 df <- df %>% rename(.cols = 3,
                     "Score" = 3)
 
