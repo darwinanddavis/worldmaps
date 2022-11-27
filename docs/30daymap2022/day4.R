@@ -11,10 +11,8 @@ citation <- "https://senseable.mit.edu/treepedia/"
 # pcks ----------------------------------------------------------
 pacman::p_load(here,ggplot2,stringr,dplyr,tibble,readr,readr,sf,sfheaders,raster,ggmap,colorspace,concaveman,ggspatial,colorspace,ggspatial)
 
-
-
-# df <- here::here("data","30daymap2022","day4") %>% list.files("geojson", full.names = T) %>% 
-#   read_sf()
+slist_boundaries <- readRDS(here::here("data","30daymap2022","day4_boundaries.Rda"))
+slist_points <-  readRDS(here::here("data","30daymap2022","day4_points.Rda"))
 
 # data ----------------------------------------------------------
 dr <- "/Users/malishev/Documents/Data/worldmaps/30daymapchallenge/2022/day4/data"
@@ -61,15 +59,16 @@ my_theme <- theme(
 
 # sort by area
 df <- slist_boundaries %>% arrange(area) 
-buff <- df %>% top_n(n = 1, wt = area) %>% st_buff(1) # set buff to equal largest city
+buff <- df %>% top_n(n = 1, wt = area) %>% st_buffer(1) # set buff to equal largest city
 
-
-mm <- reshape2::melt(slist_points[1:4])
-
+colpal <- sequential_hcl(
+  1,
+  # slist_boundaries %>% n_distinct(),
+  "Dark Mint")
 ggplot() +
-  geom_sf(data = slist_boundaries[1:4,], aes(group = id,  col = colpal, fill = fg %>% adjustcolor(opac)),size = 0.2) +
+  geom_sf(data = slist_boundaries[1], aes(group = id,  col = colpal, fill = fg %>% adjustcolor(opac)),size = 0.2) +
   geom_sf(data = slist_boundaries %>% filter(id == "kobe"), size = 0.2, col = fg, fill = fg %>% adjustcolor(opac)) +
-  geom_sf(data = slist_points[[1]], size = 0.05, col = fg) +
+  # geom_sf(data = slist_points[[1]], size = 0.05, col = fg) +
   ggspatial::annotation_scale(location = 'bl',bar_cols = c(bg,fg), line_width = 0.5, pad_x = unit(0.5, "cm"), pad_y = unit(0.1, "cm"), text_col = fg, line_col = fg, style = "bar" , width_hint = 0.1) +
   facet_wrap(~id) +
   # coord_sf(xlim = bb[c(1,3)], ylim = bb[c(1,3)]) +
