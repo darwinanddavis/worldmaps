@@ -50,30 +50,12 @@ df %>% melt() %>% tidyr::uncount(value)  # lengthen df by each row value
 # transpose
 df %>% t %>% data.frame
 
-
-
-
-
-
-
 adl[755] %>% str_detect(artist[209])
-
 index <- adl %>% purrr::map(str_which,artist) %>% unlist
 
-"RollieWestside Gunn" %>% setdiff("Westside Gunn")
-
-# option 2
-url %>% read_html() %>% html_nodes("a")
-
-
-
-
-url %>% read_html() %>% html_nodes(":contains('•')") %>%
-  .[c(19,20)] %>% 
-  html_text
 
 
 # data clean  ---------------------------------------------------------
-clean <- c("uck","igga","ussy","Bitch","bitch","dick","Dick")
+clean <- c("uck")
 
 
