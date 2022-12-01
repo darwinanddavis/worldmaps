@@ -9,9 +9,152 @@ Versions:
 File extensions:     
 .R    
 .Rmd    
-.html      
+.html   
+.js   
 
-******      
+******    
+
+<!--  -->
+<!--  -->  
+<!--  -->
+
+## 30 day map challenge     
+
+Map entries for the #30dayMapChallenge for 2022                   
+
+### City sprawling – isochrones of Australia's major cities      
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2022/day2.png", width = "100%", height = "25%">  
+</div>  
+
+### Tools   
+
+R  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2022)     
+
+******    
+
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Human rights protection scores by country (1980–2017)    
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2022/day3.jpg", width = "100%", height = "25%">  
+</div>  
+
+### Tools   
+
+R  
+Leaflet
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2022)     
+
+******     
+
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Fishprint — Major fishing vessel activity of China vs Australia     
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2022/day14.png", width = "100%", height = "100%">  
+</div>  
+
+### Tools     
+
+R  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2022)     
+
+******     
+
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Bait and hook — China's global fishing chokehold    
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2022/day19.png", width = "100%", height = "200%">  
+</div>  
+
+### Tools     
+
+R  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2022)     
+
+******     
+
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Stylised city maps of places I've lived  
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2022/day25.png", width = "100%", height = "100%">  
+</div>  
+
+### Tools     
+
+R  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2022)     
+
+******     
+
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Treescape – Urban tree canopy networks by area  
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2022/day26.png", width = "100%", height = "200%">  
+</div>  
+
+### Tools     
+
+R  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2022)     
+
+
+******     
+
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### NSW flood disaster – Leveraging hi-res data and mapping to understand natural disaster events   
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2022/day30.png", width = "100%", height = "25%">  
+</div>  
+
+### Tools     
+
+R  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2022)     
+
+
+******     
+
+
 
 ## 30 day map challenge     
 
