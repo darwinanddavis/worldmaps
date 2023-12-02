@@ -4,16 +4,153 @@
 
 Versions:    
  - R 3.5.0    
- - RStudio 1.1.453        
+ - RStudio 2022.12.0+353
   
 File extensions:     
 .R    
 .Rmd    
-.html   
+.html
+.css   
 .js   
 
 ******    
 
+<!--  -->
+<!--  -->  
+<!--  -->
+
+## 30 day map challenge       
+
+Map entries for the #30dayMapChallenge for 2023                     
+
+### Firestarter - Largest bushfires in Australian history (1899–2022)  
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day3.png", width = "100%", height = "25%">  
+</div>  
+
+### Tools   
+
+R  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2023)     
+
+******    
+   
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Where does Taiwan fish?   
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day6.png", width = "100%", height = "100%">  
+</div>  
+
+### Tools   
+
+R  
+Threejs    
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2023)     
+
+******    
+   
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Fires of the century - 125 years of Australian bushfires    
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day9_.png", width = "100%", height = "100%">  
+</div>  
+
+### Tools   
+
+R    
+Google maps  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2023)     
+
+******    
+   
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Highrise headache - Major constructions in Melbourne (2020–2022)   
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day15.png", width = "100%", height = "100%">  
+</div>  
+
+### Tools   
+
+R    
+Mapdeck   
+Mapbox  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2023)     
+
+******    
+   
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Where did the Palestine and Israel protests start? Exploring protest origins per country (Oct–Nov 2022)  
+
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day23.gif", width = "100%", height = "100%">  
+</div>    
+
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day23.png", width = "100%", height = "100%">  
+</div>  
+
+### Tools   
+
+R    
+Mapdeck   
+Mapbox  
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2023)     
+
+******    
+   
+<!--  -->
+<!--  -->  
+<!--  -->
+
+### Firelines - Australian bushfires and their ten closest neighbours  (1980–2022)    
+
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day30.png", width = "100%", height = "100%">  
+</div>    
+
+
+<div align="center"; text-align:center>
+  <img src="img/30daymap2023/day30.gif", width = "100%", height = "100%">  
+</div>  
+
+### Tools   
+
+R      
+    
+### Links      
+[`R` code](https://github.com/darwinanddavis/worldmaps/tree/gh-pages/docs/30daymap2023)     
+
+******    
+   
 <!--  -->
 <!--  -->  
 <!--  -->

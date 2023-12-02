@@ -5,7 +5,6 @@
 ##                               @darwinanddavis                            
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 # pcks --------------------------------------------------------------------
 pacman::p_load(here,dplyr,sf,sfheaders,ggplot2,maps,ggmap,nngeo,rnaturalearth,colorspace,scales)
 sf_use_s2(FALSE)
@@ -43,7 +42,17 @@ for(f in fhh){
     geom_sf(size = cex, col = colv, alpha = opac, show.legend = F) +
     labs(subtitle = f) +
     coord_sf(xlim = bbox[c(1,3)],ylim = bbox[c(2,4)]) + # set bounding box
-    theme_nothing() + my_theme
+    theme_nothing() + my_theme +
+    ggspatial::annotation_scale(
+      location = "bl",
+      bar_cols = c(colpal[1]),
+      line_width = 0.5,
+      pad_x = unit(1.5,"cm"),
+      pad_y = unit(1.5,"cm"),
+      text_col = colpal[1], line_col = colpal[1],
+      style = "ticks", # "bar"
+      width_hint = 0.1 # set scale to 10% of map
+    )
   ggsave(paste0(here::here("plot",f,".png")), device = "png", dpi = "retina", width = width, height = width, units = "cm", bg = colt)
 }
 
